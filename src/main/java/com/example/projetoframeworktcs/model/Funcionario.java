@@ -22,24 +22,18 @@ public class Funcionario implements Serializable {
     private Long id;
     private String nome;
     private String sobrenome;
-    private int idade;
-    private int id_genero;
-    private double salario;
-    private int qtdVendas;
-    private int id_setor;
+    private Integer idade;
+    private Integer id_genero;
+    private Double salario;
+    private Integer id_setor;
 
-    public Funcionario(String nome, String sobrenome, int idade, int id_genero, double salario, int qtdVendas, int id_setor) {
+    public Funcionario(String nome, Integer id_setor, String sobrenome, Integer id_genero, Integer idade, Double salario) {
         this.nome = nome;
-        this.sobrenome = sobrenome;
-        this.idade = idade;
-        this.id_genero = id_genero;
-        this.salario = salario;
-        this.qtdVendas = qtdVendas;
         this.id_setor = id_setor;
-    }
-
-    public void incrementarVendas(){
-        this.qtdVendas++;
+        this.sobrenome = sobrenome;
+        this.id_genero = id_genero;
+        this.idade = idade;
+        this.salario = salario;
     }
 
 }
