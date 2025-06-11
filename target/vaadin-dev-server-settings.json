@@ -1,0 +1,17 @@
+{
+  "frontendFolder": "C:/Users/Aluno/IdeaProjects/ProjetoFrameworkTcs/./src/main/frontend",
+  "themeFolder": "themes",
+  "themeResourceFolder": "C:/Users/Aluno/IdeaProjects/ProjetoFrameworkTcs/./src/main/frontend/generated/jar-resources",
+  "staticOutput": "C:/Users/Aluno/IdeaProjects/ProjetoFrameworkTcs/target/classes/META-INF/VAADIN/webapp/VAADIN/static",
+  "generatedFolder": "generated",
+  "statsOutput": "C:\\Users\\Aluno\\IdeaProjects\\ProjetoFrameworkTcs\\target\\classes\\META-INF\\VAADIN\\config",
+  "frontendBundleOutput": "C:\\Users\\Aluno\\IdeaProjects\\ProjetoFrameworkTcs\\target\\classes\\META-INF\\VAADIN\\webapp",
+  "devBundleOutput": "C:/Users/Aluno/IdeaProjects/ProjetoFrameworkTcs/target/dev-bundle/webapp",
+  "devBundleStatsOutput": "C:/Users/Aluno/IdeaProjects/ProjetoFrameworkTcs/target/dev-bundle/config",
+  "jarResourcesFolder": "C:/Users/Aluno/IdeaProjects/ProjetoFrameworkTcs/./src/main/frontend/generated/jar-resources",
+  "themeName": "",
+  "clientServiceWorkerSource": "C:\\Users\\Aluno\\IdeaProjects\\ProjetoFrameworkTcs\\target\\sw.ts",
+  "pwaEnabled": false,
+  "offlineEnabled": false,
+  "offlinePath": "'offline.html'"
+}
