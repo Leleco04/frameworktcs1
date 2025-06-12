@@ -20,13 +20,15 @@ public class Transportadora implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Integer idLocal;
+    private String nome;
     private Integer qtdParceiras;
     private Double valorFrete;
     private Double toneladas;
     private String transportadoraEscolhida;
 
-    public Transportadora(Integer idLocal ,String transportadoraEscolhida, Double toneladas, Double valorFrete) {
+    public Transportadora(Integer idLocal, String nome ,String transportadoraEscolhida, Double toneladas, Double valorFrete) {
         this.idLocal = 0;
+        this.nome = nome;
         this.qtdParceiras = 3;
         this.transportadoraEscolhida = transportadoraEscolhida;
         this.toneladas = toneladas;

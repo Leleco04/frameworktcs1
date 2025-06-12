@@ -35,6 +35,7 @@ public class TransportadoraService {
         Transportadora transportadora = transportadoraRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Funcionário não encontrado."));
 
+        transportadora.setNome(dto.getNome());
         transportadora.setValorFrete(dto.getValorFrete());
 
         return transportadoraRepository.save(transportadora);

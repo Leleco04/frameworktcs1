@@ -8,5 +8,6 @@ import lombok.Setter;
 @Setter
 public class AtualizarTransportadoraDTO {
 
+    private String nome;
     private Double valorFrete;
 }
