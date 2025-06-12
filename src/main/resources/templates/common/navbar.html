@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<nav class="vh-100 nav-lateral ps-3 pe-3 pt-3" th:fragment="navbar-lateral">
+
+    <a th:href="@{/}"><img th:src="@{/LOGO_FARMACIA.png}" id="logo" class="h-25"></a>
+
+    <div class="acoes d-grid gap-3 text-center fw-bold">
+        <a th:href="@{/funcionario_inicial}" class="acao-nav">Funcionários</a>
+        <a th:href="@{/produto_inicial}" class="acao-nav">Produtos</a>
+        <a th:href="@{/caixa}" class="acao-nav">Caixa</a>
+    </div>
+
+</nav>
+
+</body>
+</html>
