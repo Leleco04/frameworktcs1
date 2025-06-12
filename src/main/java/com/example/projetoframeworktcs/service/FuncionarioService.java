@@ -1,7 +1,9 @@
 package com.example.projetoframeworktcs.service;
 
 import com.example.projetoframeworktcs.dto.AtualizarFuncionarioDTO;
+import com.example.projetoframeworktcs.dto.FuncionarioDTO;
 import com.example.projetoframeworktcs.model.Funcionario;
+import com.example.projetoframeworktcs.model.Salario;
 import com.example.projetoframeworktcs.repository.FuncionarioRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,9 +16,13 @@ public class FuncionarioService {
 
     @Autowired
     private FuncionarioRepository funcionarioRepository;
+    private SalarioService salarioService;
 
-    public Funcionario adicionar(Funcionario funcionario) {
-        return funcionarioRepository.save(funcionario);
+    public Funcionario adicionar(FuncionarioDTO funcionario) {
+        Salario salario = salarioService.calcularSalario(funcionario.getVale(), funcionario.getPlanoSaude(), funcionario.getPlanoOdontologico(), funcionario.getBonusParticipacao(), funcionario.getTaxaAliquota(), funcionario.getSalarioBruto());
+        Funcionario funcionarioSalvo = new Funcionario(funcionario.getNome(), funcionario.getSobrenome(), funcionario.getIdade(), funcionario.getGenero(), salario, funcionario.getId_setor());
+
+        return funcionarioRepository.save(funcionarioSalvo);
     }
 
     public List<Funcionario> listar() {
@@ -36,7 +42,7 @@ public class FuncionarioService {
         funcionario.setNome(dto.getNome());
         funcionario.setSobrenome(dto.getSobrenome());
         funcionario.setIdade(dto.getIdade());
-        funcionario.setId_genero(dto.getId_genero());
+        funcionario.setGenero(dto.getGenero());
         funcionario.setId_setor(dto.getId_setor());
 
         return funcionarioRepository.save(funcionario);

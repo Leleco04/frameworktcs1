@@ -1,6 +1,7 @@
 package com.example.projetoframeworktcs.controller;
 
 import com.example.projetoframeworktcs.dto.AtualizarFuncionarioDTO;
+import com.example.projetoframeworktcs.dto.FuncionarioDTO;
 import com.example.projetoframeworktcs.model.Funcionario;
 import com.example.projetoframeworktcs.service.FuncionarioService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +18,7 @@ public class FuncionarioController {
     private FuncionarioService funcionarioService;
 
     @PostMapping
-    public ResponseEntity<Funcionario> addFuncionario(Funcionario funcionario) {
+    public ResponseEntity<Funcionario> addFuncionario(@RequestBody FuncionarioDTO funcionario) {
         Funcionario f = funcionarioService.adicionar(funcionario);
         return ResponseEntity.ok(f);
     }
