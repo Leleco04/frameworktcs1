@@ -1,5 +1,6 @@
 package com.example.projetoframeworktcs.model;
 
+import com.example.projetoframeworktcs.enumeracao.Genero;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -16,6 +17,7 @@ public class Funcionario implements Serializable {
     private Long id;
     private String nome;
     private String sobrenome;
+    private Genero genero;
     private int idade;
     private double salario;
     private int qtdVendas;

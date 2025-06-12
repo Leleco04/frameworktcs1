@@ -1,4 +1,5 @@
 package com.example.projetoframeworktcs.controller;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
@@ -10,4 +11,9 @@ public class FuncionarioController {
         return "funcionario_inicial";
     }
 
-}
+    @GetMapping("/adicionar_funcionario")
+    public String paginaAdicionarFuncionario() {
+        return "adicionar_funcionario";
+    }
+
+    }

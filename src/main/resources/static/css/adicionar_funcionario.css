@@ -1,0 +1,14 @@
+.input_funcionario {
+    padding: 0.25rem;
+    border: 1px solid gray;
+    outline: none;
+    width: 15rem;
+    border-radius: 5px;
+}
+
+#tabela {
+    background: #fff;
+    border-radius: 10px;
+    border: 1px solid lightgray;
+    width: 100%;
+}
