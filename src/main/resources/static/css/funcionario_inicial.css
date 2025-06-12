@@ -10,7 +10,7 @@
 
 #add_funcionario:hover {
     background: #044080;
-    color: #57d5ff;
+    color: #fff;
     transform: scale(1.05);
     transition: all 0.3s ease;
 }
@@ -26,4 +26,5 @@
     border: 1px solid gray;
     border-radius: 5px;
     outline: none;
+    width: 20rem;
 }

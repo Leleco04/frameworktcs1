@@ -8,44 +8,48 @@
 
 <section th:fragment="section">
     <div class="d-flex justify-content-between">
-        <h1>Funcionários</h1>
-        <a th:href="@{/adicionar_funcionario}" id="add_funcionario" class="pt-1 pb-1 fw-bold align-items-center d-flex gap-3 ps-3 pe-3">
-            <span id="plus">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                     class="bi bi-plus-circle-fill" viewBox="0 0 16 16">
-  <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3z"/>
-</svg>
-            </span>
-            Novo Funcionário
-        </a>
+        <h2 class="fw-bold">Adicionar Funcionário</h2>
     </div>
     <hr>
-    <div class="d-grid pt-3 pb-3" id="tabela">
-        <div class="d-grid gap-3">
-            <div class="d-flex justify-content-center gap-3">
-                <div class="d-grid gap-1">
-                    <label for="nome">Nome</label>
-                    <input type="Nome" name="nome" id="nome" class="input_funcionario">
+    <div class="d-grid justify-content-center mt-5">
+        <div class="d-grid pt-5 pb-5" id="tabela">
+            <div class="d-grid gap-3">
+                <div class="d-flex justify-content-center gap-3">
+                    <div class="d-grid gap-1">
+                        <label for="nome">Nome</label>
+                        <input type="Nome" name="nome" id="nome" class="input_funcionario" placeholder="Nome">
+                    </div>
+                    <div class="d-grid gap-1">
+                        <label for="sobrenome">Sobrenome</label>
+                        <input type="Sobrenome" name="sobrenome" id="sobrenome" class="input_funcionario" placeholder="Sobrenome">
+                    </div>
                 </div>
-                <div class="d-grid gap-1">
-                    <label for="sobrenome">Sobrenome</label>
-                    <input type="Sobrenome" name="sobrenome" id="sobrenome" class="input_funcionario">
+                <div class="d-flex justify-content-center gap-3">
+                    <div class="d-grid gap-1">
+                        <label for="genero">Genêro</label>
+                        <select id="genero" class="input_funcionario">
+                            <option selected value="1">Masculino</option>
+                            <option value="2">Feminino</option>
+                        </select>
+                    </div>
+                    <div class="d-grid gap-1">
+                        <label for="setor">Setor</label>
+                        <select id="setor" class="input_funcionario">
+                            <option selected value="1">Masculino</option>
+                            <option value="2">Feminino</option>
+                        </select>
+                    </div>
                 </div>
-            </div>
-            <div class="d-flex justify-content-center gap-3">
-                <div class="d-grid gap-1">
-                    <label for="genero">Genêro</label>
-                    <select id="genero" class="input_funcionario">
-                        <option selected value="1">Masculino</option>
-                        <option value="2">Feminino</option>
-                    </select>
+                <div class="d-flex justify-content-center gap-3">
+                    <div class="d-grid gap-1">
+                        <label for="idade">Idade</label>
+                        <input id="idade" type="number" class="input_funcionario" name="idade" placeholder="18">
+                    </div>
                 </div>
-                <div class="d-grid gap-1">
-                    <label for="setor">Setor</label>
-                    <select id="setor" class="input_funcionario">
-                        <option selected value="1">Masculino</option>
-                        <option value="2">Feminino</option>
-                    </select>
+                <div class="d-grid justify-content-center">
+                    <div class="d-grid gap-1 mt-3">
+                        <button id="btn_confirmar" class="p-2 fw-bold">Adicionar</button>
+                    </div>
                 </div>
             </div>
         </div>

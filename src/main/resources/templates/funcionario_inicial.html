@@ -8,7 +8,7 @@
 
 <section th:fragment="section">
     <div class="d-flex justify-content-between">
-        <h1>Funcionários</h1>
+        <h2 class="fw-bold">Funcionários</h2>
         <a th:href="@{/adicionar_funcionario}" id="add_funcionario"
            class="pt-1 pb-1 fw-bold align-items-center d-flex gap-3 ps-3 pe-3">
             <span id="plus">
@@ -21,7 +21,7 @@
         </a>
     </div>
     <hr>
-    <div class="d-grid p-3" id="tabela">
+    <div class="d-grid p-3 mt-5" id="tabela">
         <div class="d-flex justify-content-end">
             <input type="text" placeholder="Buscar" id="input_busca" class="ps-3 pt-2 pb-2">
         </div>
