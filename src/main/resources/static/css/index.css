@@ -1,19 +1,27 @@
+body {
+    background-color: #e0ffff;
+    font-family: "Roboto", sans-serif;
+}
+
 .nav-lateral {
-    border-right: 1px solid #fff;
-    background: cadetblue;
+    border-right: 1px solid #044080;
+    background: #57d5ff;
 }
 
-.nome {
-    color: blue;
-}
-
-a, h3 {
-    color: #fff;
+.acao-nav, h3 {
+    color: #044080;
     text-decoration: none;
+    border-radius: 10px;
 }
 
-a:hover {
-    color: blue;
+.acao-nav:hover {
+    color: #57d5ff;
+    background: #044080;
+    padding: 0.5rem;
     transform: scale(1.1);
     transition: all 0.15s ease;
+}
+
+h1 {
+    color: red;
 }
