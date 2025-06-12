@@ -1,14 +1,30 @@
 .input_funcionario {
-    padding: 0.25rem;
+    padding-left: 0.5rem;
     border: 1px solid gray;
     outline: none;
     width: 15rem;
     border-radius: 5px;
+    height: 2.5rem;
 }
 
 #tabela {
     background: #fff;
     border-radius: 10px;
     border: 1px solid lightgray;
-    width: 100%;
+    padding: 5rem;
+}
+
+#btn_confirmar {
+    background: #57d5ff;
+    color: #044080;
+    transition: all .3s ease;
+    border: 1px solid #044080;
+    width: 15rem;
+    font-size: 1.25rem;
+    border-radius: 5px;
+}
+
+#btn_confirmar:hover {
+    background: #044080;
+    color: #fff;
 }
