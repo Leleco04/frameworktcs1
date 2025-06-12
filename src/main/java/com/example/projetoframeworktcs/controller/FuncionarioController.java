@@ -1,5 +1,6 @@
 package com.example.projetoframeworktcs.controller;
 
+import com.example.projetoframeworktcs.dto.AtualizarFuncionarioDTO;
 import com.example.projetoframeworktcs.model.Funcionario;
 import com.example.projetoframeworktcs.service.FuncionarioService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +32,12 @@ public class FuncionarioController {
     public ResponseEntity<Void> deleteFuncionario(Long id) {
         funcionarioService.remover(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping
+    public ResponseEntity<Funcionario> updateFuncionario(Long id, AtualizarFuncionarioDTO dto) {
+        Funcionario f = funcionarioService.atualizar(id, dto);
+        return ResponseEntity.ok(f);
     }
 
 }

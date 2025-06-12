@@ -29,7 +29,7 @@ public class FuncionarioService {
         funcionarioRepository.delete(funcionario);
     }
 
-    public void atualizar(Long id, AtualizarFuncionarioDTO dto) {
+    public Funcionario atualizar(Long id, AtualizarFuncionarioDTO dto) {
         Funcionario funcionario = funcionarioRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Funcionário não encontrado."));
 
@@ -39,6 +39,6 @@ public class FuncionarioService {
         funcionario.setId_genero(dto.getId_genero());
         funcionario.setId_setor(dto.getId_setor());
 
-        funcionarioRepository.save(funcionario);
+        return funcionarioRepository.save(funcionario);
     }
 }
