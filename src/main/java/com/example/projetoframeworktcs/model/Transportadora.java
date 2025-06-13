@@ -26,13 +26,12 @@ public class Transportadora implements Serializable {
     private Double toneladas;
     private String transportadoraEscolhida;
 
-    public Transportadora(Integer idLocal, String nome ,String transportadoraEscolhida, Double toneladas, Double valorFrete) {
+    public Transportadora(Integer idLocal, String nome ,String transportadoraEscolhida, Double toneladas) {
         this.idLocal = 0;
         this.nome = nome;
         this.qtdParceiras = 3;
         this.transportadoraEscolhida = transportadoraEscolhida;
         this.toneladas = toneladas;
-        this.valorFrete = valorFrete;
     }
 
 

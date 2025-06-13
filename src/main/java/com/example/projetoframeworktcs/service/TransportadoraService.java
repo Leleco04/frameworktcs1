@@ -50,27 +50,28 @@ public class TransportadoraService {
         return null;
     }
 
-    public void calcularFrete(String transportadoraEscolhida, double toneladas) {
+    public Double calcularFrete(String transportadoraEscolhida, double toneladas) {
         Local local = buscarcidadeTransportadora(transportadoraEscolhida);
 
         if (local != null) {
             double valorFinal;
             double valorExtra = 200;
             valorFinal = valorExtra * toneladas;
-            System.out.println("O frete fixo para " + local.getCidadeTransportadora() + " é: R$ " + local.getValorFreteFixo());
-            System.out.println("O valor final do frete ficou: " + (valorFinal + local.getValorFreteFixo()));
-        } else {
-            System.out.println("Transportadora não encontrada nesta cidade");
+            return valorFinal + local.getValorFreteFixo();
         }
+        return null;
     }
 
-    public void exibirTransportadora(Transportadora transportadora){
+    public String exibirTransportadora(Transportadora transportadora){
 
-        System.out.println("Possuimos: " + transportadora.getQtdParceiras() + " Transportadoras" );
-        System.out.print("Cidades disponíveis: ");
+        StringBuilder sb = new StringBuilder();
+
+        sb.append("Possuimos: " + transportadora.getQtdParceiras() + " Transportadoras" );
+        sb.append("Cidades disponíveis: ");
         for(Local local: Local.values()){
-            System.out.print(local.getCidadeTransportadora() + " ");
+            sb.append(local.getCidadeTransportadora() + " ");
         }
+        return sb.toString();
     }
 
 }
