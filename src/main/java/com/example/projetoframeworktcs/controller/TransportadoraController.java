@@ -1,9 +1,8 @@
 package com.example.projetoframeworktcs.controller;
 
-import com.example.projetoframeworktcs.dto.AtualizarFuncionarioDTO;
 import com.example.projetoframeworktcs.dto.AtualizarTransportadoraDTO;
-import com.example.projetoframeworktcs.model.Funcionario;
 import com.example.projetoframeworktcs.model.Transportadora;
+import com.example.projetoframeworktcs.model.enums.Local;
 import com.example.projetoframeworktcs.service.TransportadoraService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -41,6 +40,12 @@ public class TransportadoraController {
     public ResponseEntity<Transportadora> updateTransportadora(Long id, AtualizarTransportadoraDTO dto) {
         Transportadora t = transportadoraService.atualizar(id, dto);
         return ResponseEntity.ok(t);
+    }
+
+    @GetMapping
+    public ResponseEntity<Local> buscarcidadeTransportadora(String cidadeTransportadora) {
+        Local l = TransportadoraService.buscarcidadeTransportadora(cidadeTransportadora);
+        return ResponseEntity.ok(l);
     }
 
 }

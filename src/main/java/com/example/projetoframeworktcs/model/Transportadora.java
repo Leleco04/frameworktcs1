@@ -34,5 +34,7 @@ public class Transportadora implements Serializable {
         this.toneladas = toneladas;
         this.valorFrete = valorFrete;
     }
+
+
 }
 
