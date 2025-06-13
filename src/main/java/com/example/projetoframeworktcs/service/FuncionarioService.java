@@ -1,7 +1,5 @@
 package com.example.projetoframeworktcs.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import com.example.projetoframeworktcs.dto.AtualizarFuncionarioDTO;
 import com.example.projetoframeworktcs.dto.FuncionarioDTO;
 import com.example.projetoframeworktcs.model.Funcionario;
@@ -15,8 +13,9 @@ import java.util.List;
 
 @Service
 public class FuncionarioService {
-  
-    private final FuncionarioRepository funcionarioRepository;
+
+    @Autowired
+    private FuncionarioRepository funcionarioRepository;
     private final SetorRepository setorRepository;
 
     public FuncionarioService(FuncionarioRepository funcionarioRepository, SetorRepository setorRepository) {
@@ -50,7 +49,7 @@ public class FuncionarioService {
         return funcionarioRepository.save(funcionarioSalvo);
     }
 
-    public List<Funcionario> getFuncionarios() {
+    public List<Funcionario> listarFuncionarios() {
         return funcionarioRepository.findAll();
     }
 

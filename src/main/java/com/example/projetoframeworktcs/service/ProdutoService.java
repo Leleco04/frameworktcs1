@@ -29,22 +29,20 @@ public class ProdutoService {
         }
     }
 
-    public List<Produto> listarProdutos() {
-        return produtoRepository.findAll();
-    }
-
     public Produto buscarPorId(Long id) {
         return produtoRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Produto não encontrado."));
     }
 
-    public Produto salvar(Produto produto) {
+    public Produto adicionarProduto(Produto produto) {
         return produtoRepository.save(produto);
     }
 
-    public void removerProduto(Long id) {
-        Produto p = produtoRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Produto não encontrado."));
+    public List<Produto> listarProdutos() {
+        return produtoRepository.findAll();
+    }
 
+    public void removerProduto(Long id) {
+        Produto p = buscarPorId(id);
         produtoRepository.delete(p);
     }
 }

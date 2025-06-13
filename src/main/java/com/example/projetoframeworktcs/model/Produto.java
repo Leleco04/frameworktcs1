@@ -19,7 +19,6 @@ public class Produto {
     private double valorVenda;
     private int qtdEstoque;
 
-
     private long iDCategoria;
 
 
@@ -31,8 +30,6 @@ public class Produto {
         this.qtdEstoque -= quantidade;
     }
 
-
-    // NAO SEI SE É OBRIGATORIO  O US DO EXIBIR
 
 
     public String exibirInformacoes() {
