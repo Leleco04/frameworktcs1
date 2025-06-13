@@ -1,6 +1,5 @@
 package com.example.projetoframeworktcs.model;
 
-import com.example.projetoframeworktcs.enumeracao.Categoria;
 import jakarta.persistence.*;
         import lombok.*;
 

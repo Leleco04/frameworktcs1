@@ -1,6 +1,7 @@
 package com.example.projetoframeworktcs.service;
 
 import com.example.projetoframeworktcs.dto.AtualizarNegocioDTO;
+import com.example.projetoframeworktcs.model.ItemNegocio;
 import com.example.projetoframeworktcs.model.enums.TipoNegocio;
 import com.example.projetoframeworktcs.model.Negocio;
 import com.example.projetoframeworktcs.repository.NegocioRepository;
@@ -17,7 +18,9 @@ public class NegocioService {
     private NegocioRepository negocioRepository;
 
     public Negocio adicionarNegocio(Negocio negocio) {
-        return negocioRepository.save(negocio);
+        Double valorTotal = calcularValorTotal(negocio);
+        Negocio n = new Negocio(valorTotal, negocio.getStatus(), negocio.getFuncionariosEnvolvidos(), negocio.getListaProdutos(), negocio.getDataProgramada(), negocio.getTipo());
+        return negocioRepository.save(n);
     }
 
     public List<Negocio> listarNegocios() {
@@ -34,23 +37,24 @@ public class NegocioService {
         Negocio negocio = negocioRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Negócio não encontrado."));
 
-        negocio.setStatus(dto.getStatus());
+        negocio.setListaProdutos(dto.getListaProdutos());
         negocio.setFuncionariosEnvolvidos(dto.getFuncionariosEnvolvidos());
-        negocio.setId_produto(dto.getId_produto());
+        negocio.setValorNegocio(calcularValorTotal(negocio));
+        negocio.setStatus(dto.getStatus());
         negocio.setDataProgramada(dto.getDataProgramada());
         negocio.setTipo(dto.getTipo());
 
         return negocioRepository.save(negocio);
     }
 
-    public double calcularValorTotal(Negocio negocio) {
-        double soma = 0;
+    public Double calcularValorTotal(Negocio negocio) {
+        Double soma = 0.0;
         if(negocio.getTipo().equals(TipoNegocio.VENDA)) {
-            for(ItemNegocio item : produtos) {
+            for(ItemNegocio item : negocio.getListaProdutos()) {
                 soma += item.getProduto().getValorVenda() * item.getQtd();
             }
         } else {
-            for(ItemNegocio item : produtos) {
+            for(ItemNegocio item : negocio.getListaProdutos()) {
                 soma += item.getProduto().getValorCompra() * item.getQtd();
             }
         }
@@ -70,11 +74,11 @@ public class NegocioService {
         }
 
         sb.append("\n   --- Itens do Negócio ---\n");
-        for (ItemNegocio item : this.produtos) {
+        for (ItemNegocio item : negocio.getListaProdutos()) {
             sb.append(String.format("   - Produto: %-25s | Qtd: %-5d | Valor Unit.: R$ %.2f\n",
                     item.getProduto().getNome(),
                     item.getQtd(),
-                    (tipo == TipoNegocio.VENDA ? item.getProduto().getValorVenda() : item.getProduto().getValorCompra())
+                    (negocio.getTipo() == TipoNegocio.VENDA ? item.getProduto().getValorVenda() : item.getProduto().getValorCompra())
             ));
         }
 

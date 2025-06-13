@@ -16,25 +16,25 @@ public class NegocioController {
     @Autowired
     private NegocioService negocioService;
 
-    @PostMapping
+    @PostMapping("/adicionar")
     public ResponseEntity<Negocio> addNegocio(@RequestBody Negocio negocio) {
         Negocio n = negocioService.adicionarNegocio(negocio);
         return ResponseEntity.ok(n);
     }
 
-    @GetMapping
+    @GetMapping("/listar")
     public ResponseEntity<List<Negocio>> getNegocios() {
         List<Negocio> negocios = negocioService.listarNegocios();
         return ResponseEntity.ok(negocios);
     }
 
-    @DeleteMapping
+    @DeleteMapping("/remover")
     public ResponseEntity<Void> deleteNegocio(Long id) {
         negocioService.removerNegocio(id);
         return ResponseEntity.noContent().build();
     }
 
-    @PutMapping
+    @PutMapping("/atualizar")
     public ResponseEntity<Negocio> updateFuncionario(Long id, AtualizarNegocioDTO dto) {
         Negocio n = negocioService.atualizarNegocio(id, dto);
         return ResponseEntity.ok(n);

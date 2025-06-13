@@ -30,15 +30,16 @@ public class Negocio implements Serializable {
     private Status status;
 
     @ElementCollection
-    private List<String> funcionariosEnvolvidos;
+    private ArrayList<String> funcionariosEnvolvidos;
 
     @ElementCollection
-    private List<ItemNegocio> listaProdutos;
+    private ArrayList<ItemNegocio> listaProdutos;
 
     private LocalDateTime dataProgramada;
     private TipoNegocio tipo;
 
-    public Negocio(Status status, ArrayList<String> funcionariosEnvolvidos, ArrayList<ItemNegocio> listaProdutos, LocalDateTime dataProgramada, TipoNegocio tipo) {
+    public Negocio(Double valorNegocio, Status status, ArrayList<String> funcionariosEnvolvidos, ArrayList<ItemNegocio> listaProdutos, LocalDateTime dataProgramada, TipoNegocio tipo) {
+        this.valorNegocio = valorNegocio;
         this.status = status;
         this.funcionariosEnvolvidos = funcionariosEnvolvidos;
         this.listaProdutos = listaProdutos;

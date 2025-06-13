@@ -18,46 +18,40 @@ public class TransportadoraController {
     @Autowired
     private TransportadoraService transportadoraService;
 
-    @PostMapping
+    @PostMapping("/adicionar")
     public ResponseEntity<Transportadora> addTransportadora(@RequestBody Transportadora transportadora) {
         Transportadora t = transportadoraService.adicionar(transportadora);
         return ResponseEntity.ok(t);
     }
 
-    @GetMapping
+    @GetMapping("/listar")
     public ResponseEntity<List<Transportadora>> getAllTransportadoras() {
         List<Transportadora> transportadoras = transportadoraService.listar();
         return ResponseEntity.ok(transportadoras);
     }
 
-    @DeleteMapping
+    @DeleteMapping("/remover")
     public ResponseEntity<Void> deletarTransportadora(Long id) {
         transportadoraService.remover(id);
         return ResponseEntity.noContent().build();
     }
 
-    @PutMapping
+    @PutMapping("/atualizar")
     public ResponseEntity<Transportadora> updateTransportadora(Long id, AtualizarTransportadoraDTO dto) {
         Transportadora t = transportadoraService.atualizar(id, dto);
         return ResponseEntity.ok(t);
     }
 
-    @GetMapping
+    @GetMapping("/buscarCidade")
     public ResponseEntity<Local> buscarcidadeTransportadora(String cidadeTransportadora) {
         Local l = TransportadoraService.buscarcidadeTransportadora(cidadeTransportadora);
         return ResponseEntity.ok(l);
     }
 
-    @GetMapping
+    @GetMapping("/exibir")
     public ResponseEntity<String> exibirTransportadora(Transportadora transportadora) {
         String t = transportadoraService.exibirTransportadora(transportadora);
         return ResponseEntity.ok(t);
-    }
-
-    @GetMapping
-    public ResponseEntity<Double> calcularFrete(@RequestParam String transportadoraEscolhida, @RequestParam double toneladas) {
-        Double d = transportadoraService.calcularFrete(transportadoraEscolhida, toneladas);
-        return ResponseEntity.ok(d);
     }
 
 }
