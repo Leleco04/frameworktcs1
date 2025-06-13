@@ -1,0 +1,15 @@
+package com.example.projetoframeworktcs.dto;
+
+import com.example.projetoframeworktcs.model.enums.Genero;
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
+public class AtualizarFuncionarioDTO {
+    private String nome;
+    private String sobrenome;
+    private Integer idade;
+    private Genero genero;
+    private Integer id_setor;
+}
