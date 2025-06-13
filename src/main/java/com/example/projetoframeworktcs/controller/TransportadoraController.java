@@ -54,10 +54,6 @@ public class TransportadoraController {
         return ResponseEntity.ok(t);
     }
 
-    @GetMapping
-    public ResponseEntity<Double> calcularFrete(@RequestParam String transportadoraEscolhida, @RequestParam double toneladas) {
-        Double d = transportadoraService.calcularFrete(transportadoraEscolhida, toneladas);
-        return ResponseEntity.ok(d);
-    }
+
 
 }

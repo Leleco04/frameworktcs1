@@ -50,18 +50,6 @@ public class TransportadoraService {
         return null;
     }
 
-    public Double calcularFrete(String transportadoraEscolhida, double toneladas) {
-        Local local = buscarcidadeTransportadora(transportadoraEscolhida);
-
-        if (local != null) {
-            double valorFinal;
-            double valorExtra = 200;
-            valorFinal = valorExtra * toneladas;
-            return valorFinal + local.getValorFreteFixo();
-        }
-        return null;
-    }
-
     public String exibirTransportadora(Transportadora transportadora){
 
         StringBuilder sb = new StringBuilder();
