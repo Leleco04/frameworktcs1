@@ -1,5 +1,7 @@
 package com.example.projetoframeworktcs.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import com.example.projetoframeworktcs.dto.AtualizarFuncionarioDTO;
 import com.example.projetoframeworktcs.dto.FuncionarioDTO;
 import com.example.projetoframeworktcs.model.Funcionario;
@@ -13,9 +15,32 @@ import java.util.List;
 
 @Service
 public class FuncionarioService {
+  
+    private final FuncionarioRepository funcionarioRepository;
+    private final SetorRepository setorRepository;
 
-    @Autowired
-    private FuncionarioRepository funcionarioRepository;
+    public FuncionarioService(FuncionarioRepository funcionarioRepository, SetorRepository setorRepository) {
+        this.funcionarioRepository = funcionarioRepository;
+        this.setorRepository = setorRepository;
+    }
+
+    public void registrarFuncionario(String nome, String sobrenome, String genero, int idade, long setor) {
+        Setor setorObj = setorRepository.findById(setor)
+                .orElseThrow(() -> new RuntimeException("Setor não encontrado."));
+
+        Funcionario funcionario = new Funcionario(nome, sobrenome, genero, idade, setorObj);
+
+        funcionarioRepository.save(funcionario);
+    }
+
+    public long quantidadeFuncionarios() {
+        return funcionarioRepository.count();
+    }
+
+    public Funcionario buscarFuncionarioPorId(Long id) {
+        return funcionarioRepository.findById(id).orElseThrow( () -> new RuntimeException("Funcionário não encontrado."));
+    }
+
     private SalarioService salarioService;
 
     public Funcionario adicionarFuncionario(FuncionarioDTO funcionario) {
@@ -25,7 +50,7 @@ public class FuncionarioService {
         return funcionarioRepository.save(funcionarioSalvo);
     }
 
-    public List<Funcionario> listarFuncionarios() {
+    public List<Funcionario> getFuncionarios() {
         return funcionarioRepository.findAll();
     }
 
