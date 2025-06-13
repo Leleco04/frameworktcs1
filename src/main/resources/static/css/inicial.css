@@ -1,0 +1,44 @@
+#add {
+    border: 1px solid #044080;
+    background: #57d5ff;
+    color: #044080;
+    transition: all 0.3s ease;
+    border-radius: 5px;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+#add:hover {
+    background: #044080;
+    color: #fff;
+    transform: scale(1.05);
+    transition: all 0.3s ease;
+}
+
+#tabela {
+    background: #fff;
+    border-radius: 10px;
+    border: 1px solid lightgray;
+    width: 100%;
+}
+
+#input_busca {
+    border: 1px solid gray;
+    border-radius: 5px;
+    outline: none;
+    width: 20rem;
+}
+
+.btn-rmv, .btn-editar {
+    border: none;
+    border-radius: 50%;
+    padding: .5rem;
+}
+
+.btn-rmv {
+    background: red;
+}
+
+.btn-editar {
+    background: #57d5ff;
+}
