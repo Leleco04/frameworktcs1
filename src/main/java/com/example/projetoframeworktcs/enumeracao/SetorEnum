@@ -1,0 +1,8 @@
+package setor;
+
+public enum Setor {
+    VENDAS,
+    MARKETING,
+    TI,
+    RH;
+}
