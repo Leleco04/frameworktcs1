@@ -1,9 +1,9 @@
 package com.example.projetoframeworktcs.repository;
 
-import com.example.projetoframeworktcs.model.Funcionario;
+import com.example.projetoframeworktcs.model.Setor;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface FuncionarioRepository extends JpaRepository<Funcionario, Long> {
+public interface SetorRepository extends JpaRepository<Setor, Long> {
 }
