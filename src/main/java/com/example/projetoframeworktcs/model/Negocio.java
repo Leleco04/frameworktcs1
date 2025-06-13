@@ -2,10 +2,7 @@ package com.example.projetoframeworktcs.model;
 
 import com.example.projetoframeworktcs.model.enums.Status;
 import com.example.projetoframeworktcs.model.enums.TipoNegocio;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -31,17 +28,25 @@ public class Negocio implements Serializable {
     private final LocalDateTime dataNegocio = LocalDateTime.now();
     private Double valorNegocio;
     private Status status;
+
+    @ElementCollection
     private List<String> funcionariosEnvolvidos;
-    private Integer id_produto;
+
+    @ElementCollection
+    private List<ItemNegocio> listaProdutos;
+
     private LocalDateTime dataProgramada;
     private TipoNegocio tipo;
 
-    public Negocio(Double valorNegocio, Status status, Integer id_produto, LocalDateTime dataProgramada, TipoNegocio tipo) {
-        this.valorNegocio = valorNegocio;
+    public Negocio(Status status, ArrayList<String> funcionariosEnvolvidos, ArrayList<ItemNegocio> listaProdutos, LocalDateTime dataProgramada, TipoNegocio tipo) {
         this.status = status;
-        this.funcionariosEnvolvidos = new ArrayList<>();
-        this.id_produto = id_produto;
+        this.funcionariosEnvolvidos = funcionariosEnvolvidos;
+        this.listaProdutos = listaProdutos;
         this.dataProgramada = dataProgramada;
         this.tipo = tipo;
+    }
+
+    public String getDataProgramadaFormatada() {
+        return formatter.format(dataProgramada);
     }
 }

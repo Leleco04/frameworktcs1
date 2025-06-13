@@ -18,24 +18,24 @@ public class FuncionarioService {
     private FuncionarioRepository funcionarioRepository;
     private SalarioService salarioService;
 
-    public Funcionario adicionar(FuncionarioDTO funcionario) {
+    public Funcionario adicionarFuncionario(FuncionarioDTO funcionario) {
         Salario salario = salarioService.calcularSalario(funcionario.getVale(), funcionario.getPlanoSaude(), funcionario.getPlanoOdontologico(), funcionario.getBonusParticipacao(), funcionario.getTaxaAliquota(), funcionario.getSalarioBruto());
         Funcionario funcionarioSalvo = new Funcionario(funcionario.getNome(), funcionario.getSobrenome(), funcionario.getIdade(), funcionario.getGenero(), salario, funcionario.getId_setor());
 
         return funcionarioRepository.save(funcionarioSalvo);
     }
 
-    public List<Funcionario> listar() {
+    public List<Funcionario> listarFuncionarios() {
         return funcionarioRepository.findAll();
     }
 
-    public void remover(Long id) {
+    public void removerFuncionario(Long id) {
         Funcionario funcionario = funcionarioRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Funcionário não encontrado."));
         funcionarioRepository.delete(funcionario);
     }
 
-    public Funcionario atualizar(Long id, AtualizarFuncionarioDTO dto) {
+    public Funcionario atualizarFuncionario(Long id, AtualizarFuncionarioDTO dto) {
         Funcionario funcionario = funcionarioRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Funcionário não encontrado."));
 

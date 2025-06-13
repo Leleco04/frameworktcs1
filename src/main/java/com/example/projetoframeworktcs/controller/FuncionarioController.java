@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/funcionario")
+@RequestMapping("/funcionario")
 public class FuncionarioController {
 
     @Autowired
@@ -19,25 +19,25 @@ public class FuncionarioController {
 
     @PostMapping
     public ResponseEntity<Funcionario> addFuncionario(@RequestBody FuncionarioDTO funcionario) {
-        Funcionario f = funcionarioService.adicionar(funcionario);
+        Funcionario f = funcionarioService.adicionarFuncionario(funcionario);
         return ResponseEntity.ok(f);
     }
 
     @GetMapping
     public ResponseEntity<List<Funcionario>> getFuncionarios() {
-        List<Funcionario> funcionarios = funcionarioService.listar();
+        List<Funcionario> funcionarios = funcionarioService.listarFuncionarios();
         return ResponseEntity.ok(funcionarios);
     }
 
     @DeleteMapping
     public ResponseEntity<Void> deleteFuncionario(Long id) {
-        funcionarioService.remover(id);
+        funcionarioService.removerFuncionario(id);
         return ResponseEntity.noContent().build();
     }
 
     @PutMapping
     public ResponseEntity<Funcionario> updateFuncionario(Long id, AtualizarFuncionarioDTO dto) {
-        Funcionario f = funcionarioService.atualizar(id, dto);
+        Funcionario f = funcionarioService.atualizarFuncionario(id, dto);
         return ResponseEntity.ok(f);
     }
 
