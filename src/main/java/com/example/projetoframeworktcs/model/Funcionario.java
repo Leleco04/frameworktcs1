@@ -21,6 +21,7 @@ public class Funcionario implements Serializable {
     private Long id;
     private String nome;
     private String sobrenome;
+
     private Integer idade;
 
     @Enumerated(EnumType.STRING)

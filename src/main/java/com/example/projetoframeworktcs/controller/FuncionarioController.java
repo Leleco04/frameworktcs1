@@ -7,11 +7,11 @@ import com.example.projetoframeworktcs.service.FuncionarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.stereotype.Controller;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/funcionario")
 public class FuncionarioController {
 
     @Autowired
@@ -40,5 +40,17 @@ public class FuncionarioController {
         Funcionario f = funcionarioService.atualizarFuncionario(id, dto);
         return ResponseEntity.ok(f);
     }
+    
+    @GetMapping("/funcionario_inicial")
+    public String paginaInicialFuncionario() {
+        return "funcionario_inicial";
+    }
+
+    @GetMapping("/adicionar_funcionario")
+    public String paginaAdicionarFuncionario() {
+        return "adicionar_funcionario";
+    }
 
 }
+
+

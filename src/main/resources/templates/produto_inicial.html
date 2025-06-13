@@ -1,0 +1,15 @@
+<html th:replace="~{common/layout :: layout(~{::title}, ~{::section})}">
+
+<title th:fragment="title">Página Inicial de Produtos</title>
+
+<th:block id="page-styles">
+    <link rel="stylesheet" th:href="@{/css/adicionar_funcionario.css}">
+</th:block>
+
+<section th:fragment="section">
+    <h1>Bem-vindo à Seção de Produtos</h1>
+    <hr>
+    <p>Aqui você poderá gerenciar o estoque, adicionar novos produtos, etc...</p>
+</section>
+
+</html>

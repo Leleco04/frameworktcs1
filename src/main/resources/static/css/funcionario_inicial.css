@@ -1,0 +1,30 @@
+#add_funcionario {
+    border: 1px solid #044080;
+    background: #57d5ff;
+    color: #044080;
+    transition: all 0.3s ease;
+    border-radius: 5px;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+#add_funcionario:hover {
+    background: #044080;
+    color: #fff;
+    transform: scale(1.05);
+    transition: all 0.3s ease;
+}
+
+#tabela {
+    background: #fff;
+    border-radius: 10px;
+    border: 1px solid lightgray;
+    width: 100%;
+}
+
+#input_busca {
+    border: 1px solid gray;
+    border-radius: 5px;
+    outline: none;
+    width: 20rem;
+}
