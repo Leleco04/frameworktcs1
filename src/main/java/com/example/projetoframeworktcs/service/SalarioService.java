@@ -1,3 +1,4 @@
+/*
 package com.example.projetoframeworktcs.service;
 
 import com.example.projetoframeworktcs.model.Funcionario;
@@ -81,4 +82,4 @@ public class SalarioService {
         return salario;
     }
 }
-
+*/
