@@ -41,13 +41,25 @@ public class FuncionarioController {
     }
     
     @GetMapping("/funcionario_inicial")
-    public String paginaInicialFuncionario() {
+    public String paginaInicialFuncionario(Model model) {
+        long contagem = funcionarioService.quantidadeFuncionarios();
+        List<Funcionario> funcionarios = funcionarioService.getFuncionarios();
+        model.addAttribute("funcionarios", funcionarios);
+        model.addAttribute("qtdFuncionarios", String.valueOf(contagem) + " resultados");
         return "funcionario_inicial";
     }
 
     @GetMapping("/adicionar_funcionario")
     public String paginaAdicionarFuncionario() {
+        List<Setor> setores = setorService.getSetores();
+        model.addAttribute("setores", setores);
         return "adicionar_funcionario";
+    }
+
+    @PostMapping("/funcionarios/adicionar")
+    public String registraFuncionario(@RequestParam String nome, @RequestParam String sobrenome, @RequestParam int idade, @RequestParam String genero, @RequestParam long setor) {
+        funcionarioService.registrarFuncionario(nome, sobrenome, genero, idade, setor);
+        return "redirect:/funcionario_inicial";
     }
 
 }
