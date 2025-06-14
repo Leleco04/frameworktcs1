@@ -11,4 +11,9 @@ public class ProdutoController {
         return "produto_inicial";
     }
 
+    @GetMapping("/adicionar_produto")
+    public String paginaAdicionarProduto() {
+        return "adicionar_produto";
+    }
+
 }
