@@ -1,5 +1,6 @@
 package com.example.projetoframeworktcs.model;
 
+import com.example.projetoframeworktcs.model.enums.Local;
 import jakarta.persistence.Entity;
 import lombok.Getter;
 import jakarta.persistence.GeneratedValue;
@@ -19,21 +20,22 @@ public class Transportadora implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Integer idLocal;
+
+    private Local local;
     private String nome;
     private Integer qtdParceiras;
     private Double valorFrete;
     private Double toneladas;
     private String transportadoraEscolhida;
 
-    public Transportadora(Integer idLocal, String nome ,String transportadoraEscolhida, Double toneladas) {
-        this.idLocal = 0;
+    public Transportadora(Local local, String nome, Double valorFrete, String transportadoraEscolhida, Double toneladas) {
+        this.local = local;
         this.nome = nome;
         this.qtdParceiras = 3;
+        this.valorFrete = valorFrete;
         this.transportadoraEscolhida = transportadoraEscolhida;
         this.toneladas = toneladas;
     }
-
 
 }
 

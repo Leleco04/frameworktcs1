@@ -12,6 +12,10 @@ public enum Categoria {
         this.categoria = categoria;
     }
 
+    public String getCategoria() {
+        return categoria;
+    }
+
     public String toString(){
         return this.categoria;
     }

@@ -12,9 +12,9 @@ public class ItemNegocio {
     @OneToOne
     private Produto produto;
 
-    private int qtd;
+    private Integer qtd;
 
-    public ItemNegocio(Produto produto, int qtd) {
+    public ItemNegocio(Produto produto, Integer qtd) {
         this.produto = produto;
         this.qtd = qtd;
     }

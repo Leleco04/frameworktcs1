@@ -15,17 +15,15 @@ public class Setor {
     private String nome;
 
     @Column(name = "quantidade_funcionarios")
-    private int quantidadeFuncionarios;
+    private Integer quantidadeFuncionarios;
 
     public Long getId() {
         return id;
     }
-
     public String getNome() {
         return nome;
     }
-
-    public int getQuantidadeFuncionarios() {
+    public Integer getQuantidadeFuncionarios() {
         return quantidadeFuncionarios;
     }
 }
