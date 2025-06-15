@@ -15,7 +15,7 @@ public class ProdutoService {
     @Autowired
     private ProdutoRepository produtoRepository;
 
-    public void criarProdutosIniciais() {
+    /* public void criarProdutosIniciais() {
         if (produtoRepository.count() == 0) {
             String[] nomes = {"Pasta de dente\", \"Xarope\", \"Gel\", \"Shampoo\", \"Allegra\", \"Dipirona\", \"Proteína\", \"Coca-Cola", "Ibuprofeno", "Ledx", "Tarkov"};
             Random rand = new Random();
@@ -27,24 +27,32 @@ public class ProdutoService {
                 produtoRepository.save(p);
             }
         }
-    }
+    } */
 
-    public List<Produto> listarProdutos() {
-        return produtoRepository.findAll();
+    public void registrarProduto(String nome, String descricao, double valorCompra, double valorVenda, int qtdEstoque) {
+        Produto produto = new Produto(nome, descricao, valorCompra, valorVenda, qtdEstoque);
+
+        produtoRepository.save(produto);
     }
 
     public Produto buscarPorId(Long id) {
         return produtoRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Produto não encontrado."));
     }
 
-    public Produto salvar(Produto produto) {
+    public long quantidadeProdutos() {
+        return produtoRepository.count();
+    }
+
+    public Produto adicionarProduto(Produto produto) {
         return produtoRepository.save(produto);
     }
 
-    public void removerProduto(Long id) {
-        Produto p = produtoRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Produto não encontrado."));
+    public List<Produto> listarProdutos() {
+        return produtoRepository.findAll();
+    }
 
+    public void removerProduto(Long id) {
+        Produto p = buscarPorId(id);
         produtoRepository.delete(p);
     }
 }

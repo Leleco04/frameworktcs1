@@ -79,7 +79,7 @@ public class Funcionario implements Serializable {
         this.setor = setor;
     }
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_setor")
     private Setor setor;
 
