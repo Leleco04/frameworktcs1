@@ -42,3 +42,13 @@
 .btn-editar {
     background: #57d5ff;
 }
+
+.descricao {
+    max-width: 300px;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+body {
+background: #fff;
+}
