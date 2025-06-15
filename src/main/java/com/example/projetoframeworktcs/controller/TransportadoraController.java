@@ -1,6 +1,7 @@
 package com.example.projetoframeworktcs.controller;
 
 import com.example.projetoframeworktcs.dto.AtualizarTransportadoraDTO;
+import com.example.projetoframeworktcs.dto.TransportadoraDTO;
 import com.example.projetoframeworktcs.model.Transportadora;
 import com.example.projetoframeworktcs.model.enums.Local;
 import com.example.projetoframeworktcs.service.TransportadoraService;
@@ -19,8 +20,8 @@ public class TransportadoraController {
     private TransportadoraService transportadoraService;
 
     @PostMapping("/adicionar")
-    public ResponseEntity<Transportadora> addTransportadora(@RequestBody Transportadora transportadora) {
-        Transportadora t = transportadoraService.adicionar(transportadora);
+    public ResponseEntity<Transportadora> addTransportadora(@RequestBody TransportadoraDTO dto) {
+        Transportadora t = transportadoraService.adicionar(dto);
         return ResponseEntity.ok(t);
     }
 

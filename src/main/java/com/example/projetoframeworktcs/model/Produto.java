@@ -1,5 +1,6 @@
 package com.example.projetoframeworktcs.model;
 
+import com.example.projetoframeworktcs.model.enums.Categoria;
 import jakarta.persistence.*;
         import lombok.*;
 
@@ -15,27 +16,23 @@ public class Produto {
     private Long id;
 
     private String nome;
-    private double valorCompra;
-    private double valorVenda;
-    private int qtdEstoque;
+    private Double valorCompra;
+    private Double valorVenda;
+    private Integer qtdEstoque;
+    private Categoria categoria;
 
-    private long iDCategoria;
 
-
-    public void addEstoque(int quantidade) {
+    public void addEstoque(Integer quantidade) {
         this.qtdEstoque += quantidade;
     }
 
-    public void removeEstoque(int quantidade) {
+    public void removeEstoque(Integer quantidade) {
         this.qtdEstoque -= quantidade;
     }
-
-
 
     public String exibirInformacoes() {
         return String.format(
                 "\nNome do produto: %s\nValor de compra: R$%.2f\nValor de venda: R$%.2f\nQuantidade em estoque: %d\nCategoria: %s\n",
-                nome, valorCompra, valorVenda, qtdEstoque, iDCategoria);
-
+                nome, valorCompra, valorVenda, qtdEstoque, categoria.getCategoria());
     }
 }

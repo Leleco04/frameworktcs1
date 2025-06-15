@@ -55,8 +55,7 @@ public class FuncionarioService {
     }
 
     public void removerFuncionario(Long id) {
-        Funcionario funcionario = funcionarioRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Funcionário não encontrado."));
+        Funcionario funcionario = buscarFuncionarioPorId(id);
         funcionarioRepository.delete(funcionario);
     }
 
