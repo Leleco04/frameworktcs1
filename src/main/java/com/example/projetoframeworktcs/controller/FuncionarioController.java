@@ -8,12 +8,14 @@ import com.example.projetoframeworktcs.service.FuncionarioService;
 import com.example.projetoframeworktcs.service.SetorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
-@RestController("/funcionario")
+@Controller
 public class FuncionarioController {
 
     private final SetorService setorService;
@@ -24,36 +26,36 @@ public class FuncionarioController {
         this.funcionarioService = funcionarioService;
     }
 
-    @PostMapping("/adicionar")
-    public ResponseEntity<Funcionario> addFuncionario(@RequestBody FuncionarioDTO funcionario) {
-        Funcionario f = funcionarioService.adicionarFuncionario(funcionario);
-        return ResponseEntity.ok(f);
-    }
+//    @PostMapping("/adicionar")
+//    public ResponseEntity<Funcionario> addFuncionario(@RequestBody FuncionarioDTO funcionario) {
+//        Funcionario f = funcionarioService.adicionarFuncionario(funcionario);
+//        return ResponseEntity.ok(f);
+//    }
 
-    @GetMapping("/listar")
-    public ResponseEntity<List<Funcionario>> getFuncionarios() {
-        List<Funcionario> funcionarios = funcionarioService.listarFuncionarios();
-        return ResponseEntity.ok(funcionarios);
-    }
+//    @GetMapping("/listar")
+//    public ResponseEntity<List<Funcionario>> getFuncionarios() {
+//        List<Funcionario> funcionarios = funcionarioService.listarFuncionarios();
+//        return ResponseEntity.ok(funcionarios);
+//    }
+//
+//    @DeleteMapping("/remover")
+//    public ResponseEntity<Void> deleteFuncionario(Long id) {
+//        funcionarioService.removerFuncionario(id);
+//        return ResponseEntity.noContent().build();
+//    }
 
-    @DeleteMapping("/remover")
-    public ResponseEntity<Void> deleteFuncionario(Long id) {
-        funcionarioService.removerFuncionario(id);
-        return ResponseEntity.noContent().build();
-    }
+//    @PutMapping("/atualizar")
+//    public ResponseEntity<Funcionario> updateFuncionario(Long id, AtualizarFuncionarioDTO dto) {
+//        Funcionario f = funcionarioService.atualizarFuncionario(id, dto);
+//        return ResponseEntity.ok(f);
+//    }
 
-    @PutMapping("/atualizar")
-    public ResponseEntity<Funcionario> updateFuncionario(Long id, AtualizarFuncionarioDTO dto) {
-        Funcionario f = funcionarioService.atualizarFuncionario(id, dto);
-        return ResponseEntity.ok(f);
-    }
-    
     @GetMapping("/funcionario_inicial")
     public String paginaInicialFuncionario(Model model) {
-        long contagem = funcionarioService.quantidadeFuncionarios();
+        String qtdFuncionarios = funcionarioService.quantidadeFuncionarios() + " funcionário(s)";
         List<Funcionario> funcionarios = funcionarioService.listarFuncionarios();
         model.addAttribute("funcionarios", funcionarios);
-        model.addAttribute("qtdFuncionarios", String.valueOf(contagem) + " resultados");
+        model.addAttribute("qtdFuncionarios", qtdFuncionarios);
         return "funcionario_inicial";
     }
 
@@ -65,8 +67,12 @@ public class FuncionarioController {
     }
 
     @PostMapping("/funcionarios/adicionar")
-    public String registraFuncionario(@RequestParam String nome, @RequestParam String sobrenome, @RequestParam int idade, @RequestParam String genero, @RequestParam long setor) {
+    public String registraFuncionario(@RequestParam String nome, @RequestParam String sobrenome,
+                                      @RequestParam int idade, @RequestParam String genero, @RequestParam long setor,
+                                      RedirectAttributes redirectAttributes
+    ) {
         funcionarioService.registrarFuncionario(nome, sobrenome, genero, idade, setor);
+        redirectAttributes.addFlashAttribute("sucesso", "Funcionário cadastrado com sucesso!");
         return "redirect:/funcionario_inicial";
     }
 
