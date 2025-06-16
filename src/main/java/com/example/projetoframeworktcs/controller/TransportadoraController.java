@@ -1,6 +1,10 @@
 package com.example.projetoframeworktcs.controller;
 
 import com.example.projetoframeworktcs.model.enums.Transportadora;
+import com.example.projetoframeworktcs.dto.AtualizarTransportadoraDTO;
+import com.example.projetoframeworktcs.dto.TransportadoraDTO;
+import com.example.projetoframeworktcs.model.enums.Transportadora;
+import com.example.projetoframeworktcs.service.TransportadoraService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

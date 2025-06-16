@@ -35,7 +35,7 @@
                     <th scope="col">Sobrenome</th>
                     <th scope="col">Idade</th>
                     <th scope="col">Gênero</th>
-                    <!-- <th scope="col">Setor</th> -->
+                    <th scope="col">Setor</th>
                     <th scope="col">Opções</th>
                 </tr>
                 </thead>
@@ -46,6 +46,7 @@
                     <td th:text="${funcionario.sobrenome}"></td>
                     <td th:text="${funcionario.idade}"></td>
                     <td th:text="${funcionario.genero}"></td>
+                    <td th:text="${funcionario.setor.nome}"></td>
                     <td>
                         <input name="id_funcionario" th:value="${funcionario.id}" type="hidden">
                         <div class="d-flex justify-content-center align-items-center gap-3">

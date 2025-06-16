@@ -1,49 +1,44 @@
 <html th:replace="~{common/layout :: layout(~{::title}, ~{::section})}">
 
-<title th:fragment="title">Página Inicial de Funcionários</title>
+<title th:fragment="title">Adicionar produto</title>
 
 <th:block id="page-styles">
-    <link rel="stylesheet" th:href="@{/css/adicionar_funcionario.css}">
+    <link rel="stylesheet" th:href="@{/css/adicionar_produto.css}">
 </th:block>
 
 <section th:fragment="section">
     <div class="d-flex justify-content-between">
-        <h2 class="fw-bold">Adicionar Funcionário</h2>
+        <h2 class="fw-bold">Adicionar Produto</h2>
     </div>
     <hr>
-    <form th:action="@{/funcionarios/adicionar}" method="POST">
+    <form th:action="@{/produtos/adicionar}" method="POST">
         <div class="d-grid justify-content-center mt-5">
             <div class="d-grid pt-5 pb-5" id="tabela">
                 <div class="d-grid gap-3">
                     <div class="d-flex justify-content-center gap-3">
                         <div class="d-grid gap-1">
                             <label for="nome">Nome</label>
-                            <input type="text" name="nome" id="nome" class="input_funcionario" placeholder="Nome">
+                            <input type="text" name="nome" id="nome" class="input_produto" placeholder="Nome" required>
                         </div>
                         <div class="d-grid gap-1">
-                            <label for="sobrenome">Sobrenome</label>
-                            <input type="text" name="sobrenome" id="sobrenome" class="input_funcionario" placeholder="Sobrenome">
-                        </div>
-                    </div>
-                    <div class="d-flex justify-content-center gap-3">
-                        <div class="d-grid gap-1">
-                            <label for="genero">Genêro</label>
-                            <select name="genero" id="genero" class="input_funcionario">
-                                <option selected value="Masculino">Masculino</option>
-                                <option value="Feminino">Feminino</option>
-                            </select>
-                        </div>
-                        <div class="d-grid gap-1">
-                            <label for="setor">Setor</label>
-                            <select name="setor" id="setor" class="input_funcionario">
-                                <option th:each="setor : ${setores}" th:text="${setor.nome}" th:value="${setor.id}"></option>
-                            </select>
+                            <label for="descricao">Descrição</label>
+                            <textarea name="descricao" id="descricao" rows="2" cols="40" class="input_produto" placeholder="Descrição..." required></textarea>
                         </div>
                     </div>
                     <div class="d-flex justify-content-center gap-3">
                         <div class="d-grid gap-1">
-                            <label for="idade">Idade</label>
-                            <input id="idade" type="number" class="input_funcionario" name="idade" placeholder="18">
+                            <label for="valor_compra">Valor de compra</label>
+                            <input type="number" id="valor_compra" name="valor_compra" placeholder="50.0" class="input_produto" required>
+                        </div>
+                        <div class="d-grid gap-1">
+                            <label for="valor_venda">Valor de venda</label>
+                            <input type="number" id="valor_venda" name="valor_venda" placeholder="70.0" class="input_produto" required>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-center gap-3">
+                        <div class="d-grid gap-1">
+                            <label for="estoque">Quantidade em estoque</label>
+                            <input id="estoque" type="number" name="estoque" placeholder="50" class="input_produto" required>
                         </div>
                     </div>
                     <div class="d-grid justify-content-center">

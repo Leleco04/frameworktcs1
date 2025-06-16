@@ -38,7 +38,6 @@ public class Negocio implements Serializable {
     private TipoNegocio tipo;
     private Transportadora transportadora;
 
-
     public Negocio(Double valorNegocio, Status status, ArrayList<String> funcionariosEnvolvidos, ArrayList<ItemNegocio> listaProdutos, LocalDateTime dataProgramada, TipoNegocio tipo, Transportadora transportadora) {
         this.valorNegocio = valorNegocio;
         this.status = status;

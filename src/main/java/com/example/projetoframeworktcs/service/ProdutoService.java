@@ -29,6 +29,16 @@ public class ProdutoService {
         }
     }
 
+    public void registrarProduto(String nome, String descricao, double valorCompra, double valorVenda, int qtdEstoque) {
+        Produto produto = new Produto(nome, descricao, valorCompra, valorVenda, qtdEstoque);
+
+        produtoRepository.save(produto);
+    }
+
+    public long quantidadeProdutos() {
+        return produtoRepository.count();
+    }
+
     public Produto buscarPorId(Long id) {
         return produtoRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Produto não encontrado."));
     }
