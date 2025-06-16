@@ -51,7 +51,7 @@ public class FuncionarioService {
     } */
 
     public List<Funcionario> listarFuncionarios() {
-        return funcionarioRepository.findAll();
+        return funcionarioRepository.findAllWithSetor();
     }
 
     public void removerFuncionario(Long id) {
