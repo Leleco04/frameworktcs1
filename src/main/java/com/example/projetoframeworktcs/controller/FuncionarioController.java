@@ -7,6 +7,9 @@ import com.example.projetoframeworktcs.model.Setor;
 import com.example.projetoframeworktcs.service.FuncionarioService;
 import com.example.projetoframeworktcs.service.SetorService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -50,11 +53,11 @@ public class FuncionarioController {
 //        return ResponseEntity.ok(f);
 //    }
 
-    @GetMapping("/funcionario_inicial")
-    public String paginaInicialFuncionario(Model model) {
+    @GetMapping("/funcionarios")
+    public String paginaInicialFuncionario(Model model, @PageableDefault(size = 6, sort = "id") Pageable pageable) {
         String qtdFuncionarios = funcionarioService.quantidadeFuncionarios() + " funcionário(s)";
-        List<Funcionario> funcionarios = funcionarioService.listarFuncionarios();
-        model.addAttribute("funcionarios", funcionarios);
+        Page<Funcionario> paginaDeFuncionarios = funcionarioService.listarFuncionarios(pageable);
+        model.addAttribute("paginaDeFuncionarios", paginaDeFuncionarios);
         model.addAttribute("qtdFuncionarios", qtdFuncionarios);
         return "funcionario_inicial";
     }
@@ -73,7 +76,16 @@ public class FuncionarioController {
     ) {
         funcionarioService.registrarFuncionario(nome, sobrenome, genero, idade, setor);
         redirectAttributes.addFlashAttribute("sucesso", "Funcionário cadastrado com sucesso!");
-        return "redirect:/funcionario_inicial";
+        return "redirect:/funcionarios";
+    }
+
+    @DeleteMapping("/funcionarios/{id}")
+    public String registraFuncionario(@PathVariable Long id,
+                                      RedirectAttributes redirectAttributes
+    ) {
+        funcionarioService.removerFuncionario(id);
+        redirectAttributes.addFlashAttribute("sucesso", "Funcionário deletado com sucesso!");
+        return "redirect:/funcionarios";
     }
 
 }
