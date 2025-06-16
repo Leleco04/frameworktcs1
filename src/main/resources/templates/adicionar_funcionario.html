@@ -1,6 +1,6 @@
 <html th:replace="~{common/layout :: layout(~{::title}, ~{::section})}">
 
-<title th:fragment="title">Página Inicial de Funcionários</title>
+<title th:fragment="title">Adicionar Funcionários</title>
 
 <th:block id="page-styles">
     <link rel="stylesheet" th:href="@{/css/adicionar_funcionario.css}">
@@ -18,24 +18,24 @@
                     <div class="d-flex justify-content-center gap-3">
                         <div class="d-grid gap-1">
                             <label for="nome">Nome</label>
-                            <input type="text" name="nome" id="nome" class="input_funcionario" placeholder="Nome">
+                            <input type="text" name="nome" id="nome" class="input_funcionario" placeholder="Nome" required>
                         </div>
                         <div class="d-grid gap-1">
                             <label for="sobrenome">Sobrenome</label>
-                            <input type="text" name="sobrenome" id="sobrenome" class="input_funcionario" placeholder="Sobrenome">
+                            <input type="text" name="sobrenome" id="sobrenome" class="input_funcionario" placeholder="Sobrenome" required>
                         </div>
                     </div>
                     <div class="d-flex justify-content-center gap-3">
                         <div class="d-grid gap-1">
                             <label for="genero">Genêro</label>
-                            <select name="genero" id="genero" class="input_funcionario">
+                            <select name="genero" id="genero" class="input_funcionario" required>
                                 <option selected value="Masculino">Masculino</option>
                                 <option value="Feminino">Feminino</option>
                             </select>
                         </div>
                         <div class="d-grid gap-1">
                             <label for="setor">Setor</label>
-                            <select name="setor" id="setor" class="input_funcionario">
+                            <select name="setor" id="setor" class="input_funcionario" required>
                                 <option th:each="setor : ${setores}" th:text="${setor.nome}" th:value="${setor.id}"></option>
                             </select>
                         </div>
@@ -43,7 +43,7 @@
                     <div class="d-flex justify-content-center gap-3">
                         <div class="d-grid gap-1">
                             <label for="idade">Idade</label>
-                            <input id="idade" type="number" class="input_funcionario" name="idade" placeholder="18">
+                            <input id="idade" type="number" class="input_funcionario" name="idade" placeholder="18" required>
                         </div>
                     </div>
                     <div class="d-grid justify-content-center">
