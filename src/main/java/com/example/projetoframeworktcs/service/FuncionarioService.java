@@ -50,8 +50,8 @@ public class FuncionarioService {
         return funcionarioRepository.save(funcionarioSalvo);
     } */
 
-    public List<Funcionario> listarFuncionarios() {
-        return funcionarioRepository.findAllWithSetor();
+    public Page<Funcionario> listarFuncionarios(Pageable pageable) {
+        return funcionarioRepository.findAll(pageable);
     }
 
     public void removerFuncionario(Long id) {
