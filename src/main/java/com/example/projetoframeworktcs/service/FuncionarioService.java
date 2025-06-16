@@ -60,8 +60,7 @@ public class FuncionarioService {
     }
 
     /* public Funcionario atualizarFuncionario(Long id, AtualizarFuncionarioDTO dto) {
-        Funcionario funcionario = funcionarioRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Funcionário não encontrado."));
+        Funcionario funcionario = buscarFuncionarioPorId(id);
 
         funcionario.setNome(dto.getNome());
         funcionario.setSobrenome(dto.getSobrenome());

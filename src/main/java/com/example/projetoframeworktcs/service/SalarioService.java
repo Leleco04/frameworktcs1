@@ -8,12 +8,14 @@ import org.springframework.stereotype.Service;
 @Service
 public class SalarioService {
 
-    public Salario calcularSalarioCompleto(Funcionario funcionario, Double salarioBruto, Caixa caixa) {
+    private CaixaService caixaService;
+
+    public Salario calcularSalarioCompleto(Funcionario funcionario, Double salarioBruto, Integer mes) {
 
         Double vale = calcularVale(funcionario);
         Double planoSaude = calcularPlanoSaude(funcionario);
         Double planoOdontologico = 3000.0;
-        Double bonus = calcularBonus(caixa);
+        Double bonus = caixaService.estimarLucroMensal(mes);
         Double taxaAliquota = funcionario.getSalario().getTaxaAliquota();
 
         Double desconto = vale + (salarioBruto * taxaAliquota);
@@ -54,9 +56,5 @@ public class SalarioService {
         else if(id == 4) return 1000.0;
         else if(id == 6) return 360.0;
         else return 300.0;
-    }
-
-    private Double calcularBonus(Caixa caixa) {
-        return caixa.getLucroMensal();
     }
 }

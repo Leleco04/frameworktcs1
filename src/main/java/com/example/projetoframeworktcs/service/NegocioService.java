@@ -2,11 +2,10 @@ package com.example.projetoframeworktcs.service;
 
 import com.example.projetoframeworktcs.dto.AtualizarNegocioDTO;
 import com.example.projetoframeworktcs.model.ItemNegocio;
+import com.example.projetoframeworktcs.model.enums.Status;
 import com.example.projetoframeworktcs.model.enums.TipoNegocio;
 import com.example.projetoframeworktcs.model.Negocio;
 import com.example.projetoframeworktcs.repository.NegocioRepository;
-import jakarta.persistence.EntityNotFoundException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,7 +13,6 @@ import java.util.List;
 @Service
 public class NegocioService {
 
-    @Autowired
     private NegocioRepository negocioRepository;
     private CaixaService caixaService;
 
@@ -22,24 +20,35 @@ public class NegocioService {
         Double valorTotal = calcularValorTotal(negocio);
         Negocio n = new Negocio(valorTotal, negocio.getStatus(), negocio.getFuncionariosEnvolvidos(), negocio.getListaProdutos(), negocio.getDataProgramada(), negocio.getTipo(), negocio.getTransportadora());
 
-        if(n.getTipo().equals())
+        if(n.getTipo().equals(TipoNegocio.VENDA)) caixaService.adicionarValor(valorTotal);
+        else caixaService.removerValor(valorTotal);
 
         return negocioRepository.save(n);
     }
 
-    public List<Negocio> listarNegocios() {
-        return negocioRepository.findAll();
+    public List<Negocio> listarNegocios() { return negocioRepository.findAll(); }
+
+    public List<Negocio> listarVendas() { return negocioRepository.findByTipo(TipoNegocio.VENDA); }
+
+    public List<Negocio> listarCompras() { return negocioRepository.findByTipo(TipoNegocio.COMPRA); }
+
+    public List<Negocio> listarNegociosAbertos() { return negocioRepository.findByStatus(Status.ABERTO); }
+
+    public Negocio buscarNegocioPorId(Long id) {
+        return negocioRepository.findById(id).orElseThrow( () -> new RuntimeException("Negócio não encontrado."));
     }
 
     public void removerNegocio(Long id) {
-        Negocio n = negocioRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Negócio não encontrado."));
+        Negocio n = buscarNegocioPorId(id);
+
+        if(n.getTipo().equals(TipoNegocio.VENDA)) caixaService.removerValor(calcularValorTotal(n));
+        else caixaService.adicionarValor(calcularValorTotal(n));
+
         negocioRepository.delete(n);
     }
 
     public Negocio atualizarNegocio(Long id, AtualizarNegocioDTO dto) {
-        Negocio negocio = negocioRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Negócio não encontrado."));
+        Negocio negocio = buscarNegocioPorId(id);
 
         negocio.setListaProdutos(dto.getListaProdutos());
         negocio.setFuncionariosEnvolvidos(dto.getFuncionariosEnvolvidos());
