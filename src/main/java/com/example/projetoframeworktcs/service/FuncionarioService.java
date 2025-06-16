@@ -24,7 +24,7 @@ public class FuncionarioService {
         this.setorRepository = setorRepository;
     }
 
-    public void registrarFuncionario(String nome, String sobrenome, String genero, int idade, long setor) {
+    public void registrarFuncionario(String nome, String sobrenome, String genero, Integer idade, Long setor) {
         Setor setorObj = setorRepository.findById(setor)
                 .orElseThrow(() -> new RuntimeException("Setor não encontrado."));
 
@@ -41,7 +41,7 @@ public class FuncionarioService {
         return funcionarioRepository.findById(id).orElseThrow( () -> new RuntimeException("Funcionário não encontrado."));
     }
 
-    // private SalarioService salarioService;
+    // private SalarioService.java salarioService;
 
     /* public Funcionario adicionarFuncionario(FuncionarioDTO funcionario) {
         Salario salario = salarioService.calcularSalario(funcionario.getVale(), funcionario.getPlanoSaude(), funcionario.getPlanoOdontologico(), funcionario.getBonusParticipacao(), funcionario.getTaxaAliquota(), funcionario.getSalarioBruto());
@@ -60,8 +60,7 @@ public class FuncionarioService {
     }
 
     /* public Funcionario atualizarFuncionario(Long id, AtualizarFuncionarioDTO dto) {
-        Funcionario funcionario = funcionarioRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Funcionário não encontrado."));
+        Funcionario funcionario = buscarFuncionarioPorId(id);
 
         funcionario.setNome(dto.getNome());
         funcionario.setSobrenome(dto.getSobrenome());

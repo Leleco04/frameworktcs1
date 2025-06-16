@@ -18,8 +18,8 @@ public class Funcionario implements Serializable {
     private String nome;
     private String sobrenome;
     private String genero;
-    private int idade;
-    private double salario;
+    private Integer idade;
+    private Salario salario;
 
     @ManyToOne
     @JoinColumn(name = "id_setor")
@@ -37,10 +37,10 @@ public class Funcionario implements Serializable {
     public String getGenero() {
         return genero;
     }
-    public int getIdade() {
+    public Integer getIdade() {
         return idade;
     }
-    public double getSalario() {
+    public Salario getSalario() {
         return salario;
     }
     public Setor getSetor() {
@@ -56,17 +56,17 @@ public class Funcionario implements Serializable {
     public void setGenero(String genero) {
         this.genero = genero;
     }
-    public void setIdade(int idade) {
+    public void setIdade(Integer idade) {
         this.idade = idade;
     }
-    public void setSalario(double salario) {
+    public void setSalario(Salario salario) {
         this.salario = salario;
     }
     public void setSetor(Setor setor) {
         this.setor = setor;
     }
 
-    public Funcionario(String nome, String sobrenome, String genero, int idade, Setor setor) {
+    public Funcionario(String nome, String sobrenome, String genero, Integer idade, Setor setor) {
         this.nome = nome;
         this.sobrenome = sobrenome;
         this.genero = genero;

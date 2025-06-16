@@ -22,10 +22,28 @@ public class NegocioController {
         return ResponseEntity.ok(n);
     }
 
-    @GetMapping("/listar")
+    @GetMapping("/listar-negocios")
     public ResponseEntity<List<Negocio>> getNegocios() {
         List<Negocio> negocios = negocioService.listarNegocios();
         return ResponseEntity.ok(negocios);
+    }
+
+    @GetMapping("/listar-vendas")
+    public ResponseEntity<List<Negocio>> getVendas() {
+        List<Negocio> vendas = negocioService.listarVendas();
+        return ResponseEntity.ok(vendas);
+    }
+
+    @GetMapping("/listar-compras")
+    public ResponseEntity<List<Negocio>> getCompras() {
+        List<Negocio> compras = negocioService.listarCompras();
+        return ResponseEntity.ok(compras);
+    }
+
+    @GetMapping("/listar-abertos")
+    public ResponseEntity<List<Negocio>> getAbertos() {
+        List<Negocio> abertos = negocioService.listarNegociosAbertos();
+        return ResponseEntity.ok(abertos);
     }
 
     @DeleteMapping("/remover")
