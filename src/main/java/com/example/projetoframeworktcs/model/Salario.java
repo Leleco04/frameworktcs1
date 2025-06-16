@@ -56,7 +56,7 @@ public class Salario {
 //    public class FolhaPagamentoController {
 //
 //        @Autowired // O Spring injeta a instância do nosso serviço
-//        private SalarioService salarioService;
+//        private SalarioService.java salarioService;
 //
 //        @Autowired
 //        private FuncionarioRepository funcionarioRepo; // Exemplo

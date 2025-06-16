@@ -16,10 +16,14 @@ public class NegocioService {
 
     @Autowired
     private NegocioRepository negocioRepository;
+    private CaixaService caixaService;
 
     public Negocio adicionarNegocio(Negocio negocio) {
         Double valorTotal = calcularValorTotal(negocio);
-        Negocio n = new Negocio(valorTotal, negocio.getStatus(), negocio.getFuncionariosEnvolvidos(), negocio.getListaProdutos(), negocio.getDataProgramada(), negocio.getTipo());
+        Negocio n = new Negocio(valorTotal, negocio.getStatus(), negocio.getFuncionariosEnvolvidos(), negocio.getListaProdutos(), negocio.getDataProgramada(), negocio.getTipo(), negocio.getTransportadora());
+
+        if(n.getTipo().equals())
+
         return negocioRepository.save(n);
     }
 
@@ -43,6 +47,7 @@ public class NegocioService {
         negocio.setStatus(dto.getStatus());
         negocio.setDataProgramada(dto.getDataProgramada());
         negocio.setTipo(dto.getTipo());
+        negocio.setTransportadora(dto.getTransportadora());
 
         return negocioRepository.save(negocio);
     }
@@ -58,6 +63,7 @@ public class NegocioService {
                 soma += item.getProduto().getValorCompra() * item.getQtd();
             }
         }
+        soma += negocio.getTransportadora().getValorFreteFixo();
         return soma;
     }
 
@@ -67,6 +73,7 @@ public class NegocioService {
         sb.append("TIPO DE NEGÓCIO: ").append(negocio.getTipo()).append("\n");
         sb.append("   - Status: ").append(negocio.getStatus()).append("\n");
         sb.append("   - Data de Registro: ").append(negocio.getDataProgramadaFormatada()).append("\n");
+        sb.append("   - Transportadora: ").append(negocio.getTransportadora()).append("\n");
 
         // Adiciona a data programada apenas se ela existir
         if (negocio.getDataProgramada() != null) {

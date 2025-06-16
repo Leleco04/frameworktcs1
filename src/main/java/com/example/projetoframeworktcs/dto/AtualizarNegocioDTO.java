@@ -3,6 +3,7 @@ package com.example.projetoframeworktcs.dto;
 import com.example.projetoframeworktcs.model.ItemNegocio;
 import com.example.projetoframeworktcs.model.enums.Status;
 import com.example.projetoframeworktcs.model.enums.TipoNegocio;
+import com.example.projetoframeworktcs.model.enums.Transportadora;
 import jakarta.persistence.ElementCollection;
 import lombok.Getter;
 import lombok.Setter;
@@ -24,4 +25,5 @@ public class AtualizarNegocioDTO {
 
     private LocalDateTime dataProgramada;
     private TipoNegocio tipo;
+    private Transportadora transportadora;
 }
