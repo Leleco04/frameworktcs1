@@ -8,6 +8,7 @@ import com.example.projetoframeworktcs.model.Negocio;
 import com.example.projetoframeworktcs.repository.NegocioRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -74,6 +75,33 @@ public class NegocioService {
         }
         soma += negocio.getTransportadora().getValorFreteFixo();
         return soma;
+    }
+
+    public void finalizarNegocioAberto(Negocio negocio) throws EstoqueInsuficienteException {
+        if (negocio == null || negocio.getStatus() != Status.ABERTO) {
+            return;
+        }
+
+        if (negocio.getTipo() == TipoNegocio.VENDA) {
+            for (ItemNegocio item : negocio.getListaProdutos()) {
+                if (item.getProduto().getQtdEstoque() < item.getQtd()) {
+                    throw new EstoqueInsuficienteException("Estoque insuficiente para finalizar a venda de " + item.getProduto().getNome());
+                }
+            }
+            caixaService.adicionarValor(calcularValorTotal(negocio));
+            for (ItemNegocio item : negocio.getListaProdutos()) {
+                item.getProduto().removeEstoque(item.getQtd());
+            }
+
+        } else if (negocio.getTipo() == TipoNegocio.COMPRA) {
+            caixaService.removerValor(calcularValorTotal(negocio));
+            for (ItemNegocio item : negocio.getListaProdutos()) {
+                item.getProduto().addEstoque(item.getQtd());
+            }
+        }
+
+        negocio.setStatus(Status.FINALIZADO);
+        negocio.setDataFinalizacao(LocalDateTime.now());
     }
 
     public String exibirDados(Negocio negocio) {

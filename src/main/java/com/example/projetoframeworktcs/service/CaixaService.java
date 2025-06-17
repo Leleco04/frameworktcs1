@@ -5,6 +5,8 @@ import com.example.projetoframeworktcs.model.Negocio;
 import com.example.projetoframeworktcs.model.enums.Status;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.Month;
 import java.time.Year;
 
@@ -15,11 +17,11 @@ public class CaixaService {
     private NegocioService negocioService;
 
     public void adicionarValor(Double valor) {
-        caixa.setValor(caixa.getValor() + valor);
+        caixa.setValor(Caixa.getValor() + valor);
     }
 
     public void removerValor(Double valor) {
-        caixa.setValor(caixa.getValor() - valor);
+        caixa.setValor(Caixa.getValor() - valor);
     }
 
     public Double estimarLucroMensal(Integer mes) {
@@ -42,6 +44,30 @@ public class CaixaService {
                 // Verificar se a entrega está com status aberto
                 Month mesProgramado = v.getDataProgramada().getMonth();
                 if(mesProgramado.equals(mesEscolhido)) {
+                    entrada += negocioService.calcularValorTotal(v);
+                }
+            }
+        }
+        return entrada - saida;
+    }
+
+    public Double getLucroMensal() {
+        Month mesAtual = LocalDate.now().getMonth();
+        double entrada = 0, saida = 0;
+
+        for (Negocio c : negocioService.listarCompras()) {
+            if (c.getStatus() == Status.FINALIZADO) {
+                LocalDateTime dataFinal = c.getDataFinalizacao() != null ? c.getDataFinalizacao() : c.getDataNegocio();
+                if (dataFinal.getMonth() == mesAtual) {
+                    saida += negocioService.calcularValorTotal(c);
+                }
+            }
+        }
+
+        for (Negocio v : negocioService.listarVendas()) {
+            if (v.getStatus() == Status.FINALIZADO) {
+                LocalDateTime dataFinal = v.getDataFinalizacao() != null ? v.getDataFinalizacao() : v.getDataNegocio();
+                if (dataFinal.getMonth() == mesAtual) {
                     entrada += negocioService.calcularValorTotal(v);
                 }
             }

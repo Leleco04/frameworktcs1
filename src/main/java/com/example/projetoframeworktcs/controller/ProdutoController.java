@@ -1,5 +1,7 @@
 package com.example.projetoframeworktcs.controller;
 
+import com.example.projetoframeworktcs.dto.AtualizarFuncionarioDTO;
+import com.example.projetoframeworktcs.dto.AtualizarProdutoDTO;
 import com.example.projetoframeworktcs.dto.CriarProdutoDTO;
 import com.example.projetoframeworktcs.dto.ProdutoResponseDTO;
 import com.example.projetoframeworktcs.model.Categoria;
@@ -22,19 +24,12 @@ import java.util.List;
 @Controller
 public class ProdutoController {
 
-    @Autowired
     private final ProdutoService produtoService;
     private final CategoriaService categoriaService;
 
     public ProdutoController(ProdutoService produtoService, CategoriaService categoriaService) {
         this.produtoService = produtoService;
         this.categoriaService = categoriaService;
-    }
-
-    @PostMapping("/adicionar")
-    public ResponseEntity<Produto> addProduto(Produto produto) {
-        Produto p = produtoService.adicionarProduto(produto);
-        return ResponseEntity.ok(p);
     }
 
     // VERIFICAR USO
@@ -72,6 +67,13 @@ public class ProdutoController {
     public String registraFuncionario(CriarProdutoDTO dto, RedirectAttributes redirectAttributes) {
         produtoService.registrarProduto(dto);
         redirectAttributes.addFlashAttribute("sucesso", "Produto cadastrado com sucesso!");
+        return "redirect:/produto_inicial";
+    }
+
+    @PutMapping("/produtos/atualizar/{id}")
+    public String atualizaProduto(@PathVariable Long id, AtualizarProdutoDTO dto, RedirectAttributes redirectAttributes) {
+        produtoService.atualizarProduto(id, dto);
+        redirectAttributes.addFlashAttribute("sucesso", "Produto atualizado com sucesso!");
         return "redirect:/produto_inicial";
     }
 

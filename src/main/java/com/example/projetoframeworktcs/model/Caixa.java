@@ -10,6 +10,6 @@ public class Caixa {
         valor = 200000.0;
     }
 
-    public static Double getValor() { return valor; }
-    public void setValor(Double valor) { this.valor = valor; }
+    public static double getValor() { return valor; }
+    public void setValor(Double valor) { Caixa.valor = valor; }
 }

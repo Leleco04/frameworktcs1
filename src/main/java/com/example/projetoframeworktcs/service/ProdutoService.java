@@ -1,5 +1,6 @@
 package com.example.projetoframeworktcs.service;
 
+import com.example.projetoframeworktcs.dto.AtualizarProdutoDTO;
 import com.example.projetoframeworktcs.dto.CriarProdutoDTO;
 import com.example.projetoframeworktcs.dto.ProdutoResponseDTO;
 import com.example.projetoframeworktcs.model.Categoria;
@@ -46,7 +47,7 @@ public class ProdutoService {
     // ***
 
     public void registrarProduto(CriarProdutoDTO dto) {
-        Categoria categoria = categoriaRepository.findById(dto.idCategoria())
+        Categoria categoria = categoriaRepository.findById(dto.id_categoria())
                 .orElseThrow(() -> new RuntimeException("Categoria não encontrada."));
 
         Produto produto = new Produto(dto.nome(), dto.descricao(), dto.valorCompra(), dto.valorVenda(), dto.qtdEstoque(), categoria);
@@ -58,12 +59,8 @@ public class ProdutoService {
         return produtoRepository.count();
     }
 
-    public Produto buscarPorId(Long id) {
+    public Produto buscarProdutoPorId(Long id) {
         return produtoRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Produto não encontrado."));
-    }
-
-    public Produto adicionarProduto(Produto produto) {
-        return produtoRepository.save(produto);
     }
 
     public Page<ProdutoResponseDTO> listarProdutos(Pageable pageable) {
@@ -73,8 +70,24 @@ public class ProdutoService {
     }
 
     public void removerProduto(Long id) {
-        Produto p = buscarPorId(id);
+        Produto p = buscarProdutoPorId(id);
         produtoRepository.delete(p);
+    }
+
+    public Produto atualizarProduto(Long id, AtualizarProdutoDTO dto) {
+        Produto produto = buscarProdutoPorId(id);
+
+        Categoria categoria = categoriaRepository.findById(dto.getId_categoria())
+                .orElseThrow(() -> new RuntimeException("Categoria não encontrada."));
+
+        produto.setNome(dto.getNome());
+        produto.setDescricao(dto.getDescricao());
+        produto.setValorCompra(dto.getValorCompra());
+        produto.setValorVenda(dto.getValorVenda());
+        produto.setQtdEstoque(dto.getQtdEstoque());
+        produto.setCategoria(categoria);
+
+        return produtoRepository.save(produto);
     }
 
     private ProdutoResponseDTO converterParaDTO(Produto produto) {

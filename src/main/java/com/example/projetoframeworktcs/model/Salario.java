@@ -5,8 +5,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Getter
-@Setter
 @Embeddable
 @NoArgsConstructor
 public class Salario {
@@ -50,27 +48,18 @@ public class Salario {
         return 0.275;
     }
 
-
-    //    EXEMPLO DE COMO DEVE SER UTILIZADO
-//    @RestController
-//    public class FolhaPagamentoController {
-//
-//        @Autowired // O Spring injeta a instância do nosso serviço
-//        private SalarioService.java salarioService;
-//
-//        @Autowired
-//        private FuncionarioRepository funcionarioRepo; // Exemplo
-//
-//        @PostMapping("/funcionario/{id}/calcular-salario")
-//        public Salario calcular(@PathVariable Long id) {
-//            Funcionario funcionario = funcionarioRepo.findById(id).orElseThrow();
-//            Caixa caixa = new Caixa(); // Obter o caixa de algum lugar
-//            double salarioBruto = funcionario.getSalarioBruto(); // Exemplo
-//
-//            // Chama o serviço, que faz todo o trabalho pesado
-//            Salario detalhesSalario = salarioService.calcularSalarioCompleto(funcionario, salarioBruto, caixa);
-//
-//            // Retorna o objeto de dados para quem chamou (ex: para o frontend)
-//            return detalhesSalario;
-//        }
+    public Double getVale() { return vale; }
+    public void setVale(Double vale) { this.vale = vale; }
+    public Double getPlanoSaude() { return planoSaude; }
+    public void setPlanoSaude(Double planoSaude) { this.planoSaude = planoSaude; }
+    public Double getPlanoOdontologico() { return planoOdontologico; }
+    public void setPlanoOdontologico(Double planoOdontologico) { this.planoOdontologico = planoOdontologico; }
+    public Double getBonusParticipacao() { return bonusParticipacao; }
+    public void setBonusParticipacao(Double bonusParticipacao) { this.bonusParticipacao = bonusParticipacao; }
+    public Double getTaxaAliquota() { return taxaAliquota; }
+    public void setTaxaAliquota(Double taxaAliquota) { this.taxaAliquota = taxaAliquota; }
+    public Double getSalarioBruto() { return salarioBruto; }
+    public void setSalarioBruto(Double salarioBruto) { this.salarioBruto = salarioBruto; }
+    public Double getSalarioLiquido() { return salarioLiquido; }
+    public void setSalarioLiquido(Double salarioLiquido) { this.salarioLiquido = salarioLiquido; }
 }

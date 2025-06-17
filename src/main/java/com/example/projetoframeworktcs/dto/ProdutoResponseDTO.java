@@ -1,11 +1,11 @@
 package com.example.projetoframeworktcs.dto;
 
 public record ProdutoResponseDTO (
-        long id,
+        Long id,
         String nome,
         String descricao,
-        double valorCompra,
-        double valorVenda,
-        int qtdEstoque,
+        Double valorCompra,
+        Double valorVenda,
+        Integer qtdEstoque,
         String nomeCategoria
 ) {}

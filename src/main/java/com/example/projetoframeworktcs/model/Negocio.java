@@ -35,6 +35,7 @@ public class Negocio implements Serializable {
     private ArrayList<ItemNegocio> listaProdutos;
 
     private LocalDateTime dataProgramada;
+    private LocalDateTime dataFinalizacao;
     private TipoNegocio tipo;
     private Transportadora transportadora;
 
@@ -64,4 +65,6 @@ public class Negocio implements Serializable {
     public void setTipo(TipoNegocio tipo) { this.tipo = tipo; }
     public Transportadora getTransportadora() { return transportadora; }
     public void setTransportadora(Transportadora transportadora) { this.transportadora = transportadora; }
+    public LocalDateTime getDataFinalizacao() { return dataFinalizacao; }
+    public void setDataFinalizacao(LocalDateTime dataFinalizacao) {this.dataFinalizacao = dataFinalizacao; }
 }

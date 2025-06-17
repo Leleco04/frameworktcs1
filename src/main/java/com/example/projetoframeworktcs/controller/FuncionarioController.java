@@ -31,30 +31,6 @@ public class FuncionarioController {
         this.funcionarioService = funcionarioService;
     }
 
-//    @PostMapping("/adicionar")
-//    public ResponseEntity<Funcionario> addFuncionario(@RequestBody FuncionarioDTO funcionario) {
-//        Funcionario f = funcionarioService.adicionarFuncionario(funcionario);
-//        return ResponseEntity.ok(f);
-//    }
-
-//    @GetMapping("/listar")
-//    public ResponseEntity<List<Funcionario>> getFuncionarios() {
-//        List<Funcionario> funcionarios = funcionarioService.listarFuncionarios();
-//        return ResponseEntity.ok(funcionarios);
-//    }
-//
-//    @DeleteMapping("/remover")
-//    public ResponseEntity<Void> deleteFuncionario(Long id) {
-//        funcionarioService.removerFuncionario(id);
-//        return ResponseEntity.noContent().build();
-//    }
-
-//    @PutMapping("/atualizar")
-//    public ResponseEntity<Funcionario> updateFuncionario(Long id, AtualizarFuncionarioDTO dto) {
-//        Funcionario f = funcionarioService.atualizarFuncionario(id, dto);
-//        return ResponseEntity.ok(f);
-//    }
-
     @GetMapping("/funcionarios")
     public String paginaInicialFuncionario(Model model, @PageableDefault(size = 6, sort = "id") Pageable pageable) {
         String qtdFuncionarios = funcionarioService.quantidadeFuncionarios() + " funcionário(s)";
@@ -66,7 +42,7 @@ public class FuncionarioController {
 
     @GetMapping("/adicionar_funcionario")
     public String paginaAdicionarFuncionario(Model model) {
-        model.addAttribute("funcionarioDTO", new CriarFuncionarioDTO("", "", "", 0, 0));
+        model.addAttribute("funcionarioDTO", new CriarFuncionarioDTO("", "", "", 0, 0,0.0));
         List<Setor> setores = setorService.getSetores();
         model.addAttribute("setores", setores);
         return "adicionar_funcionario";
@@ -77,6 +53,22 @@ public class FuncionarioController {
         funcionarioService.registrarFuncionario(dto);
         redirectAttributes.addFlashAttribute("sucesso", "Funcionário cadastrado com sucesso!");
         return "redirect:/funcionarios";
+    }
+
+//    @GetMapping("/{id}/atualizar_funcionario")
+//    public String paginaAtualizarFuncionario(@PathVariable Long id, Model model) {
+//        AtualizarFuncionarioDTO dto = funcionarioService.buscarFuncionarioPorId(id);
+//        model.addAttribute("atualizarFuncionarioDTO", new AtualizarFuncionarioDTO());
+//        List<Setor> setores = setorService.getSetores();
+//        model.addAttribute("setores", setores);
+//        return "atualizar_funcionario";
+//    }
+
+    @PutMapping("/funcionarios/atualizar/{id}")
+    public String atualizaFuncionario(@PathVariable Long id, @ModelAttribute AtualizarFuncionarioDTO dto, RedirectAttributes redirectAttributes) {
+        funcionarioService.atualizarFuncionario(id, dto);
+        redirectAttributes.addFlashAttribute("sucesso", "Funcionário atualizado com sucesso!");
+        return "redirect:/atualizar_funcionario";
     }
 
     @DeleteMapping("/funcionarios/{id}")

@@ -11,12 +11,12 @@ public class SalarioService {
 
     private CaixaService caixaService;
 
-    public Salario calcularSalarioCompleto(Funcionario funcionario, Double salarioBruto, Integer mes) {
+    public Salario calcularSalarioCompleto(Funcionario funcionario, Double salarioBruto) {
 
         Double vale = calcularVale(funcionario);
         Double planoSaude = calcularPlanoSaude(funcionario);
         Double planoOdontologico = 3000.0;
-        Double bonus = caixaService.estimarLucroMensal(mes);
+        Double bonus = caixaService.getLucroMensal();
         Double taxaAliquota = funcionario.getSalario().getTaxaAliquota();
 
         Double desconto = vale + (salarioBruto * taxaAliquota);
@@ -58,5 +58,7 @@ public class SalarioService {
         else if(id == 6) return 360.0;
         else return 300.0;
     }
+
 }
 */
+
