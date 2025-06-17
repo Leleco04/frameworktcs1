@@ -1,0 +1,76 @@
+<html th:replace="~{common/layout :: layout(~{::title}, ~{::section})}">
+
+<title th:fragment="title">Registro de compra</title>
+
+<th:block id="page-styles">
+    <link rel="stylesheet" th:href="@{/css/caixa.css}">
+</th:block>
+
+<section th:fragment="section">
+    <h2 class="fw-bold">Registro de compra</h2>
+    <hr>
+    <form th:action="@{/negocio/registrar/{tipo}(tipo='compra')}" th:object="${negocioDTO}" method="POST">
+        <div class="d-grid justify-content-center mt-5 align-items-center gap-5">
+            <div class="d-flex gap-3">
+                <div class="d-grid gap-2">
+                    <label for="produto">Produto</label>
+                    <select id="produto" name="produto" class="input-negocio">
+                        <option th:each="produto : ${produtos}"
+                                th:value="${produto.id}" th:text="${produto.nome}">
+                        </option>
+                    </select>
+                </div>
+            </div>
+            <p class="m-0 mt-3">Status</p>
+            <div class="d-flex gap-3">
+                <div class="d-grid">
+                    <label for="status-concluido">Concluído</label>
+                    <input type="radio" name="status" id="status-concluido" class="status" checked>
+                </div>
+                <div class="d-grid">
+                    <label for="status-aberto">Aberto</label>
+                    <input type="radio" name="status" id="status-aberto" class="status">
+                </div>
+            </div>
+            <div style="display: none" id="container-data">
+                <label for="dataProgramada">Data Programada</label>
+                <input id="dataProgramada" type="datetime-local" class="input-negocio">
+            </div>
+            <div class="d-grid">
+                <p>Funcionários envolvidos</p>
+                <div th:each="funcionario : ${funcionarios}" class="d-flex gap-2">
+                    <label th:text="${funcionario.nome}"></label>
+                    <input type="checkbox" name="" th:value="${funcionario.id}">
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <script>
+        window.addEventListener('DOMContentLoaded', function () {
+            const radioAberto = document.getElementById("status-aberto");
+
+            const containerData = document.getElementById("container-data");
+
+            const todosOsRadios = document.querySelectorAll('input[name="status"]');
+
+            function verificarStatusEExibirContainer() {
+                if (radioAberto.checked) {
+                    containerData.style.display = 'block';
+                    containerData.classList.add('d-grid');
+                    containerData.classList.add('gap-2');
+                } else {
+                    containerData.style.display = 'none';
+                    containerData.classList.remove('d-grid');
+                }
+            }
+
+            todosOsRadios.forEach(function (radio) {
+                radio.addEventListener('change', verificarStatusEExibirContainer);
+            });
+        });
+    </script>
+
+</section>
+
+</html>

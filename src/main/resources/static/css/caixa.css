@@ -1,0 +1,27 @@
+.btn-reg {
+    border: 1px solid #044080;
+    background: #57d5ff;
+    color: #044080;
+    transition: all 0.3s ease;
+    border-radius: 5px;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.btn-reg:hover {
+    background: #044080;
+    color: #fff;
+    transform: scale(1.05);
+    transition: all 0.3s ease;
+}
+
+.status {
+    cursor: pointer;
+}
+
+.input-negocio {
+    border: 1px solid gray;
+    border-radius: 5px;
+    padding: 0.5rem;
+    width: 15rem;
+}
