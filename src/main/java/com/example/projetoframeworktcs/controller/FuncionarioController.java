@@ -1,7 +1,9 @@
 package com.example.projetoframeworktcs.controller;
 
 import com.example.projetoframeworktcs.dto.AtualizarFuncionarioDTO;
+import com.example.projetoframeworktcs.dto.CriarFuncionarioDTO;
 import com.example.projetoframeworktcs.dto.FuncionarioDTO;
+import com.example.projetoframeworktcs.dto.FuncionarioResponseDTO;
 import com.example.projetoframeworktcs.model.Funcionario;
 import com.example.projetoframeworktcs.model.Setor;
 import com.example.projetoframeworktcs.service.FuncionarioService;
@@ -56,7 +58,7 @@ public class FuncionarioController {
     @GetMapping("/funcionarios")
     public String paginaInicialFuncionario(Model model, @PageableDefault(size = 6, sort = "id") Pageable pageable) {
         String qtdFuncionarios = funcionarioService.quantidadeFuncionarios() + " funcionário(s)";
-        Page<Funcionario> paginaDeFuncionarios = funcionarioService.listarFuncionarios(pageable);
+        Page<FuncionarioResponseDTO> paginaDeFuncionarios = funcionarioService.listarFuncionarios(pageable);
         model.addAttribute("paginaDeFuncionarios", paginaDeFuncionarios);
         model.addAttribute("qtdFuncionarios", qtdFuncionarios);
         return "funcionario_inicial";
@@ -64,25 +66,21 @@ public class FuncionarioController {
 
     @GetMapping("/adicionar_funcionario")
     public String paginaAdicionarFuncionario(Model model) {
+        model.addAttribute("funcionarioDTO", new CriarFuncionarioDTO("", "", "", 0, 0));
         List<Setor> setores = setorService.getSetores();
         model.addAttribute("setores", setores);
         return "adicionar_funcionario";
     }
 
     @PostMapping("/funcionarios/adicionar")
-    public String registraFuncionario(@RequestParam String nome, @RequestParam String sobrenome,
-                                      @RequestParam int idade, @RequestParam String genero, @RequestParam long setor,
-                                      RedirectAttributes redirectAttributes
-    ) {
-        funcionarioService.registrarFuncionario(nome, sobrenome, genero, idade, setor);
+    public String registraFuncionario(CriarFuncionarioDTO dto, RedirectAttributes redirectAttributes) {
+        funcionarioService.registrarFuncionario(dto);
         redirectAttributes.addFlashAttribute("sucesso", "Funcionário cadastrado com sucesso!");
         return "redirect:/funcionarios";
     }
 
     @DeleteMapping("/funcionarios/{id}")
-    public String registraFuncionario(@PathVariable Long id,
-                                      RedirectAttributes redirectAttributes
-    ) {
+    public String deletaFuncionario(@PathVariable Long id, RedirectAttributes redirectAttributes) {
         funcionarioService.removerFuncionario(id);
         redirectAttributes.addFlashAttribute("sucesso", "Funcionário deletado com sucesso!");
         return "redirect:/funcionarios";
