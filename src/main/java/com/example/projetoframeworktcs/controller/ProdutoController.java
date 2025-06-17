@@ -1,9 +1,18 @@
 package com.example.projetoframeworktcs.controller;
 
+import com.example.projetoframeworktcs.dto.AtualizarFuncionarioDTO;
+import com.example.projetoframeworktcs.dto.AtualizarProdutoDTO;
+import com.example.projetoframeworktcs.dto.CriarProdutoDTO;
+import com.example.projetoframeworktcs.dto.ProdutoResponseDTO;
+import com.example.projetoframeworktcs.model.Categoria;
 import com.example.projetoframeworktcs.model.Produto;
+import com.example.projetoframeworktcs.service.CategoriaService;
 import com.example.projetoframeworktcs.service.ProdutoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,34 +24,25 @@ import java.util.List;
 @Controller
 public class ProdutoController {
 
-    @Autowired
     private final ProdutoService produtoService;
+    private final CategoriaService categoriaService;
 
-    public ProdutoController(ProdutoService produtoService) {
+    public ProdutoController(ProdutoService produtoService, CategoriaService categoriaService) {
         this.produtoService = produtoService;
+        this.categoriaService = categoriaService;
     }
 
-    @PostMapping("/adicionar")
-    public ResponseEntity<Produto> addProduto(Produto produto) {
-        Produto p = produtoService.adicionarProduto(produto);
-        return ResponseEntity.ok(p);
-    }
-
-    @GetMapping("/listar")
+    // VERIFICAR USO
+    /* @GetMapping("/listar")
     public ResponseEntity<List<Produto>> getProdutos() {
         List<Produto> produtos = produtoService.listarProdutos();
         return ResponseEntity.ok(produtos);
     }
-
-    @DeleteMapping("/remover")
-    public ResponseEntity<Void> deleteProduto(Long id) {
-        produtoService.removerProduto(id);
-        return ResponseEntity.noContent().build();
-    }
+     */
 
     @GetMapping("/produto_inicial")
-    public String paginaInicialProdutos(Model model) {
-        List<Produto> produtos = produtoService.listarProdutos();
+    public String paginaInicialProdutos(Model model, @PageableDefault(size = 6, sort = "id") Pageable pageable) {
+        Page<ProdutoResponseDTO> produtos = produtoService.listarProdutos(pageable);
         String quantidade = produtoService.quantidadeProdutos() + " produto(s)";
         model.addAttribute("quantidade", quantidade);
         model.addAttribute("produtos", produtos);
@@ -50,24 +50,31 @@ public class ProdutoController {
     }
 
     @GetMapping("/adicionar_produto")
-    public String paginaAdicionarProduto() {
+    public String paginaAdicionarProduto(Model model) {
+        model.addAttribute("produtoDTO", new CriarProdutoDTO("","",0,0,0,0));
+        List<Categoria> categorias = categoriaService.listarCategorias();
+        model.addAttribute("categorias", categorias);
         return "adicionar_produto";
     }
 
     @PostMapping("/produtos/adicionar")
-    public String registraFuncionario(
-            @RequestParam String nome, @RequestParam String descricao,
-            @RequestParam double valor_compra, @RequestParam double valor_venda, @RequestParam int estoque,
-            RedirectAttributes redirectAttributes
-    ) {
-        try {
-            produtoService.registrarProduto(nome, descricao, valor_compra, valor_venda, estoque);
-            redirectAttributes.addFlashAttribute("sucesso", "Produto cadastrado com sucesso!");
-            return "redirect:/produto_inicial";
-        } catch(DataIntegrityViolationException e) {
-            redirectAttributes.addFlashAttribute("erro", "Erro: o valor de venda deve ser maior que o de compra.");
-            return "redirect:/adicionar_produto";
-        }
+    public String registraFuncionario(CriarProdutoDTO dto, RedirectAttributes redirectAttributes) {
+        produtoService.registrarProduto(dto);
+        redirectAttributes.addFlashAttribute("sucesso", "Produto cadastrado com sucesso!");
+        return "redirect:/produto_inicial";
     }
 
+    @PutMapping("/produtos/atualizar/{id}")
+    public String atualizaProduto(@PathVariable Long id, AtualizarProdutoDTO dto, RedirectAttributes redirectAttributes) {
+        produtoService.atualizarProduto(id, dto);
+        redirectAttributes.addFlashAttribute("sucesso", "Produto atualizado com sucesso!");
+        return "redirect:/produto_inicial";
+    }
+
+    @DeleteMapping("/produtos/{id}")
+    public String deletaProduto(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+        produtoService.removerProduto(id);
+        redirectAttributes.addFlashAttribute("sucesso", "Produto deletado com sucesso!");
+        return "redirect:/produto_inicial";
+    }
 }

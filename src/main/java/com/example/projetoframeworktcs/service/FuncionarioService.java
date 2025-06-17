@@ -1,34 +1,36 @@
 package com.example.projetoframeworktcs.service;
 
 import com.example.projetoframeworktcs.dto.AtualizarFuncionarioDTO;
-import com.example.projetoframeworktcs.dto.FuncionarioDTO;
+import com.example.projetoframeworktcs.dto.CriarFuncionarioDTO;
+import com.example.projetoframeworktcs.dto.FuncionarioResponseDTO;
 import com.example.projetoframeworktcs.model.Funcionario;
 import com.example.projetoframeworktcs.model.Salario;
 import com.example.projetoframeworktcs.model.Setor;
 import com.example.projetoframeworktcs.repository.FuncionarioRepository;
 import com.example.projetoframeworktcs.repository.SetorRepository;
-import jakarta.persistence.EntityNotFoundException;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class FuncionarioService {
 
     private final FuncionarioRepository funcionarioRepository;
     private final SetorRepository setorRepository;
+    private final SalarioService salarioService;
 
-    public FuncionarioService(FuncionarioRepository funcionarioRepository, SetorRepository setorRepository) {
+    public FuncionarioService(FuncionarioRepository funcionarioRepository, SetorRepository setorRepository, SalarioService salarioService) {
         this.funcionarioRepository = funcionarioRepository;
         this.setorRepository = setorRepository;
+        this.salarioService = salarioService;
     }
 
-    public void registrarFuncionario(String nome, String sobrenome, String genero, Integer idade, Long setor) {
-        Setor setorObj = setorRepository.findById(setor)
+    public void registrarFuncionario(CriarFuncionarioDTO dto) {
+        Setor setorObj = setorRepository.findById(dto.idSetor())
                 .orElseThrow(() -> new RuntimeException("Setor não encontrado."));
 
-        Funcionario funcionario = new Funcionario(nome, sobrenome, genero, idade, setorObj);
+        Funcionario funcionario = new Funcionario(dto.nome(), dto.sobrenome(), dto.genero(), dto.idade(), setorObj);
+        salarioService.calcularSalarioCompleto(funcionario, dto.salarioBruto());
 
         funcionarioRepository.save(funcionario);
     }
@@ -41,17 +43,21 @@ public class FuncionarioService {
         return funcionarioRepository.findById(id).orElseThrow( () -> new RuntimeException("Funcionário não encontrado."));
     }
 
-    // private SalarioService.java salarioService;
+    public Page<FuncionarioResponseDTO> listarFuncionarios(Pageable pageable) {
+        Page<Funcionario> paginaDeFuncionarios = funcionarioRepository.findAll(pageable);
 
-    /* public Funcionario adicionarFuncionario(FuncionarioDTO funcionario) {
-        Salario salario = salarioService.calcularSalario(funcionario.getVale(), funcionario.getPlanoSaude(), funcionario.getPlanoOdontologico(), funcionario.getBonusParticipacao(), funcionario.getTaxaAliquota(), funcionario.getSalarioBruto());
-        Funcionario funcionarioSalvo = new Funcionario(funcionario.getNome(), funcionario.getSobrenome(), funcionario.getIdade(), funcionario.getGenero(), salario, funcionario.getId_setor());
+        return paginaDeFuncionarios.map(this::converterParaDTO);
+    }
 
-        return funcionarioRepository.save(funcionarioSalvo);
-    } */
-
-    public List<Funcionario> listarFuncionarios() {
-        return funcionarioRepository.findAllWithSetor();
+    private FuncionarioResponseDTO converterParaDTO(Funcionario funcionario) {
+        return new FuncionarioResponseDTO(
+                funcionario.getId(),
+                funcionario.getNome(),
+                funcionario.getSobrenome(),
+                funcionario.getGenero(),
+                funcionario.getIdade(),
+                funcionario.getSetor().getNome()
+        );
     }
 
     public void removerFuncionario(Long id) {
@@ -59,15 +65,19 @@ public class FuncionarioService {
         funcionarioRepository.delete(funcionario);
     }
 
-    /* public Funcionario atualizarFuncionario(Long id, AtualizarFuncionarioDTO dto) {
+    public Funcionario atualizarFuncionario(Long id, AtualizarFuncionarioDTO dto) {
         Funcionario funcionario = buscarFuncionarioPorId(id);
 
-        funcionario.setNome(dto.getNome());
-        funcionario.setSobrenome(dto.getSobrenome());
-        funcionario.setIdade(dto.getIdade());
-        funcionario.setGenero(dto.getGenero());
-        funcionario.setId_setor(dto.getId_setor());
+        Setor setorObj = setorRepository.findById(dto.idSetor())
+                .orElseThrow(() -> new RuntimeException("Setor não encontrado."));
+
+        funcionario.setNome(dto.nome());
+        funcionario.setSobrenome(dto.sobrenome());
+        funcionario.setIdade(dto.idade());
+        funcionario.setGenero(dto.genero());
+        funcionario.setSetor(setorObj);
+        salarioService.calcularSalarioCompleto(funcionario, dto.salarioBruto());
 
         return funcionarioRepository.save(funcionario);
-    } */
+    }
 }
