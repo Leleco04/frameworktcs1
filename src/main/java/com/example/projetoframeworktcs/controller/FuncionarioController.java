@@ -2,13 +2,17 @@ package com.example.projetoframeworktcs.controller;
 
 import com.example.projetoframeworktcs.dto.AtualizarFuncionarioDTO;
 import com.example.projetoframeworktcs.dto.CriarFuncionarioDTO;
+import com.example.projetoframeworktcs.dto.FuncionarioDTO;
 import com.example.projetoframeworktcs.dto.FuncionarioResponseDTO;
+import com.example.projetoframeworktcs.model.Funcionario;
 import com.example.projetoframeworktcs.model.Setor;
 import com.example.projetoframeworktcs.service.FuncionarioService;
 import com.example.projetoframeworktcs.service.SetorService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;

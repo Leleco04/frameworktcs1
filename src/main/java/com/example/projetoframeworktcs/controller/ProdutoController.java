@@ -40,6 +40,12 @@ public class ProdutoController {
     }
      */
 
+    @DeleteMapping("/remover")
+    public ResponseEntity<Void> deleteProduto(Long id) {
+        produtoService.removerProduto(id);
+        return ResponseEntity.noContent().build();
+    }
+
     @GetMapping("/produto_inicial")
     public String paginaInicialProdutos(Model model, @PageableDefault(size = 6, sort = "id") Pageable pageable) {
         Page<ProdutoResponseDTO> produtos = produtoService.listarProdutos(pageable);

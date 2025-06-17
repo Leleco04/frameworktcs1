@@ -1,3 +1,4 @@
+/*
 package com.example.projetoframeworktcs.service;
 
 import com.example.projetoframeworktcs.model.Funcionario;
@@ -57,4 +58,7 @@ public class SalarioService {
         else if(id == 6) return 360.0;
         else return 300.0;
     }
+
 }
+*/
+
