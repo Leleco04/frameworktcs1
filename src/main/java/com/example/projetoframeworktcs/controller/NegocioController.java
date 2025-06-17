@@ -1,21 +1,34 @@
 package com.example.projetoframeworktcs.controller;
 
 import com.example.projetoframeworktcs.dto.AtualizarNegocioDTO;
+import com.example.projetoframeworktcs.dto.CriarNegocioDTO;
+import com.example.projetoframeworktcs.dto.FuncionarioResponseDTO;
+import com.example.projetoframeworktcs.dto.ProdutoResponseDTO;
+import com.example.projetoframeworktcs.model.Caixa;
 import com.example.projetoframeworktcs.model.Negocio;
+import com.example.projetoframeworktcs.service.FuncionarioService;
 import com.example.projetoframeworktcs.service.NegocioService;
+import com.example.projetoframeworktcs.service.ProdutoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
-@RestController
-@RequestMapping("/negocio")
+@Controller
 public class NegocioController {
 
     @Autowired
     private NegocioService negocioService;
+    @Autowired
+    private ProdutoService produtoService;
+    @Autowired
+    private FuncionarioService funcionarioService;
 
+    /*
     @PostMapping("/adicionar")
     public ResponseEntity<Negocio> addNegocio(@RequestBody Negocio negocio) {
         Negocio n = negocioService.adicionarNegocio(negocio);
@@ -56,5 +69,26 @@ public class NegocioController {
     public ResponseEntity<Negocio> updateFuncionario(Long id, AtualizarNegocioDTO dto) {
         Negocio n = negocioService.atualizarNegocio(id, dto);
         return ResponseEntity.ok(n);
+    }
+     */
+
+    @GetMapping("/registrar_compra")
+    public String paginaRegistrarCompra(Model model) {
+        List<ProdutoResponseDTO> produtos = produtoService.getProdutos();
+        List<FuncionarioResponseDTO> funcionarios = funcionarioService.getFuncionarios();
+        model.addAttribute("produtos", produtos);
+        model.addAttribute("funcionarios", funcionarios);
+        return "registrar_compra";
+    }
+
+    @GetMapping("/registrar_venda")
+    public String paginaRegistrarVenda(Model model) {
+        return "registrar_venda";
+    }
+
+    @PostMapping("/negocio/registrar/{tipo}")
+    public String registrarNegocio(CriarNegocioDTO dto, RedirectAttributes redirectAttributes) {
+        redirectAttributes.addFlashAttribute("sucesso", "Produto deletado com sucesso!");
+        return "redirect:/produto_inicial";
     }
 }

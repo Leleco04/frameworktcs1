@@ -1,21 +1,36 @@
 package com.example.projetoframeworktcs.service;
 
 import com.example.projetoframeworktcs.dto.AtualizarNegocioDTO;
+import com.example.projetoframeworktcs.dto.CriarNegocioDTO;
+import com.example.projetoframeworktcs.model.Funcionario;
 import com.example.projetoframeworktcs.model.ItemNegocio;
+import com.example.projetoframeworktcs.model.Produto;
 import com.example.projetoframeworktcs.model.enums.Status;
 import com.example.projetoframeworktcs.model.enums.TipoNegocio;
 import com.example.projetoframeworktcs.model.Negocio;
+import com.example.projetoframeworktcs.repository.FuncionarioRepository;
 import com.example.projetoframeworktcs.repository.NegocioRepository;
+import com.example.projetoframeworktcs.repository.ProdutoRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
 public class NegocioService {
 
+    private final ProdutoRepository produtoRepository;
+    private final FuncionarioRepository funcionarioRepository;
     private NegocioRepository negocioRepository;
-    private CaixaService caixaService;
 
+    public NegocioService(ProdutoRepository produtoRepository, FuncionarioRepository funcionarioRepository) {
+        this.produtoRepository = produtoRepository;
+        this.funcionarioRepository = funcionarioRepository;
+    }
+
+    //private CaixaService caixaService;
+
+    /*
     public Negocio adicionarNegocio(Negocio negocio) {
         Double valorTotal = calcularValorTotal(negocio);
         Negocio n = new Negocio(valorTotal, negocio.getStatus(), negocio.getFuncionariosEnvolvidos(), negocio.getListaProdutos(), negocio.getDataProgramada(), negocio.getTipo(), negocio.getTransportadora());
@@ -25,6 +40,7 @@ public class NegocioService {
 
         return negocioRepository.save(n);
     }
+    */
 
     public List<Negocio> listarNegocios() { return negocioRepository.findAll(); }
 
@@ -38,44 +54,75 @@ public class NegocioService {
         return negocioRepository.findById(id).orElseThrow( () -> new RuntimeException("Negócio não encontrado."));
     }
 
-    public void removerNegocio(Long id) {
-        Negocio n = buscarNegocioPorId(id);
+    @Transactional
+    public void criar(CriarNegocioDTO dto) {
+        Produto produto = produtoRepository.findById(dto.getProdutoId())
+                .orElseThrow(() -> new RuntimeException("Produto não encontrado."));
 
-        if(n.getTipo().equals(TipoNegocio.VENDA)) caixaService.removerValor(calcularValorTotal(n));
-        else caixaService.adicionarValor(calcularValorTotal(n));
-
-        negocioRepository.delete(n);
-    }
-
-    public Negocio atualizarNegocio(Long id, AtualizarNegocioDTO dto) {
-        Negocio negocio = buscarNegocioPorId(id);
-
-        negocio.setListaProdutos(dto.getListaProdutos());
-        negocio.setFuncionariosEnvolvidos(dto.getFuncionariosEnvolvidos());
-        negocio.setValorNegocio(calcularValorTotal(negocio));
-        negocio.setStatus(dto.getStatus());
-        negocio.setDataProgramada(dto.getDataProgramada());
+        Negocio negocio = new Negocio();
         negocio.setTipo(dto.getTipo());
-        negocio.setTransportadora(dto.getTransportadora());
+        negocio.setProduto(produto);
+        negocio.setStatus(dto.getStatus());
+        negocio.setQuantidade(dto.getQuantidade());
 
-        return negocioRepository.save(negocio);
-    }
-
-    public Double calcularValorTotal(Negocio negocio) {
-        Double soma = 0.0;
-        if(negocio.getTipo().equals(TipoNegocio.VENDA)) {
-            for(ItemNegocio item : negocio.getListaProdutos()) {
-                soma += item.getProduto().getValorVenda() * item.getQtd();
-            }
+        if(dto.getTipo().equals("venda")) {
+            negocio.setValorNegocio(produto.getValorVenda() * negocio.getQuantidade());
         } else {
-            for(ItemNegocio item : negocio.getListaProdutos()) {
-                soma += item.getProduto().getValorCompra() * item.getQtd();
-            }
+            negocio.setValorNegocio(produto.getValorCompra() * negocio.getQuantidade());
         }
-        soma += negocio.getTransportadora().getValorFreteFixo();
-        return soma;
+
+        if(negocio.getStatus().equals("aberto")) {
+            negocio.setDataProgramada(dto.getDataProgramada());
+        }
+
+        for(Long funcionarioId : dto.getFuncionarioIds()) {
+            Funcionario funcionario = funcionarioRepository.findById(funcionarioId)
+                    .orElseThrow(() -> new RuntimeException("Funcionário não encontrado."));
+            negocio.getFuncionarios().add(funcionario);
+        }
+
+        negocioRepository.save(negocio);
     }
 
+//    public void removerNegocio(Long id) {
+//        Negocio n = buscarNegocioPorId(id);
+//
+//        if(n.getTipo().equals(TipoNegocio.VENDA)) caixaService.removerValor(calcularValorTotal(n));
+//        else caixaService.adicionarValor(calcularValorTotal(n));
+//
+//        negocioRepository.delete(n);
+//    }
+//
+//    public Negocio atualizarNegocio(Long id, AtualizarNegocioDTO dto) {
+//        Negocio negocio = buscarNegocioPorId(id);
+//
+//        negocio.setListaProdutos(dto.getListaProdutos());
+//        negocio.setFuncionariosEnvolvidos(dto.getFuncionariosEnvolvidos());
+//        negocio.setValorNegocio(calcularValorTotal(negocio));
+//        negocio.setStatus(dto.getStatus());
+//        negocio.setDataProgramada(dto.getDataProgramada());
+//        negocio.setTipo(dto.getTipo());
+//        negocio.setTransportadora(dto.getTransportadora());
+//
+//        return negocioRepository.save(negocio);
+//    }
+//
+//    public Double calcularValorTotal(Negocio negocio) {
+//        Double soma = 0.0;
+//        if(negocio.getTipo().equals(TipoNegocio.VENDA)) {
+//            for(ItemNegocio item : negocio.getListaProdutos()) {
+//                soma += item.getProduto().getValorVenda() * item.getQtd();
+//            }
+//        } else {
+//            for(ItemNegocio item : negocio.getListaProdutos()) {
+//                soma += item.getProduto().getValorCompra() * item.getQtd();
+//            }
+//        }
+//        soma += negocio.getTransportadora().getValorFreteFixo();
+//        return soma;
+//    }
+
+    /*
     public String exibirDados(Negocio negocio) {
         StringBuilder sb = new StringBuilder();
         sb.append("\n");
@@ -113,5 +160,5 @@ public class NegocioService {
 
         return sb.toString();
     }
-
+     */
 }

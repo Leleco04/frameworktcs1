@@ -6,7 +6,6 @@ import lombok.*;
 
 @Entity
 @Data // @DATA PUXA AO MSM TEMPO O  @Getter, @Setter, @ToString, @EqualsAndHashCode
-@NoArgsConstructor
 @AllArgsConstructor
 public class Produto {
 
@@ -23,6 +22,8 @@ public class Produto {
     @ManyToOne
     @JoinColumn(name = "id_categoria")
     private Categoria categoria;
+
+    public Produto(){}
 
     public Produto(String nome, String descricao, Double valorCompra, Double valorVenda, Integer qtdEstoque, Categoria categoria) {
         this.nome = nome;

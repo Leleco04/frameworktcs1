@@ -7,7 +7,6 @@ import jakarta.persistence.Id;
 import lombok.NoArgsConstructor;
 
 @Entity
-@NoArgsConstructor
 public class Categoria {
 
     @Id
@@ -16,6 +15,8 @@ public class Categoria {
 
     private String nome;
     private String descricao;
+
+    public Categoria() {}
 
     public Categoria(String nome, String descricao) {
         this.nome = nome;

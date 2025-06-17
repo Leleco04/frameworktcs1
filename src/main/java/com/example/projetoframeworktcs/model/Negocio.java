@@ -7,15 +7,17 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.checkerframework.checker.units.qual.A;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
-@NoArgsConstructor
 public class Negocio implements Serializable {
     private static final long serialVersionUID = 1L;
 
@@ -26,42 +28,66 @@ public class Negocio implements Serializable {
     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy hh:mm:ss");
     private final LocalDateTime dataNegocio = LocalDateTime.now();
     private Double valorNegocio;
-    private Status status;
+    private String status;
 
-    @ElementCollection
-    private ArrayList<String> funcionariosEnvolvidos;
-
-    @ElementCollection
-    private ArrayList<ItemNegocio> listaProdutos;
+    @ManyToOne
+    @JoinColumn(name = "id_produto")
+    private Produto produto;
 
     private LocalDateTime dataProgramada;
-    private TipoNegocio tipo;
+    private String tipo;
     private Transportadora transportadora;
+    private int quantidade;
 
-    public Negocio(Double valorNegocio, Status status, ArrayList<String> funcionariosEnvolvidos, ArrayList<ItemNegocio> listaProdutos, LocalDateTime dataProgramada, TipoNegocio tipo, Transportadora transportadora) {
+    @ManyToMany
+    @JoinTable(
+        name = "negocio_funcionarios",
+            joinColumns = @JoinColumn(name = "id_negocio"),
+            inverseJoinColumns = @JoinColumn(name = "id_funcionario")
+    )
+    private Set<Funcionario> funcionarios = new HashSet<>();
+
+    public Negocio() {}
+
+    public Negocio(Double valorNegocio, String status, Set<Funcionario> funcionarios, Produto produto, LocalDateTime dataProgramada, String tipo, Transportadora transportadora, int quantidade) {
         this.valorNegocio = valorNegocio;
         this.status = status;
-        this.funcionariosEnvolvidos = funcionariosEnvolvidos;
-        this.listaProdutos = listaProdutos;
+        this.funcionarios = funcionarios;
+        this.produto = produto;
         this.dataProgramada = dataProgramada;
         this.tipo = tipo;
         this.transportadora = transportadora;
+        this.quantidade = quantidade;
     }
 
     public LocalDateTime getDataNegocio() { return dataNegocio; }
     public Double getValorNegocio() { return valorNegocio; }
     public void setValorNegocio(Double valorNegocio) { this.valorNegocio = valorNegocio; }
-    public Status getStatus() { return status; }
-    public void setStatus(Status status) { this.status = status; }
-    public ArrayList<String> getFuncionariosEnvolvidos() { return funcionariosEnvolvidos; }
-    public void setFuncionariosEnvolvidos(ArrayList<String> funcionariosEnvolvidos) { this.funcionariosEnvolvidos = funcionariosEnvolvidos; }
-    public ArrayList<ItemNegocio> getListaProdutos() { return listaProdutos; }
-    public void setListaProdutos(ArrayList<ItemNegocio> listaProdutos) { this.listaProdutos = listaProdutos; }
+    public String getStatus() { return status; }
+    public void setStatus(String status) { this.status = status; }
+    public Produto getProduto() { return produto; }
+    public void setProduto(Produto produto) { this.produto = produto; }
     public LocalDateTime getDataProgramada() { return dataProgramada; }
     public String getDataProgramadaFormatada() { return formatter.format(dataProgramada); }
     public void setDataProgramada(LocalDateTime dataProgramada) { this.dataProgramada = dataProgramada; }
-    public TipoNegocio getTipo() { return tipo; }
-    public void setTipo(TipoNegocio tipo) { this.tipo = tipo; }
+    public String getTipo() { return tipo; }
+    public void setTipo(String tipo) { this.tipo = tipo; }
     public Transportadora getTransportadora() { return transportadora; }
     public void setTransportadora(Transportadora transportadora) { this.transportadora = transportadora; }
+
+    public int getQuantidade() {
+        return quantidade;
+    }
+
+    public void setQuantidade(int quantidade) {
+        this.quantidade = quantidade;
+    }
+
+    public Set<Funcionario> getFuncionarios() {
+        return funcionarios;
+    }
+
+    public void setFuncionarios(Set<Funcionario> funcionarios) {
+        this.funcionarios = funcionarios;
+    }
 }

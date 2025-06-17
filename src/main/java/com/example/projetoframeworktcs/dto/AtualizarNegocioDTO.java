@@ -11,8 +11,6 @@ import lombok.Setter;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
-@Getter
-@Setter
 public class AtualizarNegocioDTO {
     private Double valorNegocio;
     private Status status;
@@ -26,4 +24,60 @@ public class AtualizarNegocioDTO {
     private LocalDateTime dataProgramada;
     private TipoNegocio tipo;
     private Transportadora transportadora;
+
+    public Double getValorNegocio() {
+        return valorNegocio;
+    }
+
+    public void setValorNegocio(Double valorNegocio) {
+        this.valorNegocio = valorNegocio;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
+    public ArrayList<String> getFuncionariosEnvolvidos() {
+        return funcionariosEnvolvidos;
+    }
+
+    public void setFuncionariosEnvolvidos(ArrayList<String> funcionariosEnvolvidos) {
+        this.funcionariosEnvolvidos = funcionariosEnvolvidos;
+    }
+
+    public ArrayList<ItemNegocio> getListaProdutos() {
+        return listaProdutos;
+    }
+
+    public void setListaProdutos(ArrayList<ItemNegocio> listaProdutos) {
+        this.listaProdutos = listaProdutos;
+    }
+
+    public LocalDateTime getDataProgramada() {
+        return dataProgramada;
+    }
+
+    public void setDataProgramada(LocalDateTime dataProgramada) {
+        this.dataProgramada = dataProgramada;
+    }
+
+    public TipoNegocio getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(TipoNegocio tipo) {
+        this.tipo = tipo;
+    }
+
+    public Transportadora getTransportadora() {
+        return transportadora;
+    }
+
+    public void setTransportadora(Transportadora transportadora) {
+        this.transportadora = transportadora;
+    }
 }

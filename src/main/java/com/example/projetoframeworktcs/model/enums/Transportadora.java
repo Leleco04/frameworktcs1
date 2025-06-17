@@ -2,7 +2,6 @@ package com.example.projetoframeworktcs.model.enums;
 
 import lombok.Getter;
 
-@Getter
 public enum Transportadora {
 
         LONDRINA("Londrina", 100.0),
@@ -17,5 +16,12 @@ public enum Transportadora {
             this.valorFreteFixo = valorFreteFixo;
         }
 
+    public String getCidadeTransportadora() {
+        return cidadeTransportadora;
     }
+
+    public Double getValorFreteFixo() {
+        return valorFreteFixo;
+    }
+}
 

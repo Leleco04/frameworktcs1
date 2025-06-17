@@ -13,6 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ProdutoService {
@@ -70,6 +71,17 @@ public class ProdutoService {
         Page<Produto> produtos = produtoRepository.findAll(pageable);
 
         return produtos.map(this::converterParaDTO);
+    }
+
+    public List<ProdutoResponseDTO> getProdutos() {
+        List<Produto> produtos = produtoRepository.findAll();
+
+        return produtos.stream()
+                .map(produto -> new ProdutoResponseDTO(
+                        produto.getId(), produto.getNome(), produto.getDescricao(), produto.getValorCompra(),
+                        produto.getValorVenda(), produto.getQtdEstoque(), produto.getCategoria().getNome()
+                ))
+                .collect(Collectors.toList());
     }
 
     public void removerProduto(Long id) {

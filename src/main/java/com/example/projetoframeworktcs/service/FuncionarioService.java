@@ -1,10 +1,8 @@
 package com.example.projetoframeworktcs.service;
 
-import com.example.projetoframeworktcs.dto.AtualizarFuncionarioDTO;
-import com.example.projetoframeworktcs.dto.CriarFuncionarioDTO;
-import com.example.projetoframeworktcs.dto.FuncionarioDTO;
-import com.example.projetoframeworktcs.dto.FuncionarioResponseDTO;
+import com.example.projetoframeworktcs.dto.*;
 import com.example.projetoframeworktcs.model.Funcionario;
+import com.example.projetoframeworktcs.model.Produto;
 import com.example.projetoframeworktcs.model.Salario;
 import com.example.projetoframeworktcs.model.Setor;
 import com.example.projetoframeworktcs.repository.FuncionarioRepository;
@@ -17,6 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class FuncionarioService {
@@ -72,22 +71,34 @@ public class FuncionarioService {
         );
     }
 
+    public List<FuncionarioResponseDTO> getFuncionarios() {
+        List<Funcionario> funcionarios = funcionarioRepository.findAll();
+
+        return funcionarios.stream()
+                .map(funcionario -> new FuncionarioResponseDTO(
+                        funcionario.getId(), funcionario.getNome(), funcionario.getSobrenome(), funcionario.getGenero(),
+                        funcionario.getIdade(), funcionario.getSetor().getNome()
+                ))
+                .collect(Collectors.toList());
+    }
+
     public void removerFuncionario(Long id) {
         Funcionario funcionario = buscarFuncionarioPorId(id);
         funcionarioRepository.delete(funcionario);
     }
 
-
-    // TERMINAR ***
-    /* public Funcionario atualizarFuncionario(Long id, AtualizarFuncionarioDTO dto) {
+    public Funcionario atualizarFuncionario(Long id, AtualizarFuncionarioDTO dto) {
         Funcionario funcionario = buscarFuncionarioPorId(id);
+
+        Setor setorAtt = setorRepository.findById(dto.getIdSetor())
+                .orElseThrow(() -> new RuntimeException("Setor não encontrado."));
 
         funcionario.setNome(dto.getNome());
         funcionario.setSobrenome(dto.getSobrenome());
         funcionario.setIdade(dto.getIdade());
         funcionario.setGenero(dto.getGenero());
-        funcionario.se(dto.getIdSetor());
+        funcionario.setSetor(setorAtt);
 
         return funcionarioRepository.save(funcionario);
-    } */
+    }
 }

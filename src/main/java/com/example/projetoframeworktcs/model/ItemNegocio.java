@@ -6,7 +6,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Embeddable
-@Getter
 @NoArgsConstructor
 public class ItemNegocio {
     @OneToOne
@@ -17,5 +16,13 @@ public class ItemNegocio {
     public ItemNegocio(Produto produto, Integer qtd) {
         this.produto = produto;
         this.qtd = qtd;
+    }
+
+    public Produto getProduto() {
+        return produto;
+    }
+
+    public Integer getQtd() {
+        return qtd;
     }
 }
