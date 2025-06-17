@@ -10,7 +10,7 @@ public class CaixaController {
 
     @GetMapping("/caixa")
     public String caixa(Model model) {
-        model.addAttribute("caixa", Caixa.getValorTotal());
+        model.addAttribute("caixa", Caixa.getValor());
         return "caixa";
     }
 }

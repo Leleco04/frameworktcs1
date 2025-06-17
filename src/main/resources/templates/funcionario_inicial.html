@@ -46,7 +46,7 @@
                     <td th:text="${funcionario.sobrenome}"></td>
                     <td th:text="${funcionario.idade}"></td>
                     <td th:text="${funcionario.genero}"></td>
-                    <td th:text="${funcionario.setor.nome}"></td>
+                    <td th:text="${funcionario.nomeSetor}"></td>
                     <td class="d-flex justify-content-center align-items-center gap-3">
                         <div>
                             <button class="btn-editar">
@@ -57,7 +57,7 @@
                             </button>
                         </div>
                         <div>
-                            <form th:action="@{/funcionarios/{id}(id=${funcionario.id})}" method="POST">
+                            <form th:action="@{/funcionarios/{id}(id=${funcionario.id})}" method="POST" class="m-0">
                                 <input type="hidden" name="_method" value="delete" />
                                 <button class="btn-rmv" type="submit">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor"

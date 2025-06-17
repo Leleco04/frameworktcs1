@@ -1,14 +1,13 @@
 package com.example.projetoframeworktcs.model;
 
-import com.example.projetoframeworktcs.model.enums.Categoria;
+import com.example.projetoframeworktcs.model.Categoria;
 import jakarta.persistence.*;
-        import lombok.*;
+import lombok.*;
 
 @Entity
 @Data // @DATA PUXA AO MSM TEMPO O  @Getter, @Setter, @ToString, @EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
-
 public class Produto {
 
     @Id
@@ -20,15 +19,46 @@ public class Produto {
     private Double valorCompra;
     private Double valorVenda;
     private Integer qtdEstoque;
-    //private Categoria categoria;
 
+    @ManyToOne
+    @JoinColumn(name = "id_categoria")
+    private Categoria categoria;
 
-    public Produto(String nome, String descricao, Double valorCompra, Double valorVenda, Integer qtdEstoque) {
+    public Produto(String nome, String descricao, Double valorCompra, Double valorVenda, Integer qtdEstoque, Categoria categoria) {
         this.nome = nome;
         this.descricao = descricao;
         this.valorCompra = valorCompra;
         this.valorVenda = valorVenda;
         this.qtdEstoque = qtdEstoque;
+        this.categoria = categoria;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public String getDescricao() {
+        return descricao;
+    }
+
+    public Double getValorCompra() {
+        return valorCompra;
+    }
+
+    public Double getValorVenda() {
+        return valorVenda;
+    }
+
+    public Integer getQtdEstoque() {
+        return qtdEstoque;
+    }
+
+    public Categoria getCategoria() {
+        return categoria;
     }
 
     public void addEstoque(Integer quantidade) {

@@ -1,20 +1,31 @@
 package com.example.projetoframeworktcs.service;
 
+import com.example.projetoframeworktcs.dto.CriarProdutoDTO;
+import com.example.projetoframeworktcs.dto.ProdutoResponseDTO;
+import com.example.projetoframeworktcs.model.Categoria;
 import com.example.projetoframeworktcs.model.Produto;
+import com.example.projetoframeworktcs.repository.CategoriaRepository;
 import com.example.projetoframeworktcs.repository.ProdutoRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Random;
 
 @Service
 public class ProdutoService {
 
-    @Autowired
-    private ProdutoRepository produtoRepository;
+    private final ProdutoRepository produtoRepository;
+    private final CategoriaRepository categoriaRepository;
 
+    public ProdutoService(ProdutoRepository produtoRepository, CategoriaRepository categoriaRepository) {
+        this.produtoRepository = produtoRepository;
+        this.categoriaRepository = categoriaRepository;
+    }
+
+    /*
     public void criarProdutosIniciais() {
         if (produtoRepository.count() == 0) {
             String[] nomes = {"Pasta de dente\", \"Xarope\", \"Gel\", \"Shampoo\", \"Allegra\", \"Dipirona\", \"Proteína\", \"Coca-Cola", "Ibuprofeno", "Ledx", "Tarkov"};
@@ -28,9 +39,17 @@ public class ProdutoService {
             }
         }
     }
+    */
 
-    public void registrarProduto(String nome, String descricao, double valorCompra, double valorVenda, int qtdEstoque) {
-        Produto produto = new Produto(nome, descricao, valorCompra, valorVenda, qtdEstoque);
+    // ***
+    // Alterar name para th:field no arquivo .html adicionar
+    // ***
+
+    public void registrarProduto(CriarProdutoDTO dto) {
+        Categoria categoria = categoriaRepository.findById(dto.idCategoria())
+                .orElseThrow(() -> new RuntimeException("Categoria não encontrada."));
+
+        Produto produto = new Produto(dto.nome(), dto.descricao(), dto.valorCompra(), dto.valorVenda(), dto.qtdEstoque(), categoria);
 
         produtoRepository.save(produto);
     }
@@ -47,12 +66,26 @@ public class ProdutoService {
         return produtoRepository.save(produto);
     }
 
-    public List<Produto> listarProdutos() {
-        return produtoRepository.findAll();
+    public Page<ProdutoResponseDTO> listarProdutos(Pageable pageable) {
+        Page<Produto> produtos = produtoRepository.findAll(pageable);
+
+        return produtos.map(this::converterParaDTO);
     }
 
     public void removerProduto(Long id) {
         Produto p = buscarPorId(id);
         produtoRepository.delete(p);
+    }
+
+    private ProdutoResponseDTO converterParaDTO(Produto produto) {
+        return new ProdutoResponseDTO(
+                produto.getId(),
+                produto.getNome(),
+                produto.getDescricao(),
+                produto.getValorCompra(),
+                produto.getValorVenda(),
+                produto.getQtdEstoque(),
+                produto.getCategoria().getNome()
+        );
     }
 }
