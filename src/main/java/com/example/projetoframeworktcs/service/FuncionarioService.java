@@ -1,14 +1,19 @@
 package com.example.projetoframeworktcs.service;
 
 import com.example.projetoframeworktcs.dto.AtualizarFuncionarioDTO;
+import com.example.projetoframeworktcs.dto.CriarFuncionarioDTO;
 import com.example.projetoframeworktcs.dto.FuncionarioDTO;
+import com.example.projetoframeworktcs.dto.FuncionarioResponseDTO;
 import com.example.projetoframeworktcs.model.Funcionario;
 import com.example.projetoframeworktcs.model.Salario;
 import com.example.projetoframeworktcs.model.Setor;
 import com.example.projetoframeworktcs.repository.FuncionarioRepository;
 import com.example.projetoframeworktcs.repository.SetorRepository;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,11 +29,11 @@ public class FuncionarioService {
         this.setorRepository = setorRepository;
     }
 
-    public void registrarFuncionario(String nome, String sobrenome, String genero, Integer idade, Long setor) {
-        Setor setorObj = setorRepository.findById(setor)
+    public void registrarFuncionario(CriarFuncionarioDTO dto) {
+        Setor setorObj = setorRepository.findById(dto.idSetor())
                 .orElseThrow(() -> new RuntimeException("Setor não encontrado."));
 
-        Funcionario funcionario = new Funcionario(nome, sobrenome, genero, idade, setorObj);
+        Funcionario funcionario = new Funcionario(dto.nome(), dto.sobrenome(), dto.genero(), dto.idade(), setorObj);
 
         funcionarioRepository.save(funcionario);
     }
@@ -50,8 +55,21 @@ public class FuncionarioService {
         return funcionarioRepository.save(funcionarioSalvo);
     } */
 
-    public Page<Funcionario> listarFuncionarios(Pageable pageable) {
-        return funcionarioRepository.findAll(pageable);
+    public Page<FuncionarioResponseDTO> listarFuncionarios(Pageable pageable) {
+        Page<Funcionario> paginaDeFuncionarios = funcionarioRepository.findAll(pageable);
+
+        return paginaDeFuncionarios.map(this::converterParaDTO);
+    }
+
+    private FuncionarioResponseDTO converterParaDTO(Funcionario funcionario) {
+        return new FuncionarioResponseDTO(
+                funcionario.getId(),
+                funcionario.getNome(),
+                funcionario.getSobrenome(),
+                funcionario.getGenero(),
+                funcionario.getIdade(),
+                funcionario.getSetor().getNome()
+        );
     }
 
     public void removerFuncionario(Long id) {
@@ -59,6 +77,8 @@ public class FuncionarioService {
         funcionarioRepository.delete(funcionario);
     }
 
+
+    // TERMINAR ***
     /* public Funcionario atualizarFuncionario(Long id, AtualizarFuncionarioDTO dto) {
         Funcionario funcionario = buscarFuncionarioPorId(id);
 
@@ -66,7 +86,7 @@ public class FuncionarioService {
         funcionario.setSobrenome(dto.getSobrenome());
         funcionario.setIdade(dto.getIdade());
         funcionario.setGenero(dto.getGenero());
-        funcionario.setId_setor(dto.getId_setor());
+        funcionario.se(dto.getIdSetor());
 
         return funcionarioRepository.save(funcionario);
     } */
