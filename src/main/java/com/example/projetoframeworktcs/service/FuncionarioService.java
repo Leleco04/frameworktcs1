@@ -49,12 +49,6 @@ public class FuncionarioService {
         return paginaDeFuncionarios.map(this::converterParaDTO);
     }
 
-    public Page<FuncionarioResponseDTO> listarFuncionarios(Pageable pageable) {
-        Page<Funcionario> paginaDeFuncionarios = funcionarioRepository.findAll(pageable);
-
-        return paginaDeFuncionarios.map(this::converterParaDTO);
-    }
-
     private FuncionarioResponseDTO converterParaDTO(Funcionario funcionario) {
         return new FuncionarioResponseDTO(
                 funcionario.getId(),
