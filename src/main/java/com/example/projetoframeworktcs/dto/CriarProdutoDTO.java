@@ -6,5 +6,5 @@ public record CriarProdutoDTO (
         Double valorCompra,
         Double valorVenda,
         Integer qtdEstoque,
-        long id_categoria
+        long idCategoria
 ) {}
