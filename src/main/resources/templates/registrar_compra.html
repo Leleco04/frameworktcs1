@@ -1,0 +1,117 @@
+<html th:replace="~{common/layout :: layout(~{::title}, ~{::section})}">
+
+<title th:fragment="title">Registro de compra</title>
+
+<th:block id="page-styles">
+    <link rel="stylesheet" th:href="@{/css/caixa.css}">
+</th:block>
+
+<section th:fragment="section">
+    <h2 class="fw-bold">Registro de compra</h2>
+    <hr>
+    <form th:action="@{/negocio/registrar}" th:object="${negocioDTO}" method="POST" id="form-negocio">
+        <div class="d-grid justify-content-center mt-5 align-items-center gap-4">
+            <div class="d-flex gap-3">
+                <div class="d-grid gap-2">
+                    <label class="fw-bold" for="produto">Produto</label>
+                    <select id="produto" name="produtoId" class="input-negocio" required>
+                        <option th:each="produto : ${produtos}"
+                                th:value="${produto.id}" th:text="${produto.nome}">
+                        </option>
+                    </select>
+                </div>
+                <div class="d-grid gap-1">
+                    <label class="fw-bold" for="transportadora">Transportadora</label>
+                    <select th:field="*{transportadora}" id="transportadora" class="input-negocio" required>
+                        <option th:each="t : ${transportadoras}"
+                                th:value="${t.name()}"
+                                th:text="${t.toString()}"></option>
+                    </select>
+                </div>
+            </div>
+            <div class="d-flex gap-3">
+                <div class="d-grid gap-2">
+                    <label class="fw-bold" for="quantidade">Quantidade</label>
+                    <input type="number" class="input-negocio" id="quantidade" name="quantidade" required>
+                </div>
+                <div class="d-grid gap-2">
+                    <p class="fw-bold m-0">Funcionários envolvidos</p>
+                    <div class="funcionarios-list">
+                        <div th:each="funcionario : ${funcionarios}" class="d-flex gap-2 align-items-center">
+                            <input type="checkbox" class="form-check-input" name="funcionariosIds" th:id="${'func-' + funcionario.id}"
+                                   th:value="${funcionario.id}">
+                            <label th:for="${'func-' + funcionario.id}" th:text="${funcionario.nome} + ' ' + ${funcionario.sobrenome}" class="form-check-label"></label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="d-grid gap-2">
+                <p class="m-0 fw-bold text-center">Status</p>
+                <div class="d-flex gap-3 justify-content-center">
+                    <div class="d-flex gap-3">
+                        <div class="d-grid">
+                            <label for="status-concluido">Concluído</label>
+                            <input type="radio" value="finalizado" name="status" id="status-concluido" class="status" checked>
+                        </div>
+                        <div class="d-grid">
+                            <label for="status-aberto">Aberto</label>
+                            <input type="radio" value="aberto" name="status" id="status-aberto" class="status">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div style="display: none" id="container-data" class="justify-content-center">
+                <label for="dataProgramada">Data Programada</label>
+                <input id="dataProgramada" type="datetime-local" class="input-negocio" name="dataProgramada">
+            </div>
+        </div>
+        <div class="d-flex justify-content-center mt-3">
+            <button type="submit" class="mt-3 p-2 fw-bold" id="btn-confirmar">Confirmar compra</button>
+        </div>
+        <input name="tipo" value="compra" type="hidden">
+    </form>
+
+    <script>
+        window.addEventListener('DOMContentLoaded', function () {
+            const radioAberto = document.getElementById("status-aberto");
+
+            const containerData = document.getElementById("container-data");
+
+            const radios = document.querySelectorAll('input[name="status"]');
+
+            function verificarStatusEExibirContainer() {
+                if (radioAberto.checked) {
+                    containerData.style.display = 'block';
+                    containerData.classList.add('d-grid');
+                    containerData.classList.add('gap-2');
+                } else {
+                    containerData.style.display = 'none';
+                    containerData.classList.remove('d-grid');
+                }
+            }
+
+            radios.forEach(function (radio) {
+                radio.addEventListener('change', verificarStatusEExibirContainer);
+            });
+
+            const form = document.getElementById('form-negocio');
+
+            form.addEventListener('submit', function(event) {
+            const funcionariosSelecionados = document.querySelectorAll('input[name="funcionariosIds"]:checked');
+
+            if (funcionariosSelecionados.length === 0) {
+                event.preventDefault();
+
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Campo vazio',
+                    text: 'Você deve selecionar pelo menos 1 funcionário.'
+                });
+            }
+        });
+        });
+    </script>
+
+</section>
+
+</html>

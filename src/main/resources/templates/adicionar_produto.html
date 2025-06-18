@@ -8,7 +8,7 @@
 
 <section th:fragment="section">
     <div class="d-flex justify-content-between">
-        <h2 class="fw-bold">Adicionar Produto</h2>
+        <h2 class="fw-bold">Adicionar produto</h2>
     </div>
     <hr>
     <form th:action="@{/produtos/adicionar}" th:object="${produtoDTO}" method="POST">
@@ -41,8 +41,8 @@
                             <input id="estoque" type="number" th:field="*{qtdEstoque}" placeholder="50" class="input_produto" required>
                         </div>
                         <div class="d-grid gap-1">
-                            <label for="categoria">Categoria</label>
-                            <select id="categoria" th:field="*{id_categoria}" class="input_produto" required>
+                            <label for="categoria">Setor</label>
+                            <select id="categoria" th:field="*{idCategoria}" class="input_produto" required>
                                 <option th:each="categoria : ${categorias}" th:text="${categoria.nome}" th:value="${categoria.id}"></option>
                             </select>
                         </div>

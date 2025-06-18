@@ -1,15 +1,68 @@
 <html th:replace="~{common/layout :: layout(~{::title}, ~{::section})}">
 
-<title th:fragment="title">Página Inicial PharmSystem</title>
+<title th:fragment="title">Caixa</title>
 
 <th:block id="page-styles">
     <link rel="stylesheet" th:href="@{/css/caixa.css}">
 </th:block>
 
 <section th:fragment="section">
-    <h3>Caixa</h3>
+    <div class="d-flex justify-content-between align-items-center">
+        <h2 class="fw-bold">Caixa</h2>
+        <div class="d-flex gap-3 m-0">
+            <div>
+                <a th:href="@{/registrar_compra}" class="btn-reg p-2">+ REGISTRAR COMPRA</a>
+            </div>
+            <div>
+                <a th:href="@{/registrar_venda}" class="btn-reg p-2">+ REGISTRAR VENDA</a>
+            </div>
+        </div>
+    </div>
     <hr>
-    <h1 th:text=" 'R$' + ${caixa}"></h1>
+    <div class="d-grid p-3 mt-5" id="tabela">
+        <div class="d-flex justify-content-between align-items-center">
+            <p th:text="${qtdNegocios} + ' resultado(s)'"></p>
+            <input type="text" placeholder="Buscar" id="input_busca" class="ps-3 pt-2 pb-2">
+        </div>
+        <div class="mt-5">
+            <table class="table table-striped table-bordered rounded-5">
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Data do negócio</th>
+                    <th scope="col">Produto</th>
+                    <th scope="col">Quantidade</th>
+                    <th scope="col">Transportadora</th>
+                    <th scope="col">Tipo</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Valor</th>
+                    <th scope="col">Funcionários</th>
+                    <th scope="col">Data programada</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="negocio : ${negocios.content}">
+                    <th scope="row" th:text="${negocio.id}"></th>
+                    <td th:text="${#temporals.format(negocio.dataNegocio, 'dd/MM/yyyy HH:mm')}"></td>
+                    <td th:text="${negocio.produto}"></td>
+                    <td th:text="${negocio.quantidade}"></td>
+                    <td th:text="${negocio.transportadora}"></td>
+                    <td th:text="${negocio.tipo}"></td>
+                    <td th:text="${negocio.status}"></td>
+                    <td th:text=" 'R$' + ${#numbers.formatDecimal(negocio.valorNegocio, 1, 2, 'COMMA')}"></td>
+                    <td>
+                        <ul th:unless="${negocio.funcionarios.isEmpty()}" class="list-unstyled mb-0">
+                            <li th:each="func : ${negocio.funcionarios}"
+                                th:text="${func.id} + ' | ' + ${func.nome}">
+                            </li>
+                        </ul>
+                    </td>
+                    <td th:text="${#temporals.format(negocio.dataProgramada, 'dd/MM/yyyy HH:mm')}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
 </section>
 
 </html>
