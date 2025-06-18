@@ -14,9 +14,17 @@ import java.util.List;
 @Service
 public class NegocioService {
 
-    private NegocioRepository negocioRepository;
-    private CaixaService caixaService;
+    private final ProdutoRepository produtoRepository;
+    private final FuncionarioRepository funcionarioRepository;
+    private final NegocioRepository negocioRepository;
 
+    public NegocioService(ProdutoRepository produtoRepository, FuncionarioRepository funcionarioRepository, NegocioRepository negocioRepository) {
+        this.produtoRepository = produtoRepository;
+        this.funcionarioRepository = funcionarioRepository;
+        this.negocioRepository = negocioRepository;
+    }
+
+    /*
     public Negocio adicionarNegocio(Negocio negocio) {
         Double valorTotal = calcularValorTotal(negocio);
         Negocio n = new Negocio(valorTotal, negocio.getStatus(), negocio.getFuncionariosEnvolvidos(), negocio.getListaProdutos(), negocio.getDataProgramada(), negocio.getTipo(), negocio.getTransportadora());
@@ -26,19 +34,113 @@ public class NegocioService {
 
         return negocioRepository.save(n);
     }
+    */
 
     public List<Negocio> listarNegocios() { return negocioRepository.findAll(); }
 
-    public List<Negocio> listarVendas() { return negocioRepository.findByTipo(TipoNegocio.VENDA); }
+    public List<Negocio> listarVendas() {
+        return negocioRepository.findByTipo("venda");
+    }
 
-    public List<Negocio> listarCompras() { return negocioRepository.findByTipo(TipoNegocio.COMPRA); }
+    public List<Negocio> listarCompras() {
+        return negocioRepository.findByTipo("compra");
+    }
 
-    public List<Negocio> listarNegociosAbertos() { return negocioRepository.findByStatus(Status.ABERTO); }
+    public List<Negocio> listarNegociosAbertos() {
+        return negocioRepository.findByStatus("aberto");
+    }
+
+    public List<Negocio> listarNegociosFinalizados() {
+        return negocioRepository.findByStatus("finalizado");
+    }
 
     public Negocio buscarNegocioPorId(Long id) {
         return negocioRepository.findById(id).orElseThrow( () -> new RuntimeException("Negócio não encontrado."));
     }
 
+    public Page<NegocioResponseDTO> getNegocios(Pageable pageable) {
+        Page<Negocio> negocios = negocioRepository.findAll(pageable);
+
+        return negocios.map(this::converterNegocioParaDTO);
+    }
+
+    public void criar(CriarNegocioDTO dto) {
+        Produto produto = produtoRepository.findById(dto.getProdutoId())
+                .orElseThrow(() -> new RuntimeException("Produto não encontrado."));
+
+        Negocio negocio = new Negocio();
+        negocio.setTipo(dto.getTipo());
+        negocio.setProduto(produto);
+        negocio.setStatus(dto.getStatus());
+        negocio.setQuantidade(dto.getQuantidade());
+        negocio.setTransportadora(dto.getTransportadora());
+
+        if(dto.getTipo().equals("venda")) {
+            if(negocio.getQuantidade() <= produto.getQtdEstoque()) {
+                double valor = produto.getValorVenda() * negocio.getQuantidade();
+                negocio.setValorNegocio(valor);
+                produto.removeEstoque(negocio.getQuantidade());
+                Caixa.aumentarValor(valor);
+            } else {
+                throw new RuntimeException("Produto sem estoque suficiente.");
+            }
+        } else {
+            if(negocio.getQuantidade() <= 0) {
+                throw new RuntimeException("A quantidade de compra deve ser maior que 0.");
+            } else {
+                double valor = produto.getValorCompra() * negocio.getQuantidade();
+                negocio.setValorNegocio(valor);
+                produto.addEstoque(negocio.getQuantidade());
+                Caixa.diminuirValor(valor);
+            }
+        }
+
+        produtoRepository.save(produto);
+
+        if(negocio.getStatus().equals("aberto")) {
+            if(dto.getDataProgramada() == null) {
+                throw new RuntimeException("Um negócio agendado deve ter uma data programada.");
+            } else {
+                negocio.setDataProgramada(dto.getDataProgramada());
+            }
+        }
+
+        for(Long funcionarioId : dto.getFuncionarioIds()) {
+            Funcionario funcionario = funcionarioRepository.findById(funcionarioId)
+                    .orElseThrow(() -> new RuntimeException("Funcionário não encontrado."));
+            negocio.getFuncionarios().add(funcionario);
+        }
+
+        negocioRepository.save(negocio);
+    }
+
+    public long quantidadeNegocios() {
+        return negocioRepository.count();
+    }
+
+    private NegocioResponseDTO converterNegocioParaDTO(Negocio negocio) {
+        List<FuncionarioResponseDTO> funcionariosDTO = negocio.getFuncionarios().stream()
+                .map(funcionario -> new FuncionarioResponseDTO(
+                        funcionario.getId(), funcionario.getNome(), funcionario.getSobrenome(), funcionario.getGenero(),
+                        funcionario.getIdade(), funcionario.getSetor().getNome(), funcionario.getSalario().getSalarioLiquido()
+                ))
+                .toList();
+
+        return new NegocioResponseDTO(
+                negocio.getId(),
+                negocio.getStatus(),
+                negocio.getDataProgramada(),
+                negocio.getDataNegocio(),
+                negocio.getValorNegocio(),
+                negocio.getTipo(),
+                negocio.getTransportadora(),
+                negocio.getQuantidade(),
+                negocio.getProduto().getNome(),
+                funcionariosDTO
+        );
+    }
+
+    /*
     public void removerNegocio(Long id) {
         Negocio n = buscarNegocioPorId(id);
 
@@ -47,7 +149,9 @@ public class NegocioService {
 
         negocioRepository.delete(n);
     }
+    */
 
+    /*
     public Negocio atualizarNegocio(Long id, AtualizarNegocioDTO dto) {
         Negocio negocio = buscarNegocioPorId(id);
 
@@ -61,7 +165,9 @@ public class NegocioService {
 
         return negocioRepository.save(negocio);
     }
+    */
 
+    /*
     public Double calcularValorTotal(Negocio negocio) {
         Double soma = 0.0;
         if(negocio.getTipo().equals(TipoNegocio.VENDA)) {
@@ -76,6 +182,7 @@ public class NegocioService {
         soma += negocio.getTransportadora().getValorFreteFixo();
         return soma;
     }
+    */
 
 //    public void finalizarNegocioAberto(Negocio negocio) throws EstoqueInsuficienteException {
 //        if (negocio == null || negocio.getStatus() != Status.ABERTO) {
@@ -104,6 +211,7 @@ public class NegocioService {
 //        negocio.setDataFinalizacao(LocalDateTime.now());
 //    }
 
+    /*
     public String exibirDados(Negocio negocio) {
         StringBuilder sb = new StringBuilder();
         sb.append("\n");
@@ -141,5 +249,6 @@ public class NegocioService {
 
         return sb.toString();
     }
+    */
 
 }
