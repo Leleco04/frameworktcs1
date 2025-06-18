@@ -60,7 +60,7 @@ CREATE TABLE `funcionario` (
   PRIMARY KEY (`id`),
   KEY `id_setor` (`id_setor`),
   CONSTRAINT `fk_funcionario_setor` FOREIGN KEY (`id_setor`) REFERENCES `setor` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -69,6 +69,7 @@ CREATE TABLE `funcionario` (
 
 LOCK TABLES `funcionario` WRITE;
 /*!40000 ALTER TABLE `funcionario` DISABLE KEYS */;
+INSERT INTO `funcionario` VALUES (1,'Pedro','Silva',20,'Masculino',1,0),(2,'Carlos','Pereira',32,'Masculino',4,0),(3,'Rafael','Ponte',40,'Masculino',5,0),(4,'Ana','Clara',20,'Feminino',2,0),(5,'Fernanda','Silva',32,'Masculino',3,0),(6,'Maria','Fernanda',21,'Masculino',6,0),(7,'Charles','Oliveira',30,'Masculino',5,0),(8,'teste','testeteste',10,'Masculino',1,0),(9,'tdawdwadaw','tdawdwadawtdawdwadaw',25,'Masculino',1,0),(10,'dawda','dwwdadw',34,'Masculino',3,0),(11,'Leandro','Hideki',18,'Masculino',6,0),(12,'Leandro','Tsuchida',11,'Masculino',6,0),(13,'Luan','Pereira',100,'Masculino',3,0),(14,'Ana','Castela',21,'Feminino',6,0),(15,'dawdwa','wadawdawdawd',1,'Masculino',6,0),(16,'wadwadwadwad','dwadwdwad',53,'Masculino',6,0);
 /*!40000 ALTER TABLE `funcionario` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -84,14 +85,15 @@ CREATE TABLE `negocio` (
   `data_negocio` timestamp NOT NULL DEFAULT current_timestamp(),
   `data_programada` timestamp NULL DEFAULT NULL,
   `valor_negocio` double NOT NULL DEFAULT 0,
-  `status_negocio` enum('aberto','finalizado') DEFAULT NULL,
+  `status` enum('aberto','finalizado') DEFAULT NULL,
   `tipo` enum('venda','compra') DEFAULT NULL,
-  `id_produto` int(11) NOT NULL,
   `quantidade` int(10) unsigned NOT NULL DEFAULT 1,
+  `transportadora` varchar(70) DEFAULT NULL,
+  `id_produto` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `id_produto` (`id_produto`),
   CONSTRAINT `fk_negocio_produto` FOREIGN KEY (`id_produto`) REFERENCES `produto` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -100,6 +102,7 @@ CREATE TABLE `negocio` (
 
 LOCK TABLES `negocio` WRITE;
 /*!40000 ALTER TABLE `negocio` DISABLE KEYS */;
+INSERT INTO `negocio` VALUES (1,'2025-06-18 00:37:21',NULL,0,'finalizado','compra',0,'CAMBE',1),(2,'2025-06-18 00:37:59',NULL,0,'finalizado','compra',0,'ROLANDIA',1),(3,'2025-06-18 00:39:25','2025-06-19 00:40:00',0,'aberto','compra',0,'CAMBE',5),(4,'2025-06-18 00:41:44',NULL,1550,'finalizado','compra',100,'CAMBE',4),(5,'2025-06-18 00:44:57',NULL,800,'finalizado','compra',100,'LONDRINA',2),(6,'2025-06-18 00:47:54',NULL,504,'finalizado','compra',120,'LONDRINA',5),(7,'2025-06-18 01:50:09',NULL,599,'finalizado','venda',100,'LONDRINA',1),(8,'2025-06-18 01:53:52','2025-06-21 01:57:00',249.89999999999998,'aberto','venda',10,'CAMBE',4),(9,'2025-06-18 02:01:39',NULL,700,'finalizado','compra',200,'LONDRINA',1),(10,'2025-06-18 02:02:10',NULL,2250,'finalizado','venda',300,'LONDRINA',5);
 /*!40000 ALTER TABLE `negocio` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -126,6 +129,7 @@ CREATE TABLE `negocio_funcionarios` (
 
 LOCK TABLES `negocio_funcionarios` WRITE;
 /*!40000 ALTER TABLE `negocio_funcionarios` DISABLE KEYS */;
+INSERT INTO `negocio_funcionarios` VALUES (1,6),(2,6),(3,6),(4,6),(5,6),(6,6),(7,7),(7,8),(7,9),(7,10),(8,5),(8,6),(8,7),(8,8),(8,9),(8,10),(9,6),(10,1),(10,2),(10,3);
 /*!40000 ALTER TABLE `negocio_funcionarios` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -157,7 +161,7 @@ CREATE TABLE `produto` (
 
 LOCK TABLES `produto` WRITE;
 /*!40000 ALTER TABLE `produto` DISABLE KEYS */;
-INSERT INTO `produto` VALUES (1,'Dipirona Sódica 500mg','Analgésico e antitérmico com 10 comprimidos.',3.5,5.99,150,1),(2,'Ibuprofeno 400mg','Anti-inflamatório, alivia dores e febre. Caixa com 8 comprimidos.',8,12.5,200,1),(3,'Protetor Solar FPS 50','Proteção contra raios UVA e UVB. Toque seco. 150ml.',35,55.9,80,3),(4,'Shampoo Anticaspa','Controle eficaz da caspa e da oleosidade. 200ml.',15.5,24.99,120,2),(5,'Creme Dental Proteção Total','Proteção por 12 horas contra bactérias. Embalagem de 90g.',4.2,7.5,300,2),(6,'Vitamina C 1g Efervescente','Suplemento alimentar para reforço da imunidade. Tubo com 10 comprimidos.',12,19.9,95,4),(7,'Loção Hidratante Corporal','Pele macia e hidratada por 24 horas. 400ml.',22,34.99,60,3),(8,'Fraldas Descartáveis M','Máxima absorção e conforto para o bebê. Pacote com 30 unidades.',25,39.9,70,2),(9,'Losartana Potássica 50mg','Medicamento para controle da pressão arterial. Caixa com 30 comprimidos.',9.5,15,180,1),(10,'Barra de Cereal Nuts e Frutas','Lanche rápido e saudável. 25g.',2.5,4.5,250,4);
+INSERT INTO `produto` VALUES (1,'Dipirona Sódica 500mg','Analgésico e antitérmico com 10 comprimidos.',3.5,5.99,250,1),(2,'Ibuprofeno 400mg','Anti-inflamatório, alivia dores e febre. Caixa com 8 comprimidos.',8,12.5,300,1),(3,'Protetor Solar FPS 50','Proteção contra raios UVA e UVB. Toque seco. 150ml.',35,55.9,80,3),(4,'Shampoo Anticaspa','Controle eficaz da caspa e da oleosidade. 200ml.',15.5,24.99,210,2),(5,'Creme Dental Proteção Total','Proteção por 12 horas contra bactérias. Embalagem de 90g.',4.2,7.5,120,2),(6,'Vitamina C 1g Efervescente','Suplemento alimentar para reforço da imunidade. Tubo com 10 comprimidos.',12,19.9,95,4),(7,'Loção Hidratante Corporal','Pele macia e hidratada por 24 horas. 400ml.',22,34.99,60,3),(8,'Fraldas Descartáveis M','Máxima absorção e conforto para o bebê. Pacote com 30 unidades.',25,39.9,70,2),(9,'Losartana Potássica 50mg','Medicamento para controle da pressão arterial. Caixa com 30 comprimidos.',9.5,15,180,1),(10,'Barra de Cereal Nuts e Frutas','Lanche rápido e saudável. 25g.',2.5,4.5,250,4);
 /*!40000 ALTER TABLE `produto` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -182,7 +186,7 @@ CREATE TABLE `setor` (
 
 LOCK TABLES `setor` WRITE;
 /*!40000 ALTER TABLE `setor` DISABLE KEYS */;
-INSERT INTO `setor` VALUES (1,'Vendas',0),(2,'Financeiro',0),(3,'Gestão de pessoas',0),(4,'Gerente de filial',0),(5,'Atendimento ao cliente',0),(6,'Almoxarifado',0);
+INSERT INTO `setor` VALUES (1,'Vendas',2),(2,'Financeiro',0),(3,'Gestão de pessoas',2),(4,'Gerente de filial',0),(5,'Atendimento ao cliente',0),(6,'Almoxarifado',5);
 /*!40000 ALTER TABLE `setor` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -203,4 +207,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-06-17 17:28:24
+-- Dump completed on 2025-06-18  2:00:35
