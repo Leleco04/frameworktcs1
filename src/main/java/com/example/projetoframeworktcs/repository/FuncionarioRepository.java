@@ -12,4 +12,6 @@ import java.util.Optional;
 public interface FuncionarioRepository extends JpaRepository<Funcionario, Long> {
     @Query("SELECT f FROM Funcionario f JOIN FETCH f.setor")
     List<Funcionario> findAllWithSetor();
+
+    List<Funcionario> findBySetor(Setor setor);
 }
