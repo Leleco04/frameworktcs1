@@ -19,6 +19,8 @@ public class Funcionario implements Serializable {
     private String sobrenome;
     private String genero;
     private Integer idade;
+
+    @Embedded
     private Salario salario;
 
     @ManyToOne
