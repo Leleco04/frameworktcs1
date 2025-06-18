@@ -1,12 +1,8 @@
 package com.example.projetoframeworktcs.model;
 
 import jakarta.persistence.Embeddable;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Embeddable
-@NoArgsConstructor
 public class Salario {
 
     private Double vale;
@@ -25,6 +21,9 @@ public class Salario {
         this.taxaAliquota = calcularTaxaAliquota();
         this.salarioBruto = salarioBruto;
         this.salarioLiquido = salarioLiquido;
+    }
+
+    public Salario() {
     }
 
     @Override

@@ -4,18 +4,13 @@ import com.example.projetoframeworktcs.model.enums.Status;
 import com.example.projetoframeworktcs.model.enums.TipoNegocio;
 import com.example.projetoframeworktcs.model.enums.Transportadora;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.List;
 
 @Entity
-@NoArgsConstructor
 public class Negocio implements Serializable {
     private static final long serialVersionUID = 1L;
 
@@ -38,6 +33,9 @@ public class Negocio implements Serializable {
     private LocalDateTime dataFinalizacao;
     private TipoNegocio tipo;
     private Transportadora transportadora;
+
+    public Negocio() {
+    }
 
     public Negocio(Double valorNegocio, Status status, ArrayList<String> funcionariosEnvolvidos, ArrayList<ItemNegocio> listaProdutos, LocalDateTime dataProgramada, TipoNegocio tipo, Transportadora transportadora) {
         this.valorNegocio = valorNegocio;

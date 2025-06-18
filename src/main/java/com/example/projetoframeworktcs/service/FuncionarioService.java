@@ -4,7 +4,6 @@ import com.example.projetoframeworktcs.dto.AtualizarFuncionarioDTO;
 import com.example.projetoframeworktcs.dto.CriarFuncionarioDTO;
 import com.example.projetoframeworktcs.dto.FuncionarioResponseDTO;
 import com.example.projetoframeworktcs.model.Funcionario;
-import com.example.projetoframeworktcs.model.Salario;
 import com.example.projetoframeworktcs.model.Setor;
 import com.example.projetoframeworktcs.repository.FuncionarioRepository;
 import com.example.projetoframeworktcs.repository.SetorRepository;

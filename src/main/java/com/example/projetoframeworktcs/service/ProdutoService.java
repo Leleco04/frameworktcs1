@@ -1,16 +1,13 @@
 package com.example.projetoframeworktcs.service;
 
-import com.example.projetoframeworktcs.dto.AtualizarFuncionarioDTO;
 import com.example.projetoframeworktcs.dto.AtualizarProdutoDTO;
 import com.example.projetoframeworktcs.dto.CriarProdutoDTO;
 import com.example.projetoframeworktcs.dto.ProdutoResponseDTO;
 import com.example.projetoframeworktcs.model.Categoria;
-import com.example.projetoframeworktcs.model.Funcionario;
 import com.example.projetoframeworktcs.model.Produto;
 import com.example.projetoframeworktcs.repository.CategoriaRepository;
 import com.example.projetoframeworktcs.repository.ProdutoRepository;
 import jakarta.persistence.EntityNotFoundException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;

@@ -1,13 +1,8 @@
 package com.example.projetoframeworktcs.model;
 
-import com.example.projetoframeworktcs.model.Categoria;
 import jakarta.persistence.*;
-import lombok.*;
 
 @Entity
-@Data // @DATA PUXA AO MSM TEMPO O  @Getter, @Setter, @ToString, @EqualsAndHashCode
-@NoArgsConstructor
-@AllArgsConstructor
 public class Produto {
 
     @Id
@@ -24,6 +19,9 @@ public class Produto {
     @JoinColumn(name = "id_categoria")
     private Categoria categoria;
 
+    public Produto() {
+    }
+
     public Produto(String nome, String descricao, Double valorCompra, Double valorVenda, Integer qtdEstoque, Categoria categoria) {
         this.nome = nome;
         this.descricao = descricao;
@@ -36,30 +34,31 @@ public class Produto {
     public Long getId() {
         return id;
     }
-
     public String getNome() {
         return nome;
     }
-
     public String getDescricao() {
         return descricao;
     }
-
     public Double getValorCompra() {
         return valorCompra;
     }
-
     public Double getValorVenda() {
         return valorVenda;
     }
-
     public Integer getQtdEstoque() {
         return qtdEstoque;
     }
-
     public Categoria getCategoria() {
         return categoria;
     }
+
+    public void setNome(String nome) { this.nome = nome; }
+    public void setDescricao(String descricao) { this.descricao = descricao; }
+    public void setValorCompra(Double valorCompra) { this.valorCompra = valorCompra; }
+    public void setValorVenda(Double valorVenda) { this.valorVenda = valorVenda; }
+    public void setQtdEstoque(Integer qtdEstoque) { this.qtdEstoque = qtdEstoque; }
+    public void setCategoria(Categoria categoria) { this.categoria = categoria; }
 
     public void addEstoque(Integer quantidade) {
         this.qtdEstoque += quantidade;

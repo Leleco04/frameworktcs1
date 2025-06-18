@@ -1,20 +1,14 @@
 package com.example.projetoframeworktcs.controller;
 
-import com.example.projetoframeworktcs.dto.AtualizarFuncionarioDTO;
 import com.example.projetoframeworktcs.dto.AtualizarProdutoDTO;
 import com.example.projetoframeworktcs.dto.CriarProdutoDTO;
 import com.example.projetoframeworktcs.dto.ProdutoResponseDTO;
 import com.example.projetoframeworktcs.model.Categoria;
-import com.example.projetoframeworktcs.model.Produto;
-import com.example.projetoframeworktcs.model.Setor;
 import com.example.projetoframeworktcs.service.CategoriaService;
 import com.example.projetoframeworktcs.service.ProdutoService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;

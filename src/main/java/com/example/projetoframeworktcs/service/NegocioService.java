@@ -77,32 +77,32 @@ public class NegocioService {
         return soma;
     }
 
-//    public void finalizarNegocioAberto(Negocio negocio) throws EstoqueInsuficienteException {
-//        if (negocio == null || negocio.getStatus() != Status.ABERTO) {
-//            return;
-//        }
-//
-//        if (negocio.getTipo() == TipoNegocio.VENDA) {
-//            for (ItemNegocio item : negocio.getListaProdutos()) {
-//                if (item.getProduto().getQtdEstoque() < item.getQtd()) {
-//                    throw new EstoqueInsuficienteException("Estoque insuficiente para finalizar a venda de " + item.getProduto().getNome());
-//                }
-//            }
-//            caixaService.adicionarValor(calcularValorTotal(negocio));
-//            for (ItemNegocio item : negocio.getListaProdutos()) {
-//                item.getProduto().removeEstoque(item.getQtd());
-//            }
-//
-//        } else if (negocio.getTipo() == TipoNegocio.COMPRA) {
-//            caixaService.removerValor(calcularValorTotal(negocio));
-//            for (ItemNegocio item : negocio.getListaProdutos()) {
-//                item.getProduto().addEstoque(item.getQtd());
-//            }
-//        }
-//
-//        negocio.setStatus(Status.FINALIZADO);
-//        negocio.setDataFinalizacao(LocalDateTime.now());
-//    }
+    public void finalizarNegocioAberto(Negocio negocio) throws IllegalArgumentException {
+        if (negocio == null || negocio.getStatus() != Status.ABERTO) {
+            return;
+        }
+
+        if (negocio.getTipo() == TipoNegocio.VENDA) {
+            for (ItemNegocio item : negocio.getListaProdutos()) {
+                if (item.getProduto().getQtdEstoque() < item.getQtd()) {
+                    throw new IllegalArgumentException("Estoque insuficiente para finalizar a venda de " + item.getProduto().getNome());
+                }
+            }
+            caixaService.adicionarValor(calcularValorTotal(negocio));
+            for (ItemNegocio item : negocio.getListaProdutos()) {
+                item.getProduto().removeEstoque(item.getQtd());
+            }
+
+        } else if (negocio.getTipo() == TipoNegocio.COMPRA) {
+            caixaService.removerValor(calcularValorTotal(negocio));
+            for (ItemNegocio item : negocio.getListaProdutos()) {
+                item.getProduto().addEstoque(item.getQtd());
+            }
+        }
+
+        negocio.setStatus(Status.FINALIZADO);
+        negocio.setDataFinalizacao(LocalDateTime.now());
+    }
 
     public String exibirDados(Negocio negocio) {
         StringBuilder sb = new StringBuilder();
