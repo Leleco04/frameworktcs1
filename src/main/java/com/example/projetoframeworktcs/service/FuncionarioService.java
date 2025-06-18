@@ -19,6 +19,7 @@ public class FuncionarioService {
     private final SetorRepository setorRepository;
     private final SalarioService salarioService;
 
+    @Autowired
     public FuncionarioService(FuncionarioRepository funcionarioRepository, SetorRepository setorRepository, SalarioService salarioService) {
         this.funcionarioRepository = funcionarioRepository;
         this.setorRepository = setorRepository;
@@ -26,13 +27,33 @@ public class FuncionarioService {
     }
 
     public void registrarFuncionario(CriarFuncionarioDTO dto) {
-        Setor setorObj = setorRepository.findById(dto.idSetor())
+        if(dto.idade() < 18) {
+            throw new RuntimeException("O funcionário deve ser maior de idade.");
+        } else {
+            Setor setorObj = setorRepository.findById(dto.idSetor())
+                    .orElseThrow(() -> new RuntimeException("Setor não encontrado."));
+
+            Funcionario funcionario = new Funcionario(dto.nome(), dto.sobrenome(), dto.genero(), dto.idade(), setorObj);
+
+            funcionario.setSalario(salarioService.calcularSalarioCompleto(funcionario));
+
+            funcionarioRepository.save(funcionario);
+
+            setorObj.incrementarNumeroFuncionarios();
+            setorRepository.save(setorObj);
+        }
+    }
+
+    public List<FuncionarioResponseDTO> getFuncionariosAlmoxarifado(Long idSetor) {
+
+        Setor setor = setorRepository.findById(idSetor)
                 .orElseThrow(() -> new RuntimeException("Setor não encontrado."));
 
-        Funcionario funcionario = new Funcionario(dto.nome(), dto.sobrenome(), dto.genero(), dto.idade(), setorObj);
-        salarioService.calcularSalarioCompleto(funcionario, dto.salarioBruto());
+        List<Funcionario> funcionarios = funcionarioRepository.findBySetor(setor);
 
-        funcionarioRepository.save(funcionario);
+        return funcionarios.stream()
+                .map(this::converterParaDTO)
+                .toList();
     }
 
     public long quantidadeFuncionarios() {
@@ -64,6 +85,17 @@ public class FuncionarioService {
                 funcionario.getIdade(),
                 funcionario.getSetor().getNome()
         );
+    }
+
+    public List<FuncionarioResponseDTO> getFuncionarios() {
+        List<Funcionario> funcionarios = funcionarioRepository.findAll();
+
+        return funcionarios.stream()
+                .map(funcionario -> new FuncionarioResponseDTO(
+                        funcionario.getId(), funcionario.getNome(), funcionario.getSobrenome(), funcionario.getGenero(),
+                        funcionario.getIdade(), funcionario.getSetor().getNome(), funcionario.getSalario().getSalarioLiquido()
+                ))
+                .collect(Collectors.toList());
     }
 
     public void removerFuncionario(Long id) {
