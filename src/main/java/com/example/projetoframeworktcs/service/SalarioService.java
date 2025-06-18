@@ -8,22 +8,36 @@ import org.springframework.stereotype.Service;
 @Service
 public class SalarioService {
 
-    private CaixaService caixaService;
+   public Salario calcularSalarioCompleto(Funcionario funcionario) {
+        double salarioBruto = funcionario.getSetor().getSalarioBase();
+        double salarioLiquido = calcularDesconto(salarioBruto);
 
-    public Salario calcularSalarioCompleto(Funcionario funcionario, Double salarioBruto) {
+        Salario salario = new Salario();
+        salario.setVale(calcularVale(funcionario));
+        salario.setPlanoSaude(calcularPlanoSaude(funcionario));
+        salario.setSalarioBruto(salarioBruto);
+        salario.setSalarioLiquido(salarioLiquido);
+        salario.setPlanoOdontologico(calcularPlanoOdonto(funcionario));
 
-        Double vale = calcularVale(funcionario);
-        Double planoSaude = calcularPlanoSaude(funcionario);
-        Double planoOdontologico = 3000.0;
-        Double bonus = caixaService.getLucroMensal();
-        Double taxaAliquota = funcionario.getSalario().getTaxaAliquota();
+        return salario;
+    }
 
-        Double desconto = vale + (salarioBruto * taxaAliquota);
-        Double salarioLiquido = salarioBruto + bonus - desconto;
+    private Double calcularDesconto(Double salarioBruto) {
+        double aliquota = 0;
 
-        Salario salario = new Salario(vale, planoSaude, planoOdontologico, bonus, salarioBruto, salarioLiquido);
-        funcionario.setSalario(salario);
-        return new Salario(vale, planoSaude, planoOdontologico, bonus, salarioBruto, salarioLiquido);
+        if (salarioBruto == null || salarioBruto <= 2428.80) {
+            return 0.0;
+        } else if(salarioBruto <= 2826.65) {
+            aliquota = 0.075;
+        } else if (salarioBruto <= 3751.05) {
+            aliquota = 0.15;
+        } else if (salarioBruto <= 4664.68) {
+            aliquota = 0.225;
+        } else {
+            aliquota = 0.275;
+        }
+
+        return salarioBruto - (salarioBruto * aliquota);
     }
 
     private Double calcularPlanoSaude(Funcionario funcionario) {
@@ -39,6 +53,22 @@ public class SalarioService {
         else if(id == 3) return 4200.0;
         else if(id == 4) return 5000.0;
         else if(id == 6) return 3500.0;
+        else return 0.0;
+    }
+
+    private Double calcularPlanoOdonto(Funcionario funcionario) {
+        Setor setor = funcionario.getSetor();
+        if (setor == null) {
+            return 0.0;
+        }
+
+        Long id = setor.getId();
+
+        if(id == 1 || id == 5) return 1000.0;
+        else if(id == 2) return 1500.0;
+        else if(id == 3) return 2000.0;
+        else if(id == 4) return 2500.0;
+        else if(id == 6) return 3000.0;
         else return 0.0;
     }
 
