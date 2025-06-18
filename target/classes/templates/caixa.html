@@ -1,0 +1,15 @@
+<html th:replace="~{common/layout :: layout(~{::title}, ~{::section})}">
+
+<title th:fragment="title">Página Inicial PharmSystem</title>
+
+<th:block id="page-styles">
+    <link rel="stylesheet" th:href="@{/css/caixa.css}">
+</th:block>
+
+<section th:fragment="section">
+    <h3>Caixa</h3>
+    <hr>
+    <h1 th:text=" 'R$' + ${caixa}"></h1>
+</section>
+
+</html>

@@ -43,6 +43,12 @@ public class FuncionarioService {
         return funcionarioRepository.findById(id).orElseThrow( () -> new RuntimeException("Funcionário não encontrado."));
     }
 
+    public AtualizarFuncionarioDTO atualizarFuncionarioPorId(Long id) {
+        Funcionario f = buscarFuncionarioPorId(id);
+        AtualizarFuncionarioDTO dto = new AtualizarFuncionarioDTO(f.getId(), f.getNome(), f.getSobrenome(), f.getIdade(), f.getGenero(), f.getSetor().getId());
+        return dto;
+    }
+
     public Page<FuncionarioResponseDTO> listarFuncionarios(Pageable pageable) {
         Page<Funcionario> paginaDeFuncionarios = funcionarioRepository.findAll(pageable);
 
@@ -68,15 +74,14 @@ public class FuncionarioService {
     public Funcionario atualizarFuncionario(Long id, AtualizarFuncionarioDTO dto) {
         Funcionario funcionario = buscarFuncionarioPorId(id);
 
-        Setor setorObj = setorRepository.findById(dto.idSetor())
+        Setor setorObj = setorRepository.findById(dto.getIdSetor())
                 .orElseThrow(() -> new RuntimeException("Setor não encontrado."));
 
-        funcionario.setNome(dto.nome());
-        funcionario.setSobrenome(dto.sobrenome());
-        funcionario.setIdade(dto.idade());
-        funcionario.setGenero(dto.genero());
+        funcionario.setNome(dto.getNome());
+        funcionario.setSobrenome(dto.getSobrenome());
+        funcionario.setIdade(dto.getIdade());
+        funcionario.setGenero(dto.getGenero());
         funcionario.setSetor(setorObj);
-        salarioService.calcularSalarioCompleto(funcionario, dto.salarioBruto());
 
         return funcionarioRepository.save(funcionario);
     }

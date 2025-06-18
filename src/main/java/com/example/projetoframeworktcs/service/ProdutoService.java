@@ -1,9 +1,11 @@
 package com.example.projetoframeworktcs.service;
 
+import com.example.projetoframeworktcs.dto.AtualizarFuncionarioDTO;
 import com.example.projetoframeworktcs.dto.AtualizarProdutoDTO;
 import com.example.projetoframeworktcs.dto.CriarProdutoDTO;
 import com.example.projetoframeworktcs.dto.ProdutoResponseDTO;
 import com.example.projetoframeworktcs.model.Categoria;
+import com.example.projetoframeworktcs.model.Funcionario;
 import com.example.projetoframeworktcs.model.Produto;
 import com.example.projetoframeworktcs.repository.CategoriaRepository;
 import com.example.projetoframeworktcs.repository.ProdutoRepository;
@@ -67,6 +69,12 @@ public class ProdutoService {
         Page<Produto> produtos = produtoRepository.findAll(pageable);
 
         return produtos.map(this::converterParaDTO);
+    }
+
+    public AtualizarProdutoDTO atualizarProdutoPorId(Long id) {
+        Produto p = buscarProdutoPorId(id);
+        AtualizarProdutoDTO dto = new AtualizarProdutoDTO(p.getId(), p.getNome(), p.getDescricao(), p.getValorCompra(), p.getValorVenda(), p.getQtdEstoque(), p.getCategoria().getId());
+        return dto;
     }
 
     public void removerProduto(Long id) {

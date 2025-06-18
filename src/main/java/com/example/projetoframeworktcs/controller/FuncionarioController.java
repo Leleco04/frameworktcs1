@@ -55,20 +55,20 @@ public class FuncionarioController {
         return "redirect:/funcionarios";
     }
 
-//    @GetMapping("/{id}/atualizar_funcionario")
-//    public String paginaAtualizarFuncionario(@PathVariable Long id, Model model) {
-//        AtualizarFuncionarioDTO dto = funcionarioService.buscarFuncionarioPorId(id);
-//        model.addAttribute("atualizarFuncionarioDTO", new AtualizarFuncionarioDTO());
-//        List<Setor> setores = setorService.getSetores();
-//        model.addAttribute("setores", setores);
-//        return "atualizar_funcionario";
-//    }
+    @GetMapping("/{id}/atualizar_funcionario")
+    public String paginaAtualizarFuncionario(@PathVariable Long id, Model model) {
+        AtualizarFuncionarioDTO dto = funcionarioService.atualizarFuncionarioPorId(id);
+        model.addAttribute("atualizarFuncionarioDTO", dto);
+        List<Setor> setores = setorService.getSetores();
+        model.addAttribute("setores", setores);
+        return "atualizar_funcionario";
+    }
 
     @PutMapping("/funcionarios/atualizar/{id}")
     public String atualizaFuncionario(@PathVariable Long id, @ModelAttribute AtualizarFuncionarioDTO dto, RedirectAttributes redirectAttributes) {
         funcionarioService.atualizarFuncionario(id, dto);
         redirectAttributes.addFlashAttribute("sucesso", "Funcionário atualizado com sucesso!");
-        return "redirect:/atualizar_funcionario";
+        return "redirect:/funcionarios";
     }
 
     @DeleteMapping("/funcionarios/{id}")

@@ -1,27 +1,28 @@
 body {
-    background-color: #e0ffff;
-    font-family: "Roboto", sans-serif;
+    /* background-color: #e0ffff; */
+    font-family: "Roboto Mono", monospace;
 }
 
 .nav-lateral {
     border-right: 1px solid #044080;
+    border-left: 1px solid #044080;
     background: #57d5ff;
 }
 
-.acao-nav, h3 {
+.acoes {
+    font-size: 18px;
+}
+
+.acao-nav {
     color: #044080;
     text-decoration: none;
+    transition: all .3s ease;
     border-radius: 10px;
+    padding: 0.5rem;
 }
 
 .acao-nav:hover {
-    color: #57d5ff;
+    color: #fff;
     background: #044080;
-    padding: 0.5rem;
     transform: scale(1.1);
-    transition: all 0.15s ease;
-}
-
-h1 {
-    color: red;
 }

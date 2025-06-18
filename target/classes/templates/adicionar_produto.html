@@ -1,0 +1,60 @@
+<html th:replace="~{common/layout :: layout(~{::title}, ~{::section})}">
+
+<title th:fragment="title">Adicionar produto</title>
+
+<th:block id="page-styles">
+    <link rel="stylesheet" th:href="@{/css/adicionar_produto.css}">
+</th:block>
+
+<section th:fragment="section">
+    <div class="d-flex justify-content-between">
+        <h2 class="fw-bold">Adicionar Produto</h2>
+    </div>
+    <hr>
+    <form th:action="@{/produtos/adicionar}" th:object="${produtoDTO}" method="POST">
+        <div class="d-grid justify-content-center mt-5">
+            <div class="d-grid pt-5 pb-5" id="tabela">
+                <div class="d-grid gap-3">
+                    <div class="d-flex justify-content-center gap-3">
+                        <div class="d-grid gap-1">
+                            <label for="nome">Nome</label>
+                            <input type="text" th:field="*{nome}" id="nome" class="input_produto" placeholder="Nome" required>
+                        </div>
+                        <div class="d-grid gap-1">
+                            <label for="descricao">Descrição</label>
+                            <textarea th:field="*{descricao}" id="descricao" rows="2" cols="40" class="input_produto" placeholder="Descrição..." required></textarea>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-center gap-3">
+                        <div class="d-grid gap-1">
+                            <label for="valor_compra">Valor de compra</label>
+                            <input type="number" id="valor_compra" th:field="*{valorCompra}" placeholder="50.0" class="input_produto" required>
+                        </div>
+                        <div class="d-grid gap-1">
+                            <label for="valor_venda">Valor de venda</label>
+                            <input type="number" id="valor_venda" th:field="*{valorVenda}" placeholder="70.0" class="input_produto" required>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-center gap-3">
+                        <div class="d-grid gap-1">
+                            <label for="estoque">Quantidade em estoque</label>
+                            <input id="estoque" type="number" th:field="*{qtdEstoque}" placeholder="50" class="input_produto" required>
+                        </div>
+                        <div class="d-grid gap-1">
+                            <label for="categoria">Setor</label>
+                            <select id="categoria" th:field="*{idCategoria}" class="input_produto" required>
+                                <option th:each="categoria : ${categorias}" th:text="${categoria.nome}" th:value="${categoria.id}"></option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="d-grid justify-content-center">
+                        <div class="d-grid gap-1 mt-3">
+                            <button id="btn_confirmar" type="submit" class="p-2 fw-bold">Adicionar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</section>
+</html>

@@ -6,6 +6,7 @@ import com.example.projetoframeworktcs.dto.CriarProdutoDTO;
 import com.example.projetoframeworktcs.dto.ProdutoResponseDTO;
 import com.example.projetoframeworktcs.model.Categoria;
 import com.example.projetoframeworktcs.model.Produto;
+import com.example.projetoframeworktcs.model.Setor;
 import com.example.projetoframeworktcs.service.CategoriaService;
 import com.example.projetoframeworktcs.service.ProdutoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,20 +33,6 @@ public class ProdutoController {
         this.categoriaService = categoriaService;
     }
 
-    // VERIFICAR USO
-    /* @GetMapping("/listar")
-    public ResponseEntity<List<Produto>> getProdutos() {
-        List<Produto> produtos = produtoService.listarProdutos();
-        return ResponseEntity.ok(produtos);
-    }
-     */
-
-    @DeleteMapping("/remover")
-    public ResponseEntity<Void> deleteProduto(Long id) {
-        produtoService.removerProduto(id);
-        return ResponseEntity.noContent().build();
-    }
-
     @GetMapping("/produto_inicial")
     public String paginaInicialProdutos(Model model, @PageableDefault(size = 6, sort = "id") Pageable pageable) {
         Page<ProdutoResponseDTO> produtos = produtoService.listarProdutos(pageable);
@@ -57,17 +44,26 @@ public class ProdutoController {
 
     @GetMapping("/adicionar_produto")
     public String paginaAdicionarProduto(Model model) {
-        model.addAttribute("produtoDTO", new CriarProdutoDTO("","",0,0,0,0));
+        model.addAttribute("produtoDTO", new CriarProdutoDTO("","",0.0,0.0,0,0));
         List<Categoria> categorias = categoriaService.listarCategorias();
         model.addAttribute("categorias", categorias);
         return "adicionar_produto";
     }
 
     @PostMapping("/produtos/adicionar")
-    public String registraFuncionario(CriarProdutoDTO dto, RedirectAttributes redirectAttributes) {
+    public String registraProduto(CriarProdutoDTO dto, RedirectAttributes redirectAttributes) {
         produtoService.registrarProduto(dto);
         redirectAttributes.addFlashAttribute("sucesso", "Produto cadastrado com sucesso!");
         return "redirect:/produto_inicial";
+    }
+
+    @GetMapping("/{id}/atualizar_produto")
+    public String paginaAtualizarProduto(@PathVariable Long id, Model model) {
+        AtualizarProdutoDTO dto = produtoService.atualizarProdutoPorId(id);
+        model.addAttribute("atualizarProdutoDTO", dto);
+        List<Categoria> categorias = categoriaService.listarCategorias();
+        model.addAttribute("categorias", categorias);
+        return "atualizar_produto";
     }
 
     @PutMapping("/produtos/atualizar/{id}")
