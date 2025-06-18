@@ -17,6 +17,12 @@ public class Setor {
     @Column(name = "quantidade_funcionarios")
     private Integer quantidadeFuncionarios;
 
+    private Double salarioBase;
+
+    public Double getSalarioBase() {
+        return salarioBase;
+    }
+
     public Long getId() {
         return id;
     }
@@ -25,5 +31,9 @@ public class Setor {
     }
     public Integer getQuantidadeFuncionarios() {
         return quantidadeFuncionarios;
+    }
+
+    public void incrementarNumeroFuncionarios() {
+        this.quantidadeFuncionarios++;
     }
 }
