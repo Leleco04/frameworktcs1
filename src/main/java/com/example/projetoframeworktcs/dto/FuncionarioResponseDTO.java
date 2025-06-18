@@ -6,5 +6,6 @@ public record FuncionarioResponseDTO (
         String sobrenome,
         String genero,
         Integer idade,
-        String nomeSetor
+        String nomeSetor,
+        double salarioLiquido
 ){}
