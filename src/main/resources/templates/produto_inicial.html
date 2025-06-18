@@ -77,6 +77,25 @@
             </div>
         </div>
     </div>
+    <nav th:if="${produtos.totalPages > 1}" aria-label="Paginação de funcionários" class="mt-5">
+        <ul class="pagination justify-content-center">
+            <li class="page-item" th:classappend="${produtos.first} ? 'disabled'">
+                <a class="page-link"
+                   th:href="@{/produto_inicial(page=${produtos.number - 1}, size=${produtos.size})}">Anterior</a>
+            </li>
+
+            <li class="page-item" th:each="i : ${#numbers.sequence(0, produtos.totalPages - 1)}"
+                th:classappend="${i == produtos.number} ? 'active'">
+                <a class="page-link" th:href="@{/produto_inicial(page=${i}, size=${produtos.size})}"
+                   th:text="${i + 1}"></a>
+            </li>
+
+            <li class="page-item" th:classappend="${produtos.last} ? 'disabled'">
+                <a class="page-link"
+                   th:href="@{/produto_inicial(page=${produtos.number + 1}, size=${produtos.size})}">Próximo</a>
+            </li>
+        </ul>
+    </nav>
 </section>
 
 </html>
