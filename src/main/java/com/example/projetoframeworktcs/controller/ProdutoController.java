@@ -34,7 +34,7 @@ public class ProdutoController {
     }
 
     @GetMapping("/produto_inicial")
-    public String paginaInicialProdutos(Model model, @PageableDefault(size = 6, sort = "id") Pageable pageable) {
+    public String paginaInicialProdutos(Model model, @PageableDefault(size = 5, sort = "id") Pageable pageable) {
         Page<ProdutoResponseDTO> produtos = produtoService.listarProdutos(pageable);
         String quantidade = produtoService.quantidadeProdutos() + " produto(s)";
         model.addAttribute("quantidade", quantidade);
@@ -44,7 +44,7 @@ public class ProdutoController {
 
     @GetMapping("/adicionar_produto")
     public String paginaAdicionarProduto(Model model) {
-        model.addAttribute("produtoDTO", new CriarProdutoDTO("","",0.0,0.0,0,0));
+        model.addAttribute("produtoDTO", new CriarProdutoDTO("","",0,0,0,0));
         List<Categoria> categorias = categoriaService.listarCategorias();
         model.addAttribute("categorias", categorias);
         return "adicionar_produto";
@@ -52,9 +52,14 @@ public class ProdutoController {
 
     @PostMapping("/produtos/adicionar")
     public String registraProduto(CriarProdutoDTO dto, RedirectAttributes redirectAttributes) {
-        produtoService.registrarProduto(dto);
-        redirectAttributes.addFlashAttribute("sucesso", "Produto cadastrado com sucesso!");
-        return "redirect:/produto_inicial";
+        try {
+            produtoService.registrarProduto(dto);
+            redirectAttributes.addFlashAttribute("sucesso", "Produto cadastrado com sucesso!");
+            return "redirect:/produto_inicial";
+        } catch(RuntimeException e) {
+            redirectAttributes.addFlashAttribute("erro", e.getMessage());
+            return "redirect:/adicionar_produto";
+        }
     }
 
     @GetMapping("/{id}/atualizar_produto")
