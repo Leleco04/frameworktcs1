@@ -32,7 +32,7 @@ public class FuncionarioController {
     }
 
     @GetMapping("/funcionarios")
-    public String paginaInicialFuncionario(Model model, @PageableDefault(size = 6, sort = "id") Pageable pageable) {
+    public String paginaInicialFuncionario(Model model, @PageableDefault(size = 5, sort = "id") Pageable pageable) {
         String qtdFuncionarios = funcionarioService.quantidadeFuncionarios() + " funcionário(s)";
         Page<FuncionarioResponseDTO> paginaDeFuncionarios = funcionarioService.listarFuncionarios(pageable);
         model.addAttribute("paginaDeFuncionarios", paginaDeFuncionarios);
@@ -42,7 +42,7 @@ public class FuncionarioController {
 
     @GetMapping("/adicionar_funcionario")
     public String paginaAdicionarFuncionario(Model model) {
-        model.addAttribute("funcionarioDTO", new CriarFuncionarioDTO("", "", "", 0, 0,0.0));
+        model.addAttribute("funcionarioDTO", new CriarFuncionarioDTO("", "", "", 0, 0));
         List<Setor> setores = setorService.getSetores();
         model.addAttribute("setores", setores);
         return "adicionar_funcionario";
@@ -50,9 +50,14 @@ public class FuncionarioController {
 
     @PostMapping("/funcionarios/adicionar")
     public String registraFuncionario(CriarFuncionarioDTO dto, RedirectAttributes redirectAttributes) {
-        funcionarioService.registrarFuncionario(dto);
-        redirectAttributes.addFlashAttribute("sucesso", "Funcionário cadastrado com sucesso!");
-        return "redirect:/funcionarios";
+        try {
+            funcionarioService.registrarFuncionario(dto);
+            redirectAttributes.addFlashAttribute("sucesso", "Funcionário cadastrado com sucesso!");
+            return "redirect:/funcionarios";
+        } catch(RuntimeException e) {
+            redirectAttributes.addFlashAttribute("erro", e.getMessage());
+            return "redirect:/adicionar_funcionario";
+        }
     }
 
     @GetMapping("/{id}/atualizar_funcionario")
