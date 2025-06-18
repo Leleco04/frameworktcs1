@@ -49,12 +49,16 @@ public class ProdutoService {
     // ***
 
     public void registrarProduto(CriarProdutoDTO dto) {
-        Categoria categoria = categoriaRepository.findById(dto.id_categoria())
-                .orElseThrow(() -> new RuntimeException("Categoria não encontrada."));
+        if(dto.valorCompra() > dto.valorVenda()) {
+            throw new RuntimeException("O valor de venda deve ser maior que o valor de compra");
+        } else {
+            Categoria categoria = categoriaRepository.findById(dto.idCategoria())
+                    .orElseThrow(() -> new RuntimeException("Categoria não encontrada."));
 
-        Produto produto = new Produto(dto.nome(), dto.descricao(), dto.valorCompra(), dto.valorVenda(), dto.qtdEstoque(), categoria);
+            Produto produto = new Produto(dto.nome(), dto.descricao(), dto.valorCompra(), dto.valorVenda(), dto.qtdEstoque(), categoria);
 
-        produtoRepository.save(produto);
+            produtoRepository.save(produto);
+        }
     }
 
     public long quantidadeProdutos() {
@@ -75,6 +79,17 @@ public class ProdutoService {
         Produto p = buscarProdutoPorId(id);
         AtualizarProdutoDTO dto = new AtualizarProdutoDTO(p.getId(), p.getNome(), p.getDescricao(), p.getValorCompra(), p.getValorVenda(), p.getQtdEstoque(), p.getCategoria().getId());
         return dto;
+    }
+
+    public List<ProdutoResponseDTO> getProdutos() {
+        List<Produto> produtos = produtoRepository.findAll();
+
+        return produtos.stream()
+                .map(produto -> new ProdutoResponseDTO(
+                        produto.getId(), produto.getNome(), produto.getDescricao(), produto.getValorCompra(),
+                        produto.getValorVenda(), produto.getQtdEstoque(), produto.getCategoria().getNome()
+                ))
+                .collect(Collectors.toList());
     }
 
     public void removerProduto(Long id) {
