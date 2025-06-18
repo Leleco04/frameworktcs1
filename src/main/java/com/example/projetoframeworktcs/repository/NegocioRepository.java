@@ -10,6 +10,6 @@ import java.util.List;
 
 @Repository
 public interface NegocioRepository extends JpaRepository<Negocio, Long> {
-    public List<Negocio> findByTipo(TipoNegocio tipo);
-    public List<Negocio> findByStatus(Status status);
+    public List<Negocio> findByTipo(String tipo);
+    public List<Negocio> findByStatus(String status);
 }
