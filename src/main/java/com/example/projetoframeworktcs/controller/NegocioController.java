@@ -6,16 +6,21 @@ import com.example.projetoframeworktcs.service.NegocioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.stereotype.Controller;
 
 import java.util.List;
 
-@RestController
-@RequestMapping("/negocio")
+@Controller
 public class NegocioController {
 
     @Autowired
     private NegocioService negocioService;
+    @Autowired
+    private ProdutoService produtoService;
+    @Autowired
+    private FuncionarioService funcionarioService;
 
+    /*
     @PostMapping("/adicionar")
     public ResponseEntity<Negocio> addNegocio(@RequestBody Negocio negocio) {
         Negocio n = negocioService.adicionarNegocio(negocio);
@@ -56,5 +61,43 @@ public class NegocioController {
     public ResponseEntity<Negocio> updateFuncionario(Long id, AtualizarNegocioDTO dto) {
         Negocio n = negocioService.atualizarNegocio(id, dto);
         return ResponseEntity.ok(n);
+    }
+    */
+
+    @GetMapping("/registrar_compra")
+    public String paginaRegistrarCompra(Model model) {
+        List<ProdutoResponseDTO> produtos = produtoService.getProdutos();
+        List<FuncionarioResponseDTO> funcionarios = funcionarioService.getFuncionariosAlmoxarifado(6L);
+        model.addAttribute("transportadoras", Transportadora.values());
+        model.addAttribute("produtos", produtos);
+        model.addAttribute("funcionarios", funcionarios);
+        model.addAttribute("negocioDTO", new CriarNegocioDTO());
+        return "registrar_compra";
+    }
+
+    @GetMapping("/registrar_venda")
+    public String paginaRegistrarVenda(Model model) {
+        List<ProdutoResponseDTO> produtos = produtoService.getProdutos();
+        List<FuncionarioResponseDTO> funcionarios = funcionarioService.getFuncionarios();
+        model.addAttribute("transportadoras", Transportadora.values());
+        model.addAttribute("produtos", produtos);
+        model.addAttribute("funcionarios", funcionarios);
+        model.addAttribute("negocioDTO", new CriarNegocioDTO());
+        return "registrar_venda";
+    }
+
+    @PostMapping("/negocio/registrar")
+    // Utiliza o parametro de ids
+    public String registrarNegocio(CriarNegocioDTO dto, RedirectAttributes redirectAttributes, @RequestParam(name = "funcionariosIds") List<Long> idsDosFuncionarios) {
+        dto.setFuncionarioIds(idsDosFuncionarios);
+        try {
+            negocioService.criar(dto);
+            redirectAttributes.addFlashAttribute("sucesso", "Negócio registrado com sucesso!");
+            return "redirect:/";
+
+        } catch (RuntimeException e) {
+            redirectAttributes.addFlashAttribute("erro", e.getMessage());
+            return "redirect:/registrar_compra";
+        }
     }
 }
