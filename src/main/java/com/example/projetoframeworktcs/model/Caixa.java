@@ -4,12 +4,19 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class Caixa {
-    private static Double valor;
+   private static Double valor;
 
     public Caixa() {
         valor = 200000.0;
     }
 
-    public static double getValor() { return valor; }
-    public void setValor(Double valor) { Caixa.valor = valor; }
+    public static Double getValor() { return valor; }
+    public void setValor(Double valor) { valor = valor; }
+
+    public static void aumentarValor(double valor) {
+        Caixa.valor += valor;
+    }
+
+    public static void diminuirValor(double valor) {
+        Caixa.valor -= valor;
 }
