@@ -44,7 +44,7 @@ public class ProdutoController {
 
     @GetMapping("/adicionar_produto")
     public String paginaAdicionarProduto(Model model) {
-        model.addAttribute("produtoDTO", new CriarProdutoDTO("","",0,0,0,0));
+        model.addAttribute("produtoDTO", new CriarProdutoDTO("","",0.0,0.0,0,0));
         List<Categoria> categorias = categoriaService.listarCategorias();
         model.addAttribute("categorias", categorias);
         return "adicionar_produto";

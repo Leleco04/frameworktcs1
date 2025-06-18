@@ -1,12 +1,20 @@
 package com.example.projetoframeworktcs.controller;
 
 import com.example.projetoframeworktcs.dto.AtualizarNegocioDTO;
+import com.example.projetoframeworktcs.dto.CriarNegocioDTO;
+import com.example.projetoframeworktcs.dto.FuncionarioResponseDTO;
+import com.example.projetoframeworktcs.dto.ProdutoResponseDTO;
 import com.example.projetoframeworktcs.model.Negocio;
+import com.example.projetoframeworktcs.model.enums.Transportadora;
+import com.example.projetoframeworktcs.service.FuncionarioService;
 import com.example.projetoframeworktcs.service.NegocioService;
+import com.example.projetoframeworktcs.service.ProdutoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
@@ -93,7 +101,7 @@ public class NegocioController {
         try {
             negocioService.criar(dto);
             redirectAttributes.addFlashAttribute("sucesso", "Negócio registrado com sucesso!");
-            return "redirect:/";
+            return "redirect:/caixa";
 
         } catch (RuntimeException e) {
             redirectAttributes.addFlashAttribute("erro", e.getMessage());

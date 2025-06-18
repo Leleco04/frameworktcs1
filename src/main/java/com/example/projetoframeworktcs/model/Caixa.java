@@ -19,4 +19,5 @@ public class Caixa {
 
     public static void diminuirValor(double valor) {
         Caixa.valor -= valor;
+    }
 }

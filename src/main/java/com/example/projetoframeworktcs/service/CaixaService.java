@@ -1,3 +1,4 @@
+/*
 package com.example.projetoframeworktcs.service;
 
 import com.example.projetoframeworktcs.model.Caixa;
@@ -100,5 +101,5 @@ public class CaixaService {
         }
         return entrada - saida;
     }
-
 }
+*/

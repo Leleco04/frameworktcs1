@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class SalarioService {
 
-   public Salario calcularSalarioCompleto(Funcionario funcionario) {
+    public Salario calcularSalarioCompleto(Funcionario funcionario) {
         double salarioBruto = funcionario.getSetor().getSalarioBase();
         double salarioLiquido = calcularDesconto(salarioBruto);
 
@@ -26,7 +26,7 @@ public class SalarioService {
         double aliquota = 0;
 
         if (salarioBruto == null || salarioBruto <= 2428.80) {
-            return 0.0;
+            return salarioBruto;
         } else if(salarioBruto <= 2826.65) {
             aliquota = 0.075;
         } else if (salarioBruto <= 3751.05) {

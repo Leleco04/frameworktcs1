@@ -8,9 +8,14 @@ import com.example.projetoframeworktcs.model.Salario;
 import com.example.projetoframeworktcs.model.Setor;
 import com.example.projetoframeworktcs.repository.FuncionarioRepository;
 import com.example.projetoframeworktcs.repository.SetorRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class FuncionarioService {
@@ -26,9 +31,12 @@ public class FuncionarioService {
         this.salarioService = salarioService;
     }
 
+    @Transactional
     public void registrarFuncionario(CriarFuncionarioDTO dto) {
         if(dto.idade() < 18) {
             throw new RuntimeException("O funcionário deve ser maior de idade.");
+        } else if(dto.idade() > 127) {
+            throw new RuntimeException("Idade inválida.");
         } else {
             Setor setorObj = setorRepository.findById(dto.idSetor())
                     .orElseThrow(() -> new RuntimeException("Setor não encontrado."));
@@ -83,7 +91,8 @@ public class FuncionarioService {
                 funcionario.getSobrenome(),
                 funcionario.getGenero(),
                 funcionario.getIdade(),
-                funcionario.getSetor().getNome()
+                funcionario.getSetor().getNome(),
+                funcionario.getSalario().getSalarioLiquido()
         );
     }
 

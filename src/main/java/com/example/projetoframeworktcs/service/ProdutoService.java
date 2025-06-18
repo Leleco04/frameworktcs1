@@ -16,6 +16,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ProdutoService {
@@ -50,7 +51,9 @@ public class ProdutoService {
 
     public void registrarProduto(CriarProdutoDTO dto) {
         if(dto.valorCompra() > dto.valorVenda()) {
-            throw new RuntimeException("O valor de venda deve ser maior que o valor de compra");
+            throw new RuntimeException("O valor de venda deve ser maior que o valor de compra.");
+        } else if(dto.valorCompra() <= 0 || dto.valorVenda() <= 0) {
+            throw new RuntimeException("Os valores devem ser maiores que 0.");
         } else {
             Categoria categoria = categoriaRepository.findById(dto.idCategoria())
                     .orElseThrow(() -> new RuntimeException("Categoria não encontrada."));

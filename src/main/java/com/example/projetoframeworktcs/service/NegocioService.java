@@ -1,14 +1,22 @@
 package com.example.projetoframeworktcs.service;
 
 import com.example.projetoframeworktcs.dto.AtualizarNegocioDTO;
-import com.example.projetoframeworktcs.model.ItemNegocio;
+import com.example.projetoframeworktcs.dto.CriarNegocioDTO;
+import com.example.projetoframeworktcs.dto.FuncionarioResponseDTO;
+import com.example.projetoframeworktcs.dto.NegocioResponseDTO;
+import com.example.projetoframeworktcs.model.*;
 import com.example.projetoframeworktcs.model.enums.Status;
 import com.example.projetoframeworktcs.model.enums.TipoNegocio;
-import com.example.projetoframeworktcs.model.Negocio;
+import com.example.projetoframeworktcs.repository.FuncionarioRepository;
 import com.example.projetoframeworktcs.repository.NegocioRepository;
+import com.example.projetoframeworktcs.repository.ProdutoRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.Month;
 import java.util.List;
 
 @Service
@@ -64,6 +72,47 @@ public class NegocioService {
         return negocios.map(this::converterNegocioParaDTO);
     }
 
+    public double estimarLucroMensal() {
+        int mesAtual = LocalDate.now().getMonthValue();
+
+        List<Negocio> negociosAgendados = negocioRepository.findByStatus("aberto");
+
+        double somaCompra = 0;
+        double somaVenda = 0;
+
+        for(Negocio negocio : negociosAgendados) {
+            if(negocio.getDataProgramada().getMonthValue() == mesAtual) {
+                if(negocio.getTipo().equals("compra")) {
+                    somaCompra += negocio.getValorNegocio();
+                } else {
+                    somaVenda += negocio.getValorNegocio();
+                }
+            }
+        }
+
+        return somaVenda - somaCompra;
+    }
+
+    public double estimarLucroAnual() {
+        int anoAtual = LocalDate.now().getYear();
+
+        List<Negocio> negociosAgendados = negocioRepository.findByStatus("aberto");
+
+        double somaCompra = 0;
+        double somaVenda = 0;
+
+        for(Negocio negocio : negociosAgendados) {
+            if(negocio.getDataProgramada().getYear() == anoAtual) {
+                if(negocio.getTipo().equals("compra")) {
+                    somaCompra += negocio.getValorNegocio();
+                } else {
+                    somaVenda += negocio.getValorNegocio();
+                }
+            }
+        }
+        return somaVenda - somaCompra;
+    }
+
     public void criar(CriarNegocioDTO dto) {
         Produto produto = produtoRepository.findById(dto.getProdutoId())
                 .orElseThrow(() -> new RuntimeException("Produto não encontrado."));
@@ -100,6 +149,8 @@ public class NegocioService {
         if(negocio.getStatus().equals("aberto")) {
             if(dto.getDataProgramada() == null) {
                 throw new RuntimeException("Um negócio agendado deve ter uma data programada.");
+            } else if(dto.getDataProgramada().isBefore(LocalDateTime.now())) {
+                throw new RuntimeException("Data inválida.");
             } else {
                 negocio.setDataProgramada(dto.getDataProgramada());
             }
